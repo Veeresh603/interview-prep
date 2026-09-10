@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep Game</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--surface:#1e293b;--surface2:#273548;
+--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+--accent:#7c3aed;--accent2:#3b82f6;--accent-soft:rgba(124,58,237,0.15);
+--green:#22c55e;--green-soft:rgba(34,197,94,0.15);--green-text:#4ade80;
+--orange:#f59e0b;--orange-soft:rgba(245,158,11,0.15);--orange-text:#fbbf24;
+--red:#ef4444;--red-soft:rgba(239,68,68,0.15);--red-text:#f87171;
+--radius:12px;--radius-lg:16px;
+--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+--mono:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace;
+--shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5}
+.screen{display:none;padding:20px;max-width:700px;margin:0 auto;min-height:100vh}
+.screen.active{display:block}
+h1{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{font-size:22px;font-weight:700}
+h3{font-size:16px;font-weight:600;color:var(--text2)}
+
+/* NAV */
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:var(--bg);z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}
+.top-bar button{background:none;border:none;color:var(--text2);font-size:14px;cursor:pointer;padding:6px 12px;border-radius:8px;font-family:var(--font);font-weight:500;transition:0.2s}
+.top-bar button:hover{background:var(--bg2);color:var(--text)}
+.top-bar .logo{font-weight:800;font-size:16px;color:var(--text)}
+
+/* HOME SCREEN */
+.home-hero{text-align:center;padding:60px 0 40px}
+.home-hero h1{font-size:36px;margin-bottom:8px}
+.home-hero p{color:var(--text2);font-size:15px;max-width:400px;margin:0 auto}
+.stats-row{display:flex;gap:12px;justify-content:center;margin:30px 0;flex-wrap:wrap}
+.stat-card{background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:16px 24px;text-align:center;min-width:110px}
+.stat-card .num{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;margin-top:2px}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:30px 0}
+@media(max-width:500px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-lg);padding:28px 24px;cursor:pointer;transition:0.3s;text-align:left;position:relative;overflow:hidden}
+.mode-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 30px rgba(124,58,237,0.2)}
+.mode-card .icon{font-size:36px;margin-bottom:12px;display:block}
+.mode-card h3{color:var(--text);margin-bottom:6px}
+.mode-card p{color:var(--text3);font-size:13px;line-height:1.5}
+.reset-btn{display:inline-block;margin-top:30px;padding:8px 16px;background:var(--red-soft);border:1px solid rgba(239,68,68,0.3);color:var(--red-text);border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--font);font-weight:500;transition:0.2s}
+.reset-btn:hover{background:rgba(239,68,68,0.25)}
+
+/* CATEGORY FILTERS */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 20px}
+.filter-chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:var(--surface);color:var(--text2);transition:0.2s;user-select:none}
+.filter-chip:hover{border-color:var(--accent);color:var(--text)}
+.filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* FLASHCARD */
+.card-container{perspective:1200px;margin:20px auto;max-width:560px}
+.card{width:100%;min-height:340px;position:relative;transform-style:preserve-3d;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius-lg);padding:32px 28px;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,0.08);box-shadow:var(--shadow)}
+.card-front{background:linear-gradient(145deg,var(--surface),var(--bg2));justify-content:center;align-items:center;text-align:center}
+.card-back{background:linear-gradient(145deg,var(--bg2),var(--surface));transform:rotateY(180deg);overflow-y:auto}
+.card-front .cat-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:20px;background:var(--accent-soft);color:var(--accent)}
+.card-front .q-text{font-size:20px;font-weight:700;line-height:1.4;max-width:420px}
+.card-front .hint{color:var(--text3);font-size:12px;margin-top:24px}
+.card-back .oneliner-box{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px;margin-bottom:16px;font-weight:600;font-size:14px;line-height:1.5;color:var(--text)}
+.card-back .points{list-style:none;padding:0}
+.card-back .points li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13.5px;color:var(--text2);line-height:1.5}
+.card-back .points li:last-child{border-bottom:none}
+.card-back .points li::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent2);margin-right:10px;vertical-align:middle}
+
+.card-actions{display:flex;gap:12px;justify-content:center;margin:24px auto;max-width:560px}
+.card-actions button{flex:1;padding:14px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:var(--font);transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-review{background:var(--orange-soft);color:var(--orange-text);border-color:rgba(245,158,11,0.3)}
+.btn-review:hover{background:rgba(245,158,11,0.25);border-color:var(--orange)}
+.btn-got-it{background:var(--green-soft);color:var(--green-text);border-color:rgba(34,197,94,0.3)}
+.btn-got-it:hover{background:rgba(34,197,94,0.25);border-color:var(--green)}
+
+.progress-section{display:flex;align-items:center;gap:12px;margin:16px auto;max-width:560px}
+.progress-bar-bg{flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width 0.4s ease}
+.progress-text{font-size:12px;color:var(--text3);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.streak-display{text-align:center;margin:10px 0;font-size:14px;color:var(--text3);font-weight:600}
+.streak-display .fire{font-size:20px}
+.streak-display .count{color:var(--orange-text);font-size:18px;font-weight:800}
+.card-counter{text-align:center;font-size:13px;color:var(--text3);margin-top:8px;font-variant-numeric:tabular-nums}
+
+/* INTERVIEW SIMULATOR */
+.sim-container{max-width:600px;margin:0 auto}
+.sim-question-area{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:28px;margin:16px 0;box-shadow:var(--shadow)}
+.sim-cat{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;background:var(--accent-soft);color:var(--accent)}
+.sim-q{font-size:20px;font-weight:700;line-height:1.4}
+.timer-ring{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0}
+.timer-circle{width:80px;height:80px;border-radius:50%;border:4px solid var(--bg3);position:relative;display:flex;align-items:center;justify-content:center}
+.timer-circle svg{position:absolute;inset:-4px;transform:rotate(-90deg)}
+.timer-circle circle{fill:none;stroke-width:4;stroke-linecap:round;r:38;cx:42;cy:42;stroke-dasharray:238.76;transition:stroke-dashoffset 1s linear}
+.timer-text{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;z-index:1}
+.timer-label{font-size:12px;color:var(--text3);font-weight:500}
+.notepad{width:100%;min-height:120px;background:var(--bg2);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:14px;font-family:var(--font);font-size:14px;color:var(--text);resize:vertical;margin:16px 0;outline:none;transition:border-color 0.2s}
+.notepad:focus{border-color:var(--accent)}
+.notepad::placeholder{color:var(--text3)}
+.sim-btn{width:100%;padding:14px;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:var(--font);transition:0.2s;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.sim-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.sim-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.answer-reveal{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:24px;margin:16px 0;animation:slideUp 0.3s ease}
+.answer-reveal .oneliner-box{background:var(--green-soft);border-left:3px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px;margin-bottom:14px;font-weight:600;font-size:14px;line-height:1.5}
+.answer-reveal .points{list-style:none;padding:0}
+.answer-reveal .points li{padding:6px 0;font-size:13.5px;color:var(--text2)}
+.answer-reveal .points li::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:10px;vertical-align:middle}
+.rating-buttons{display:flex;gap:10px;margin:16px 0}
+.rating-btn{flex:1;padding:14px 10px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:var(--font);transition:0.2s;text-align:center}
+.rating-btn.crushed{background:var(--green-soft);color:var(--green-text);border-color:rgba(34,197,94,0.3)}
+.rating-btn.decent{background:var(--orange-soft);color:var(--orange-text);border-color:rgba(245,158,11,0.3)}
+.rating-btn.struggled{background:var(--red-soft);color:var(--red-text);border-color:rgba(239,68,68,0.3)}
+.rating-btn:hover{transform:translateY(-2px)}
+
+/* SESSION SUMMARY */
+.summary-card{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:28px;text-align:center;margin:20px 0}
+.summary-card h2{margin-bottom:4px}
+.summary-card .subtitle{color:var(--text3);font-size:13px;margin-bottom:20px}
+.summary-scores{display:flex;gap:16px;justify-content:center;margin:20px 0;flex-wrap:wrap}
+.score-item{min-width:80px}
+.score-item .num{font-size:28px;font-weight:800}
+.score-item .label{font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600;margin-top:2px}
+.score-item.crushed .num{color:var(--green-text)}
+.score-item.decent .num{color:var(--orange-text)}
+.score-item.struggled .num{color:var(--red-text)}
+.weak-areas{text-align:left;margin:20px 0}
+.weak-areas h4{font-size:13px;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px}
+.weak-areas .tag{display:inline-block;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;background:var(--red-soft);color:var(--red-text);margin:3px}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:10px;height:10px;z-index:9999;pointer-events:none;animation:confettiFall 2s ease-out forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.kb-hints{display:flex;gap:16px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.kb-hint{font-size:11px;color:var(--text3)}
+.kb-hint kbd{display:inline-block;padding:2px 6px;border-radius:4px;background:var(--bg2);border:1px solid rgba(255,255,255,0.1);font-family:var(--mono);font-size:10px;margin:0 2px}
+@media(max-width:600px){.kb-hints{display:none}}
+
+/* STORY BANK */
+.story-list{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+.story-card{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);overflow:hidden;transition:0.2s}
+.story-card:hover{border-color:rgba(255,255,255,0.15)}
+.story-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:14px}
+.story-header .story-cat{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;background:var(--accent-soft);color:var(--accent)}
+.story-header .story-q{flex:1;font-size:15px;font-weight:600;line-height:1.4}
+.story-header .chevron{color:var(--text3);font-size:18px;transition:transform 0.3s}
+.story-card.open .chevron{transform:rotate(90deg)}
+.story-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.story-card.open .story-body{max-height:2000px}
+.story-content{padding:0 24px 24px}
+.star-section{margin:12px 0;padding:12px 16px;border-radius:8px;border-left:4px solid}
+.star-section.s-sit{border-color:#3b82f6;background:rgba(59,130,246,0.08)}
+.star-section.s-task{border-color:#f59e0b;background:rgba(245,158,11,0.08)}
+.star-section.s-act{border-color:#22c55e;background:rgba(34,197,94,0.08)}
+.star-section.s-res{border-color:#7c3aed;background:rgba(124,58,237,0.08)}
+.star-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.star-section.s-sit .star-label{color:#60a5fa}
+.star-section.s-task .star-label{color:#fbbf24}
+.star-section.s-act .star-label{color:#4ade80}
+.star-section.s-res .star-label{color:#a78bfa}
+.star-text{font-size:13.5px;color:var(--text2);line-height:1.6}
+.story-tips{margin-top:14px;padding:12px 16px;background:var(--bg2);border-radius:8px}
+.story-tips h4{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px}
+.story-tips li{font-size:12.5px;color:var(--text2);padding:3px 0;list-style:none}
+.story-tips li::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent2);margin-right:8px;vertical-align:middle}
+.practice-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--font);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:0.2s}
+.practice-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.practice-timer-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.92);z-index:200;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s ease}
+.practice-timer-box{background:var(--surface);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:40px;text-align:center;max-width:440px;width:90%}
+.practice-timer-box .pt-q{font-size:16px;font-weight:600;margin-bottom:20px;color:var(--text2);line-height:1.4}
+.practice-timer-box .pt-time{font-size:56px;font-weight:800;font-variant-numeric:tabular-nums;margin:16px 0}
+.practice-timer-box .pt-label{font-size:13px;color:var(--text3);margin-bottom:20px}
+.practice-timer-box .pt-close{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:var(--bg2);color:var(--text);font-family:var(--font);transition:0.2s}
+.practice-timer-box .pt-close:hover{background:var(--bg3)}
+.story-filter-row{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+
+/* DEPTH DRILL */
+.depth-container{max-width:600px;margin:0 auto}
+.depth-step-dots{display:flex;justify-content:center;gap:10px;margin:16px 0}
+.depth-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;border:2px solid var(--bg3);color:var(--text3);transition:0.3s}
+.depth-dot.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.depth-dot.done{border-color:var(--green);color:var(--green);background:var(--green-soft)}
+.depth-q-area{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:28px;margin:12px 0;box-shadow:var(--shadow)}
+.depth-level-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+.depth-level-badge.base{background:var(--accent-soft);color:var(--accent)}
+.depth-level-badge.f1{background:var(--orange-soft);color:var(--orange-text)}
+.depth-level-badge.f2{background:var(--red-soft);color:var(--red-text)}
+.depth-q-text{font-size:19px;font-weight:700;line-height:1.4}
+.depth-answer-box{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:20px;margin:12px 0;animation:slideUp 0.3s ease}
+.depth-answer-box .depth-a-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;margin-bottom:8px}
+.depth-answer-box .depth-a-text{font-size:14px;color:var(--text);line-height:1.6;font-weight:500}
+.depth-final{background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:28px;margin:16px 0}
+.depth-final h3{font-size:15px;font-weight:700;margin-bottom:16px}
+.depth-final-q{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.depth-final-q:last-child{border-bottom:none}
+.depth-final-q .dfq-label{font-size:10px;text-transform:uppercase;font-weight:800;letter-spacing:0.05em;margin-bottom:4px}
+.depth-final-q .dfq-label.base{color:var(--accent)}
+.depth-final-q .dfq-label.f1{color:var(--orange-text)}
+.depth-final-q .dfq-label.f2{color:var(--red-text)}
+.depth-final-q .dfq-q{font-size:14px;font-weight:600;margin-bottom:4px}
+.depth-final-q .dfq-a{font-size:13px;color:var(--text2);line-height:1.5}
+.depth-rating{display:flex;gap:10px;margin:16px 0}
+.depth-rating button{flex:1;padding:14px 10px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;font-family:var(--font);transition:0.2s;text-align:center}
+.depth-rating .dr-deep{background:var(--green-soft);color:var(--green-text);border-color:rgba(34,197,94,0.3)}
+.depth-rating .dr-surface{background:var(--orange-soft);color:var(--orange-text);border-color:rgba(245,158,11,0.3)}
+.depth-rating .dr-lost{background:var(--red-soft);color:var(--red-text);border-color:rgba(239,68,68,0.3)}
+.depth-rating button:hover{transform:translateY(-2px)}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span class="logo" onclick="showScreen('home')" style="cursor:pointer">Interview Game</span>
+  <div>
+    <button onclick="showScreen('home')">Home</button>
+    <a href="interview-prep.html" style="color:var(--text2);font-size:14px;padding:6px 12px;text-decoration:none;border-radius:8px;font-weight:500" target="_blank">Reference</a>
+  </div>
+</div>
+
+<!-- HOME SCREEN -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h1>Interview Prep Game</h1>
+    <p>Practice your CloudSufi Senior UI Engineer interview with flashcards and mock interviews</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="num" id="home-mastered">0</div><div class="label">Mastered</div></div>
+    <div class="stat-card"><div class="num" id="home-total">0</div><div class="label">Total Qs</div></div>
+    <div class="stat-card"><div class="num" id="home-streak">0</div><div class="label">Best Streak</div></div>
+    <div class="stat-card"><div class="num" id="home-sessions">0</div><div class="label">Sessions</div></div>
+    <div class="stat-card"><div class="num" id="home-stories">12</div><div class="label">Stories</div></div>
+  </div>
+  <div class="mode-cards">
+    <div class="mode-card" onclick="startFlashcards()">
+      <span class="icon">&#x1F0CF;</span>
+      <h3>Flashcards</h3>
+      <p>Flip cards, rate yourself. Cards you struggle with appear more often. Keyboard shortcuts supported.</p>
+    </div>
+    <div class="mode-card" onclick="startSimulator()">
+      <span class="icon">&#x1F399;</span>
+      <h3>Interview Simulator</h3>
+      <p>2-minute timer per question. Write your answer, then compare with the model answer. 10 questions per session.</p>
+    </div>
+    <div class="mode-card" onclick="showScreen('stories')">
+      <span class="icon">&#x1F4DA;</span>
+      <h3>Story Bank</h3>
+      <p>12 ready-made STAR stories for behavioral questions. Read, adapt, then practice retelling with a 90-second timer.</p>
+    </div>
+    <div class="mode-card" onclick="startDepthDrill()">
+      <span class="icon">&#x1F50D;</span>
+      <h3>Depth Drill</h3>
+      <p>Interviewers dig 2 levels deep. Practice base question → follow-up 1 → follow-up 2. 8 chains per session.</p>
+    </div>
+  </div>
+  <div style="text-align:center">
+    <button class="reset-btn" onclick="if(confirm('Reset all progress? This cannot be undone.')){localStorage.clear();location.reload()}">Reset All Progress</button>
+  </div>
+</div>
+
+<!-- FLASHCARD SCREEN -->
+<div class="screen" id="screen-flashcards">
+  <h2>Flashcards</h2>
+  <div class="filters" id="fc-filters"></div>
+  <div class="progress-section">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="fc-progress" style="width:0%"></div></div>
+    <span class="progress-text" id="fc-progress-text">0/0</span>
+  </div>
+  <div class="streak-display"><span class="fire">&#x1F525;</span> Streak: <span class="count" id="fc-streak">0</span></div>
+  <div class="card-container" id="fc-card-container">
+    <div class="card" id="fc-card" onclick="flipCard()">
+      <div class="card-face card-front">
+        <span class="cat-badge" id="fc-cat"></span>
+        <div class="q-text" id="fc-question"></div>
+        <div class="hint">tap to flip</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="oneliner-box" id="fc-oneliner"></div>
+        <ul class="points" id="fc-points"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="card-actions" id="fc-actions" style="visibility:hidden">
+    <button class="btn-review" onclick="rateCard('review')">&#x1F504; Review Again</button>
+    <button class="btn-got-it" onclick="rateCard('got')">&#x2705; Got It</button>
+  </div>
+  <div class="card-counter" id="fc-counter"></div>
+  <div class="kb-hints">
+    <span class="kb-hint"><kbd>Space</kbd> Flip</span>
+    <span class="kb-hint"><kbd>&larr;</kbd> Review</span>
+    <span class="kb-hint"><kbd>&rarr;</kbd> Got It</span>
+  </div>
+</div>
+
+<!-- INTERVIEW SIMULATOR SCREEN -->
+<div class="screen" id="screen-simulator">
+  <h2>Interview Simulator</h2>
+  <div class="filters" id="sim-filters"></div>
+  <div class="sim-container" id="sim-container">
+    <div id="sim-question-wrap">
+      <div class="sim-question-area">
+        <span class="sim-cat" id="sim-cat"></span>
+        <div class="sim-q" id="sim-q"></div>
+      </div>
+      <div class="timer-ring">
+        <div class="timer-circle">
+          <svg width="84" height="84"><circle id="timer-ring-circle" stroke="var(--accent)" /></svg>
+          <span class="timer-text" id="sim-timer">2:00</span>
+        </div>
+        <span class="timer-label">Time remaining</span>
+      </div>
+      <textarea class="notepad" id="sim-notepad" placeholder="Jot your answer here... (practice articulating before revealing)"></textarea>
+      <button class="sim-btn" id="sim-reveal-btn" onclick="revealSimAnswer()">Show Model Answer</button>
+    </div>
+    <div id="sim-answer-wrap" style="display:none">
+      <div class="answer-reveal" id="sim-answer-box"></div>
+      <div class="rating-buttons">
+        <button class="rating-btn crushed" onclick="rateSimQuestion('crushed')">&#x1F4AA; Crushed It</button>
+        <button class="rating-btn decent" onclick="rateSimQuestion('decent')">&#x1F44D; Decent</button>
+        <button class="rating-btn struggled" onclick="rateSimQuestion('struggled')">&#x1F61E; Struggled</button>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--text3)" id="sim-counter"></div>
+    </div>
+    <div id="sim-summary" style="display:none"></div>
+  </div>
+</div>
+
+<!-- STORY BANK SCREEN -->
+<div class="screen" id="screen-stories">
+  <h2>Story Bank</h2>
+  <p style="color:var(--text3);font-size:13px;margin:6px 0 12px">Ready-made STAR stories for behavioral questions. Read, adapt to your experience, then practice retelling out loud.</p>
+  <div class="story-filter-row" id="story-filters"></div>
+  <div class="story-list" id="story-list"></div>
+</div>
+
+<!-- DEPTH DRILL SCREEN -->
+<div class="screen" id="screen-depth">
+  <h2>Depth Drill</h2>
+  <div class="depth-container" id="depth-container">
+    <div class="depth-step-dots" id="depth-dots">
+      <div class="depth-dot" id="dd-1">1</div>
+      <div class="depth-dot" id="dd-2">2</div>
+      <div class="depth-dot" id="dd-3">3</div>
+    </div>
+    <div id="depth-q-wrap">
+      <div class="depth-q-area">
+        <span class="depth-level-badge" id="depth-badge">Base Question</span>
+        <div class="depth-q-text" id="depth-q"></div>
+      </div>
+      <button class="sim-btn" id="depth-next-btn" onclick="depthNext()">I've got my answer</button>
+    </div>
+    <div id="depth-reveal-wrap" style="display:none"></div>
+    <div id="depth-final-wrap" style="display:none"></div>
+    <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--text3)" id="depth-counter"></div>
+  </div>
+</div>
+
+<div class="practice-timer-overlay" id="practice-overlay" style="display:none">
+  <div class="practice-timer-box">
+    <div class="pt-q" id="pt-question"></div>
+    <div class="pt-time" id="pt-time">1:30</div>
+    <div class="pt-label">Say your answer out loud</div>
+    <button class="pt-close" onclick="closePracticeTimer()">Done</button>
+  </div>
+</div>
+
+<script>
+const Q = [
+{id:1,cat:"React",q:"What is Virtual DOM?",a:"The Virtual DOM is a lightweight JS copy of the real DOM. When state changes, React diffs the new copy with the old, finds differences, and updates only those parts in the real DOM.",p:["Plain JS objects representing the UI tree","Diffing compares old vs new Virtual DOM","Only changed parts update the real DOM (reconciliation)","Declarative: you describe WHAT, React figures out HOW"]},
+{id:2,cat:"React",q:"How does React reconciliation work?",a:"React's diffing algorithm compares old and new Virtual DOM trees using two rules: different element type = rebuild from scratch, same type = update changed props. Keys track list items.",p:["Different type → tear down and rebuild entire subtree","Same type → keep DOM node, update changed attributes","Keys in lists help React track which items moved/added/removed","O(n) complexity by comparing tree level-by-level"]},
+{id:3,cat:"React",q:"What causes a React component to re-render?",a:"A component re-renders when: its state changes, its parent re-renders, its props change, a consumed context value changes, or an external store (Redux) updates.",p:["setState triggers re-render of that component and children","Parent render → children re-evaluated (not necessarily DOM update)","Context change → all consumers re-render","Key change → component unmounts and remounts (resets state)"]},
+{id:4,cat:"React",q:"useMemo vs useCallback — what's the difference?",a:"useMemo caches a computed value. useCallback caches a function reference. Both prevent recalculation/recreation on every render, but only help when the result is passed to a memoized child.",p:["useMemo(() => expensiveCalc(), [deps]) → caches the RESULT","useCallback(fn, [deps]) → caches the FUNCTION itself","useCallback(fn, deps) is equivalent to useMemo(() => fn, deps)","Only useful when paired with React.memo or as effect dependency"]},
+{id:5,cat:"React",q:"useEffect vs useLayoutEffect",a:"useEffect runs asynchronously after the browser paints. useLayoutEffect runs synchronously before the browser paints. Use useLayoutEffect only when you need to measure/mutate DOM before the user sees it.",p:["useEffect: render → paint → effect runs (non-blocking)","useLayoutEffect: render → effect runs → paint (blocks paint)","useLayoutEffect for: measuring DOM, preventing flicker","99% of the time, useEffect is correct"]},
+{id:6,cat:"React",q:"How would you create a custom hook?",a:"A custom hook is a function starting with 'use' that extracts reusable stateful logic. It can use other hooks inside it. Components using it each get their own independent state.",p:["Name must start with 'use' (convention + linter rule)","Can use useState, useEffect, other hooks inside","Each component using the hook gets its own copy of state","Great for: data fetching, form handling, subscriptions, timers"]},
+{id:7,cat:"React",q:"Context API vs Redux — when to use each?",a:"Context is for passing values through the tree without prop drilling — good for theme, auth, locale. Redux is a full state management architecture with actions, reducers, middleware, and devtools — for complex shared state.",p:["Context: value propagation. Redux: state management architecture","Context for: rarely-changing globals (theme, auth, locale)","Redux for: complex state, many consumers, middleware, time-travel debugging","Context causes ALL consumers to re-render; Redux useSelector is granular"]},
+{id:8,cat:"React",q:"How would you optimize a slow React app?",a:"Profile first with React DevTools Profiler. Then: keep state local, memoize expensive computations, use React.memo for pure components, virtualize long lists, code-split routes, and lazy load heavy components.",p:["Measure before optimizing — use React Profiler","State colocation: keep state close to where it's used","React.memo + useCallback for stable props to children","Virtualize lists (react-window), code-split routes (lazy/Suspense)"]},
+{id:9,cat:"React",q:"What is React Fiber and concurrent rendering?",a:"Fiber is React's internal engine that breaks rendering into small units of work, can pause and resume. Concurrent rendering (React 18) uses Fiber to keep UI responsive by interrupting low-priority work.",p:["Before Fiber: synchronous rendering blocked the main thread","Fiber nodes form a linked list — each is a unit of work","useTransition: mark state updates as low priority","useDeferredValue: defer re-rendering of expensive content"]},
+{id:10,cat:"React",q:"What are React Server Components?",a:"Server Components run on the server and send rendered HTML with zero JavaScript to the client. They can access databases directly. Mix with Client Components ('use client') for interactivity.",p:["Default in Next.js App Router — zero JS shipped","Can async/await, read files, query databases directly","Cannot use useState, useEffect, onClick","Client Components need 'use client' directive for interactivity"]},
+{id:11,cat:"React",q:"Redux vs Zustand vs Recoil — trade-offs?",a:"Redux is battle-tested with great devtools but verbose. Zustand is tiny (~1KB) and simple. Recoil gives atom-based state with React Suspense. Pick based on team size and complexity.",p:["Redux: strict patterns, middleware, time-travel, large teams","Zustand: minimal API, no Provider needed, ~1KB, fast prototyping","Recoil/Jotai: atom-based, complex derived state, Suspense integration","Context alone: theme, auth, locale — rarely-changing globals"]},
+{id:12,cat:"React",q:"Refs vs State — when to use which?",a:"State triggers re-renders when it changes — use for anything the user sees. Refs persist values across renders WITHOUT re-rendering — use for DOM access, timers, or tracking previous values.",p:["useState: changes cause re-render, value in JSX, async batched","useRef: changes do NOT re-render, access via .current, synchronous","Ref for: DOM focus, timer IDs, previous values, imperative APIs","If UI must change when value changes → state. Otherwise → ref"]},
+{id:13,cat:"React",q:"Class components vs functional components",a:"Functional components with hooks are the modern standard. Hooks give you all the same powers (state, lifecycle, context) with less code and better reusability through custom hooks.",p:["Class: lifecycle methods, this, setState — verbose","Functional: hooks, no this confusion, ~40% less code","Custom hooks enable logic reuse (impossible with classes)","Error Boundaries still require class components (only exception)"]},
+{id:14,cat:"React",q:"What is hydration?",a:"Hydration is where React takes server-rendered HTML and 'wakes it up' by attaching event listeners and state. HTML shows instantly, then React takes over for interactivity.",p:["Server sends full HTML → fast first paint","React JS loads → walks DOM → attaches handlers = hydration","Mismatch warning if server HTML ≠ client render (use useEffect for browser APIs)","React 18: selective hydration — prioritizes what user interacts with"]},
+{id:15,cat:"JavaScript",q:"Explain closures with a practical example",a:"A closure is when a function remembers the variables from its outer scope even after that outer function has finished executing. It's like a backpack of variables the inner function carries around.",p:["Inner function 'closes over' outer function's variables","Variables survive even after outer function returns","Use cases: data privacy, factory functions, callbacks, React hooks","Every time outer function is called, a new closure is created"]},
+{id:16,cat:"JavaScript",q:"Explain the event loop",a:"The event loop is how JS handles async code on a single thread. It runs synchronous code first, then checks the microtask queue (Promises), then the macrotask queue (setTimeout), repeating forever.",p:["Call stack executes synchronous code","Microtask queue: Promises, queueMicrotask (runs FIRST)","Macrotask queue: setTimeout, setInterval, I/O (runs AFTER microtasks)","Event loop: stack empty → drain microtasks → one macrotask → repeat"]},
+{id:17,cat:"JavaScript",q:"Microtask vs macrotask",a:"Microtasks (Promises, queueMicrotask) run before macrotasks (setTimeout, setInterval). After each macrotask, ALL pending microtasks drain before the next macrotask runs.",p:["Microtasks: Promise.then, queueMicrotask, MutationObserver","Macrotasks: setTimeout, setInterval, setImmediate, I/O","ALL microtasks drain before next macrotask","console.log, Promise.resolve().then, setTimeout(0) → sync, micro, macro"]},
+{id:18,cat:"JavaScript",q:"Explain this, call, apply, bind",a:"'this' depends on HOW a function is called, not where it's defined. 4 rules: default binding (global), implicit (object.method), explicit (call/apply/bind), and new (constructor).",p:["Default: standalone function → this = global/undefined (strict)","Implicit: obj.method() → this = obj","Explicit: fn.call(obj) / fn.apply(obj, [args]) / fn.bind(obj)","new: constructor → this = new empty object"]},
+{id:19,cat:"JavaScript",q:"Shallow copy vs deep copy",a:"Shallow copy copies the top level only — nested objects still share the same reference. Deep copy creates completely independent copies at every level. Use structuredClone() for deep copy.",p:["Shallow: spread {...obj}, Object.assign — nested refs shared","Deep: structuredClone(), JSON.parse(JSON.stringify()), recursive","JSON method fails on: Date, undefined, functions, circular refs","In React: spread for state updates, structuredClone for deep nesting"]},
+{id:20,cat:"JavaScript",q:"Explain prototypes / prototype chain",a:"Every JS object has a hidden [[Prototype]] link to another object. When you access a property, JS looks up the chain until it finds it or hits null. This is how inheritance works in JS.",p:["Object.create(proto) creates object with proto as prototype","dog.__proto__ === animal → dog inherits animal's properties","Chain: dog → animal → Object.prototype → null","hasOwnProperty() checks only the object itself, not the chain"]},
+{id:21,cat:"JavaScript",q:"Event delegation and event bubbling",a:"Event delegation attaches ONE listener to a parent instead of many to children. It works because of bubbling — events travel up from the target element to the root. Check event.target to identify which child was clicked.",p:["Bubbling: event fires on target, then parent, then grandparent, up to document","Delegation: listen on parent, use event.target to identify child","Benefits: fewer listeners, works for dynamically added elements","event.stopPropagation() stops bubbling, event.preventDefault() stops default action"]},
+{id:22,cat:"JavaScript",q:"Promise.all vs allSettled vs race vs any",a:"Promise.all: all must succeed (fails fast on first rejection). allSettled: waits for all, gives status of each. race: first to settle wins. any: first to fulfill wins (ignores rejections).",p:["all: ALL succeed → results array. ONE fails → immediately rejects","allSettled: ALL complete → [{status, value/reason}] for each","race: first to settle (fulfill OR reject) wins","any: first to FULFILL wins. All reject → AggregateError"]},
+{id:23,cat:"JavaScript",q:"WeakMap and WeakSet",a:"WeakMap/WeakSet hold 'weak' references — they don't prevent garbage collection. When the object key is no longer referenced elsewhere, it's automatically cleaned up. Perfect for caching without memory leaks.",p:["Keys must be objects (no strings/numbers)","Not iterable — no forEach, keys(), or size","GC cleans up entries when key object is dereferenced","Use cases: DOM element metadata, private class data, caching"]},
+{id:24,cat:"JavaScript",q:"Garbage collection and memory optimization",a:"JS automatically frees memory when objects are unreachable. V8 uses mark-and-sweep: starts from roots, marks reachable objects, sweeps unmarked ones. Memory leaks happen when you keep unintended references.",p:["Mark-and-sweep: roots → mark reachable → free unmarked","Common leaks: forgotten timers, event listeners, closures, detached DOM","In React: always return cleanup from useEffect","Diagnose: Chrome DevTools → Memory → heap snapshots"]},
+{id:25,cat:"JavaScript",q:"Pass by value vs pass by reference",a:"Primitives (string, number, boolean) are passed by value — you get a copy. Objects/arrays are passed by reference — you get a pointer to the same data. Mutating a passed object changes the original.",p:["Primitives: changing copy doesn't affect original","Objects: obj2 = obj1 → both point to same data","React: must create new references for state updates (spread)","React uses === reference equality to detect changes"]},
+{id:26,cat:"JavaScript",q:"Async vs Sync in JavaScript",a:"Synchronous runs line by line — each waits for the previous. Asynchronous starts a task and moves on — you get notified when done. JS uses the event loop to handle async on a single thread.",p:["Sync: blocking — code waits for each line to finish","Async: non-blocking — starts task, continues, gets callback later","Patterns: callbacks → Promises → async/await (evolution)","async/await is syntactic sugar over Promises — same thing underneath"]},
+{id:27,cat:"JavaScript",q:"var vs let vs const",a:"var is function-scoped and hoisted (initialized as undefined). let and const are block-scoped and hoisted but in a temporal dead zone. const prevents reassignment but doesn't make objects immutable.",p:["var: function-scoped, hoisted, can redeclare — avoid it","let: block-scoped, can reassign, temporal dead zone","const: block-scoped, cannot reassign, BUT objects/arrays are still mutable","const obj = {}; obj.x = 1; // works! Only obj = newObj fails"]},
+{id:28,cat:"TypeScript",q:"type vs interface — when to use each?",a:"Interface is for object shapes and supports extends/implements/declaration merging. Type is more flexible — supports unions, intersections, mapped types, and primitives. Use interface for objects, type for everything else.",p:["Interface: object shapes, extends, implements, declaration merging","Type: unions (A | B), intersections (A & B), mapped types, primitives","Interface can be extended later (open). Type is closed.","Both work for React component props — pick one and be consistent"]},
+{id:29,cat:"TypeScript",q:"Generic types in TypeScript",a:"Generics let you write reusable code that works with any type while keeping type safety. Think of T as a type variable — the caller fills it in. Like a function parameter but for types.",p:["function identity<T>(arg: T): T — T is determined by caller","Constraints: <T extends HasLength> limits what T can be","Common: Array<T>, Promise<T>, useState<T>, Record<K,V>","Use when: function works with multiple types but needs to preserve the type relationship"]},
+{id:30,cat:"TypeScript",q:"Mapped types in TypeScript",a:"Mapped types create new types by transforming every property of an existing type. Like Array.map() but for type properties. Partial, Required, Readonly, Pick, Omit are all built-in mapped types.",p:["Syntax: { [K in keyof T]: T[K] } — iterates over all keys","Partial<T>: all optional. Required<T>: all required","Pick<T, Keys>: select properties. Omit<T, Keys>: remove properties","Record<Keys, Value>: create object type with specific keys and value type"]},
+{id:31,cat:"TypeScript",q:"Conditional types in TypeScript",a:"Conditional types are ternary for types: T extends U ? X : Y. If T is assignable to U, type is X, otherwise Y. The 'infer' keyword extracts types from within a pattern.",p:["T extends string ? 'yes' : 'no' — type-level if/else","infer R: 'if T matches this shape, pull out and name a part'","ReturnType<T>, Parameters<T> are built-in conditional types","Used for API response wrappers, type narrowing, utility types"]},
+{id:32,cat:"CSS",q:"Flexbox vs Grid — when to use each?",a:"Flexbox is 1-dimensional (row OR column). Grid is 2-dimensional (rows AND columns). Use Flexbox for component-level layouts (nav, card content). Use Grid for page-level layouts.",p:["Flexbox: justify-content (main axis), align-items (cross axis)","Grid: grid-template-columns/rows, gap, grid-area for named regions","Flexbox for: navbars, card content, centering, equal-height columns","Grid for: page layouts, dashboards, image galleries, complex 2D layouts"]},
+{id:33,cat:"CSS",q:"CSS specificity — how is it calculated?",a:"Specificity determines which CSS rule wins when multiple rules target the same element. Order: inline styles > IDs > classes/attributes > elements. !important overrides everything (avoid it).",p:["Inline: 1000, #id: 100, .class/[attr]/:pseudo: 10, element: 1","#nav .link = 110 beats .nav .link.active = 30","!important > inline > ID > class > element","Avoid !important. Use more specific selectors instead."]},
+{id:34,cat:"CSS",q:"Responsive design and mobile-first approach",a:"Mobile-first means writing base styles for mobile, then adding complexity with min-width media queries for larger screens. This ensures mobile gets the lightest CSS and progressive enhancement.",p:["Mobile-first: base styles = mobile, @media (min-width: 768px) adds tablet","Desktop-first: base = desktop, @media (max-width) removes features — backwards","Use relative units: rem, %, vw/vh instead of fixed px","Breakpoints: 640px (mobile), 768px (tablet), 1024px (desktop)"]},
+{id:35,cat:"CSS",q:"Semantic HTML and ARIA attributes",a:"Semantic HTML uses elements that describe their meaning (nav, main, article, button) instead of generic divs. ARIA adds accessibility info when HTML semantics aren't enough. Screen readers depend on both.",p:["Semantic: <nav>, <main>, <article>, <button> vs <div> for everything","Button vs div: button has keyboard focus, Enter/Space, role built in","ARIA: aria-label, aria-expanded, aria-hidden, role='dialog'","Rule: use native HTML first. ARIA only when HTML can't express it"]},
+{id:36,cat:"CSS",q:"Browser rendering pipeline — HTML to pixels",a:"Browser parses HTML→DOM, CSS→CSSOM, combines into Render Tree, calculates Layout (positions/sizes), then Paints pixels. CSS blocks rendering, JS blocks parsing — optimize with defer/async.",p:["Parse HTML → DOM tree. Parse CSS → CSSOM. Combine → Render Tree","Layout: calculate exact position/size of every element","Paint + Composite: draw pixels, combine GPU layers","CSS in <head>, JS with defer attribute = fastest rendering"]},
+{id:37,cat:"CSS",q:"Reflow vs Repaint",a:"Repaint is cheap — just redrawing pixels (color change). Reflow is expensive — recalculating layout (size/position changes). Only animate transform and opacity — they skip both and run on the GPU.",p:["Repaint: color, background-color, visibility, box-shadow","Reflow: width, height, margin, padding, font-size, DOM changes","Neither (GPU): transform, opacity — cheapest to animate","Layout thrashing: reading then writing DOM in a loop forces reflows"]},
+{id:38,cat:"CSS",q:"CSS-in-JS vs CSS Modules vs Tailwind",a:"CSS-in-JS (styled-components) co-locates styles with components but has runtime cost. CSS Modules scope classes with zero runtime. Tailwind is utility-first with tiny production CSS. Pick by team preference.",p:["CSS-in-JS: scoped, dynamic props, but runtime overhead","CSS Modules: hashed class names, zero runtime, separate files","Tailwind: utility classes, tiny production CSS, cluttered HTML","Recommendation: Tailwind or CSS Modules for new projects (zero runtime)"]},
+{id:39,cat:"Performance",q:"Why is your React application slow?",a:"Profile first with React DevTools Profiler and Chrome Performance tab. Check: unnecessary re-renders, large bundle size, unoptimized images, missing code splitting, no virtualization for long lists.",p:["React Profiler: which components render, how often, how long","Chrome Performance: flame chart, long tasks (>50ms)","Network tab: API payload sizes, request count, timing","Don't guess — measure, identify root cause, fix, measure again"]},
+{id:40,cat:"Performance",q:"Code splitting and lazy loading",a:"Code splitting breaks your bundle into smaller chunks loaded on demand. React.lazy + Suspense loads components only when needed. Route-based splitting is the easiest win — each page is a separate chunk.",p:["React.lazy(() => import('./AdminPage')) — loaded only when rendered","Wrap with <Suspense fallback={<Loading/>}>","Route-based splitting: each route = separate JS chunk","Reduces initial bundle size → faster Time to Interactive"]},
+{id:41,cat:"Performance",q:"Tree shaking and bundle optimization",a:"Tree shaking removes unused code from your bundle at build time. It works with ES module imports (import/export), not CommonJS (require). Use bundle analyzer to find what's bloating your bundle.",p:["Only works with ES modules (import/export), not require()","import { debounce } from 'lodash-es' → only debounce included","Webpack/Vite Bundle Analyzer: visual treemap of bundle contents","Replace heavy libs: moment.js (300KB) → date-fns (tree-shakeable)"]},
+{id:42,cat:"Performance",q:"Virtualization for long lists",a:"Virtualization renders only the visible rows in the viewport, not all 10,000. Libraries like react-window keep the DOM small (~20-50 nodes) regardless of data size. Scrolling swaps rows in/out.",p:["10,000 items but viewport shows ~20 → render only ~25 DOM nodes","react-window, TanStack Virtual — lightweight virtualization","FixedSizeList for equal-height rows, VariableSizeList for dynamic","Combine with backend pagination for the best performance"]},
+{id:43,cat:"System Design",q:"How would you structure a large React app?",a:"Feature-based folder structure: each feature (auth, products, checkout) has its own components, hooks, API, types, and tests. Shared folder for reusable UI. Features don't import from each other.",p:["features/auth/, features/products/, features/checkout/","Each feature has: components/, hooks/, api/, types/, tests/","shared/ for: Button, Modal, useDebounce — truly generic code","Features are independent modules — remove one by deleting its folder"]},
+{id:44,cat:"System Design",q:"Design a reusable component library",a:"Define a consistent API pattern (variant, size, disabled). Use composition over configuration. Style with CSS variables for theming. Test with Storybook. Publish as an npm package with TypeScript types.",p:["Consistent API: variant='primary|secondary', size='sm|md|lg'","Composition: <Dialog><Dialog.Header/><Dialog.Body/></Dialog>","Theming via CSS custom properties (--color-primary)","Storybook for visual testing, Chromatic for visual regression"]},
+{id:45,cat:"System Design",q:"Handle 100,000 rows in a data table",a:"Never render all rows. Use virtualization (react-window) for the UI, backend pagination for data fetching, server-side search/sort/filter, and only send columns the user can see.",p:["Backend: GET /data?page=1&limit=50&sort=name&filter=active","Frontend: virtualized table renders only visible rows","Server-side search/sort/filter — don't do it in JS","Column virtualization for wide tables — render only visible columns"]},
+{id:46,cat:"System Design",q:"Design an error monitoring system",a:"Use Sentry or similar for automatic error capture. Add error boundaries around feature areas. Log context (user, route, action). Set up alerts for error rate spikes. Track error resolution.",p:["Sentry: auto-captures unhandled errors + stack traces + source maps","Error boundaries per feature section — isolate crashes","Log context: userId, route, last action, browser/OS","Alerts: error rate > 2x baseline → Slack/PagerDuty notification"]},
+{id:47,cat:"Auth",q:"How do you handle authentication in React?",a:"Backend authenticates via HTTP-only Secure cookies. React maintains auth state, protects routes, handles login/logout UI. React never handles real authentication — backend is the source of truth.",p:["Backend sets HttpOnly Secure cookie on login","Browser sends cookie automatically with credentials: 'include'","React: AuthContext for UI state, ProtectedRoute for access control","Backend MUST enforce authorization on every API call"]},
+{id:48,cat:"Auth",q:"Cookie vs Session — what's the difference?",a:"A cookie is client-side storage sent with every request. A session is server-side state tracking a logged-in user. They work together: session ID is stored in an HTTP-only cookie.",p:["Cookie = ID card carried by browser","Session = user record stored on server","Server creates session → stores ID in cookie → browser sends it back","Browser doesn't know session data — just carries the ID"]},
+{id:49,cat:"Auth",q:"Cookie vs localStorage for auth tokens",a:"For auth, prefer HTTP-only Secure cookies. JavaScript can't access them (XSS protection). localStorage is readable by any script on the page — one XSS vulnerability exposes your tokens.",p:["HttpOnly cookie: JS cannot read it → XSS can't steal token","localStorage: any script can read it → XSS risk","Cookies need CSRF protection (SameSite=Lax/Strict)","localStorage OK for non-sensitive data (theme, preferences)"]},
+{id:50,cat:"Auth",q:"JWT vs Session-based authentication",a:"Sessions store state on the server (simple, easy to revoke). JWTs are stateless self-contained tokens (good for microservices). Choose based on architecture, not popularity.",p:["Session: server stores state, easy to revoke, needs session store (Redis)","JWT: stateless, no server storage, hard to revoke until expiry","JWT good for: microservices where multiple services verify auth","Either way: store token/session ID in HttpOnly cookie, not localStorage"]},
+{id:51,cat:"Auth",q:"Authentication vs Authorization",a:"Authentication = 'Who are you?' (login, verify identity). Authorization = 'What are you allowed to do?' (roles, permissions). Always authenticate first, then authorize.",p:["Authentication: login → verify credentials → user identified","Authorization: check role/permissions → allow/deny action","RBAC: Admin/Editor/Viewer — simple, works for most apps","Backend must enforce both — frontend is UX, not security"]},
+{id:52,cat:"Auth",q:"Protected routes in React",a:"Create a wrapper that checks auth state — if logged in, render child route; if not, redirect to login. But this is just UX — the backend must enforce authorization on every API call.",p:["ProtectedRoute: if (loading) → spinner, if (!user) → Navigate to /login","useAuth hook: provides user, loading, login, logout via Context","Role-based: AdminRoute checks user.role before rendering","Frontend protection = UX. Backend protection = real security"]},
+{id:53,cat:"State",q:"Context API — solving prop drilling",a:"Context passes data through the component tree without manually passing props at every level. Create context, wrap with Provider, consume with useContext anywhere below.",p:["Prop drilling: passing props through 5 levels of components","Context: provide at top, consume anywhere below — skip intermediates","Good for: theme, auth user, locale, feature flags","Separate contexts per concern: AuthContext, ThemeContext, LocaleContext"]},
+{id:54,cat:"State",q:"Redux Toolkit — how it works",a:"Redux keeps shared state in one store. Components dispatch actions describing what happened. Reducers process actions and return new state. RTK removes the boilerplate with createSlice.",p:["Flow: dispatch(action) → middleware → reducer → store → component re-renders","createSlice: define reducer + actions in one place","Immer built in: write 'mutating' code, RTK produces immutable updates","useSelector: read state. useDispatch: send actions"]},
+{id:55,cat:"State",q:"Does Context cause unnecessary re-renders?",a:"Yes. When a Context value changes, ALL components consuming it re-render, even if they only use a small part. Split contexts by concern, and memoize the value object.",p:["One big context with everything → every consumer re-renders on any change","Fix: separate contexts (AuthContext, ThemeContext, CartContext)","Fix: useMemo on provider value to stabilize reference","Redux advantage: useSelector only re-renders when selected slice changes"]},
+{id:56,cat:"State",q:"Local state vs Context vs Redux — decision framework",a:"Only this component needs it? → useState. Subtree needs it? → lift state / Context. Server data? → React Query. Complex shared state across features? → Redux. Shareable via URL? → URL params.",p:["Form inputs, modals, hover → useState (local)","Theme, auth, locale → Context (rarely changes, global)","API data → React Query (caching, retries, dedup — NOT Redux)","Shopping cart, multi-step flows → Redux (complex, cross-feature)"]},
+{id:57,cat:"State",q:"Would you replace Redux with Context?",a:"Not automatically. First understand why Redux was added, how much shared state exists, what middleware is used, and if devtools are needed. Only simplify areas where Redux is genuinely unnecessary.",p:["Evaluate: why was Redux introduced? What problem does it solve?","Check: middleware (thunks, sagas), devtools usage, team patterns","Gradually simplify: move simple global values to Context","Never rip out Redux just because Context exists — evaluate first"]},
+{id:58,cat:"Next.js",q:"Next.js vs React — what does Next.js add?",a:"React is a UI library for components. Next.js is a framework adding routing, SSR/SSG/ISR, Server Components, API routes, image optimization, and caching. React = blocks, Next.js = architecture.",p:["React alone: need to choose routing, SSR setup, code splitting manually","Next.js adds: file-based routing, automatic code splitting, SSR/SSG/ISR","Server Components: zero JS shipped for data-display components","Use React alone for internal tools; Next.js for public-facing SEO apps"]},
+{id:59,cat:"Next.js",q:"Server vs Client component boundary in Next.js",a:"Components are Server Components by default (zero JS). Add 'use client' only for interactivity (useState, onClick). Keep the interactive boundary as small as possible to minimize JS sent to browser.",p:["Server (default): fetch data, read files, zero JS shipped","Client ('use client'): useState, useEffect, onClick, browser APIs","Keep client boundary small: mostly server, tiny interactive islands","Don't put 'use client' at page level — only on interactive components"]},
+{id:60,cat:"Next.js",q:"SSR vs SSG vs ISR — when to use each?",a:"CSR: browser renders (dashboards). SSR: server renders per request (SEO pages). SSG: built at deploy time (blogs). ISR: static + background regeneration (product catalogs). Pick by freshness needs.",p:["CSR: fast navigation, slow initial, no SEO → admin panels","SSR: fresh every request, good SEO → product pages, search results","SSG: fastest (CDN), content fixed until rebuild → docs, blogs","ISR: static speed + periodic refresh → catalogs, pricing pages"]},
+{id:61,cat:"Performance",q:"How to diagnose which component is re-rendering",a:"Use React DevTools Profiler first. Record interaction, see which components rendered, how long, and why. Don't guess — measure. Check 6 causes: state, props, parent, context, store, remount.",p:["React Profiler: record → flame chart → render count + commit time","6 causes: state change, prop change, parent render, context, store, key change","Console.log in components during dev to spot unexpected renders","Highlight updates toggle in React DevTools shows re-renders visually"]},
+{id:62,cat:"Performance",q:"Why does React.memo sometimes not work?",a:"React.memo compares props with === (reference equality). If you pass a new inline function or object every render, the reference changes even with same values, so memo thinks props changed.",p:["Inline functions: () => handleClick(id) → new function every render","Inline objects: style={{ color: 'red' }} → new object every render","Fix: useCallback for functions, useMemo for objects","Don't blindly memo everything — profile first, memo only expensive components"]},
+{id:63,cat:"Performance",q:"When useMemo and useCallback actually hurt",a:"They allocate memory for cached values and dependency arrays. React must compare deps every render. For cheap operations, this overhead exceeds the savings. Only use for expensive computations or referential equality.",p:["Cost: memory allocation + dependency comparison every render","Don't memoize: simple string concat, basic math, cheap operations","DO memoize: large array filter/sort, complex calculations","DO memoize: functions passed to React.memo children"]},
+{id:64,cat:"Performance",q:"State colocation — keep state close",a:"Don't lift state higher than necessary. If only one component needs it, use local useState. Global state for everything = every change re-renders the whole tree. Colocate state near its consumers.",p:["Bad: App holds search term, modal state, tab selection → everything re-renders","Good: Search manages its own term, Modal manages open/close","Only lift state when siblings genuinely need to share it","Separating state = separating re-render boundaries"]},
+{id:65,cat:"Performance",q:"10,000 records is slow — full senior diagnosis",a:"Don't jump to virtualization. Diagnose: is API returning too much? Is JSON parsing slow? How many DOM nodes? Are expensive sort/filter running every render? Fix root cause, not symptom.",p:["1. API: backend pagination (50/page), not all 10K at once","2. DOM: virtualize (react-window) — render only visible rows","3. Calculations: useMemo for expensive filter/sort","4. Images: lazy load, only for visible rows","5. Re-renders: React.memo on row components, stable keys"]},
+{id:66,cat:"Performance",q:"API called multiple times — how to debug",a:"Check 5 things: React Strict Mode (intentional double-invoke in dev), missing useEffect dependency array, object references in deps, parent causing remounts, multiple components fetching same data.",p:["Strict Mode: expected in dev, not in production","Missing deps: useEffect(() => fetch()) runs EVERY render","Object identity: new object in deps = effect re-fires every render","Fix: use primitive deps, or React Query for automatic deduplication"]},
+{id:67,cat:"Performance",q:"React optimization isn't just React",a:"When a page is slow, don't immediately blame React. The pipeline has 10+ stages: DNS, network, server, JS download, execution, React render, DOM, layout, paint. A senior investigates the full stack.",p:["Network: 3MB API response? Fix the API, not React","Bundle: 3MB JS? Code split, tree shake, remove unused deps","React: 800ms commit? Memoize, virtualize, move to server","Layout/Paint: CSS animations? Use transform/opacity only"]},
+{id:68,cat:"Debugging",q:"Memory leak in React — how to diagnose",a:"Reproduce with mount/unmount cycles. Take heap snapshots in Chrome DevTools Memory tab. Compare snapshots — if objects accumulate, you have a leak. Check timers, listeners, subscriptions, pending requests.",p:["Common leaks: setInterval without clearInterval, addEventListener without remove","WebSocket/subscription not disconnected on unmount","API response setting state on unmounted component","Fix: always return cleanup function from useEffect"]},
+{id:69,cat:"Debugging",q:"Slow third-party API — how to handle",a:"Never block the UI — load async with skeleton. Set timeouts (don't hang forever). Cache responses. Use a BFF (Backend-for-Frontend) layer. Circuit breaker pattern for failing services.",p:["Suspense/skeleton for non-blocking UI while API loads","AbortController with timeout — cancel after 5 seconds","BFF: React → your backend → third-party (caching, retries, rate limiting)","Circuit breaker: too many failures → stop calling → use fallback"]},
+{id:70,cat:"Debugging",q:"Error boundaries + loading/error/empty states",a:"Error boundaries catch React render crashes — only the broken section shows a fallback, not the whole app. Every feature needs 4 states: loading (skeleton), success (data), empty (message), error (retry).",p:["ErrorBoundary wraps feature sections — isolates crashes","componentDidCatch logs to Sentry (still requires class component)","4 states: if (loading) skeleton, if (error) retry, if (empty) message, else data","Senior thinking: design ALL states before coding the happy path"]},
+{id:71,cat:"Debugging",q:"Senior debugging framework — the complete approach",a:"Reproduce → Measure in 3 areas (Network, Browser, React) → Identify root cause → Smallest fix → Measure again. Never randomly optimize without data.",p:["Network: API timing, payload size, request count (Network tab)","Browser: flame chart, long tasks, CPU usage (Performance tab)","React: render count, commit duration (React Profiler)","Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1"]},
+{id:72,cat:"Architecture",q:"Separation of concerns: UI → Hook → Service → API",a:"Don't put API calls, business logic, and UI in one component. Component renders UI, custom hook manages state, service handles business rules, API layer talks to server. Each layer is testable and swappable.",p:["Component: just renders props, no fetch calls","Custom hook: useProducts() — manages state + orchestration","API layer: fetchProducts() — HTTP calls","Swap REST for GraphQL? Change only the API layer"]},
+{id:73,cat:"Architecture",q:"Feature-based architecture — why it scales",a:"Organize by feature (auth, products, checkout), not by type (components, hooks). Remove a feature = delete one folder. Teams own feature folders. Features don't import from each other.",p:["features/auth/, features/products/, features/checkout/","Each has: components/, hooks/, api/, types/, tests/","shared/ for truly generic code: Button, Modal, useDebounce","'Remove checkout' = delete features/checkout/ — clean boundary"]},
+{id:74,cat:"Architecture",q:"URL state management — the underused pattern",a:"For search, filters, pagination — put state in URL params instead of useState. URL state is refreshable, shareable, bookmarkable, and back-button friendly. Senior architecture choice most juniors miss.",p:["useSearchParams() from React Router — read/write URL params","Benefits: shareable links, bookmark filters, F5 preserves state","URL state for: search, filters, sort, pagination, tabs","useState for: modals, hover, transient UI that's not worth preserving"]},
+{id:75,cat:"Architecture",q:"How to architect any new feature — senior template",a:"Requirements → Domain model → API contract → State ownership → UI boundaries → All states (loading/success/empty/error) → Accessibility → Security → Performance → Testing → Observability → Deployment.",p:["Start with what data entities and API endpoints exist","Decide state: local, URL, Context, Redux, or React Query","Design all 4 states: loading, success, empty, error","Test + monitor: integration tests, Sentry, web-vitals"]},
+{id:76,cat:"Architecture",q:"'What performance improvements have you made?' — answer pattern",a:"Use: Problem → Measurement → Root cause → Solution → Validation. Never give a generic list. Tell a specific story with numbers.",p:["Problem: 'Product listing was sluggish with 500+ products'","Measurement: 'Profiler showed 800ms commits, Network showed 2MB response'","Root cause: 'All products fetched, no pagination, entire list re-rendering'","Solution + Validation: 'Backend pagination + virtualization → 40ms commits, 4s→800ms load'"]},
+{id:77,cat:"Web",q:"What is CORS and how do you fix it?",a:"CORS is a browser security feature blocking requests from one origin to another unless the server allows it with Access-Control-Allow-Origin headers. The fix is always on the server.",p:["Browser sends Origin header → server checks if allowed","Preflight OPTIONS request for non-simple requests (PUT, DELETE, custom headers)","Fix: server adds Access-Control-Allow-Origin for your domain","Dev workaround: proxy in Vite/CRA config (requests go through dev server)"]},
+{id:78,cat:"Web",q:"Browser rendering pipeline — HTML to pixels",a:"5 steps: HTML→DOM, CSS→CSSOM, combine into Render Tree, Layout (calculate positions), Paint pixels. CSS blocks rendering, JS blocks parsing. Defer JS, inline critical CSS.",p:["CSS is render-blocking: browser won't paint until CSS parsed","JS is parser-blocking: <script> stops HTML parsing","<script defer>: download parallel, execute after HTML parsed","<script async>: download parallel, execute immediately (no order guarantee)"]},
+{id:79,cat:"Process",q:"Feature lifecycle: design to deployment",a:"Requirements → Design review → Tech planning → Implementation → Code review → Testing → Staging → Production (behind feature flag). Each step has a gate.",p:["Design review: check feasibility, responsive edge cases, missing states","Implementation: small PRs, tests alongside code","QA: unit (Jest) + integration (RTL) + E2E (Playwright) for critical paths","Deploy behind feature flag → monitor errors (Sentry) → gradual rollout"]},
+{id:80,cat:"Process",q:"How do you handle technical debt?",a:"Track it in the backlog. Allocate 15-20% of each sprint. Prioritize by impact (what slows us down most). Boy Scout Rule: leave code better than you found it when touching a file.",p:["Types: deliberate (known shortcut), accidental, bit rot","Budget: 15-20% of sprint capacity for debt — non-negotiable","Prioritize by pain: most bugs? slowest development? growing risk?","Frame for stakeholders: 'reduces bug rate by X' or 'feature Y: 2 weeks → 2 days'"]},
+{id:81,cat:"Process",q:"Testing strategy beyond unit tests",a:"Testing Trophy: mostly integration tests (RTL), some E2E (Playwright), unit tests for complex logic, static analysis (TypeScript + ESLint) as foundation. Don't chase 100% coverage.",p:["Static: TypeScript + ESLint catch bugs before tests run","Unit: pure functions, utils, complex business logic","Integration (most value): render component, simulate user, assert","E2E: full browser automation for critical flows (login, checkout)"]},
+{id:82,cat:"Performance",q:"Keys in React — why they matter",a:"Keys tell React which list items are the same between renders. Stable unique IDs preserve state. Using index as key causes bugs on reorder. Changing a key intentionally remounts (resets state).",p:["key={item.id} — stable unique identifier","key={index} — breaks when items reorder, add, delete","key={Math.random()} — remounts everything every render","Intentional: <Component key={userId} /> — reset state on user change"]},
+{id:83,cat:"Performance",q:"Redux middleware and selectors",a:"Middleware intercepts dispatched actions for side effects (API calls, logging). Selectors read specific slices of state so components only subscribe to what they need. createSelector memoizes derived data.",p:["Middleware: dispatch → middleware → reducer (logging, async, analytics)","Reducers must be pure — middleware handles side effects","useSelector: subscribe to specific state slice","createSelector: memoized derived data — recalculates only when inputs change"]}
+];
+
+const CATEGORIES = [...new Set(Q.map(q => q.cat))];
+const CAT_COLORS = {React:'#61DAFB',JavaScript:'#F7DF1E',TypeScript:'#3178C6',CSS:'#EC4899',Performance:'#F97316',
+'System Design':'#7C3AED',Auth:'#10B981',State:'#F59E0B','Next.js':'#888',Architecture:'#6366F1',
+Web:'#06B6D4',Debugging:'#EF4444',Process:'#8B5CF6'};
+
+let fcState = {deck:[],current:0,flipped:false,streak:0,bestStreak:0,mastered:new Set(),review:new Set(),selectedCats:new Set(CATEGORIES)};
+let simState = {deck:[],current:0,timer:null,timeLeft:120,answered:false,ratings:[],selectedCats:new Set(CATEGORIES),sessionCount:0};
+
+function loadProgress(){
+  try {
+    const d=JSON.parse(localStorage.getItem('fc-progress')||'{}');
+    if(d.mastered) fcState.mastered=new Set(d.mastered);
+    if(d.review) fcState.review=new Set(d.review);
+    if(d.bestStreak) fcState.bestStreak=d.bestStreak;
+    const s=JSON.parse(localStorage.getItem('sim-history')||'{}');
+    if(s.sessionCount) simState.sessionCount=s.sessionCount;
+    if(s.ratings) simState.ratings=s.ratings;
+  }catch(e){}
+}
+function saveProgress(){
+  try {
+    localStorage.setItem('fc-progress',JSON.stringify({mastered:[...fcState.mastered],review:[...fcState.review],bestStreak:fcState.bestStreak}));
+    localStorage.setItem('sim-history',JSON.stringify({sessionCount:simState.sessionCount,ratings:simState.ratings}));
+  }catch(e){}
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  if(name==='home') updateHomeStats();
+}
+
+function updateHomeStats(){
+  document.getElementById('home-mastered').textContent=fcState.mastered.size;
+  document.getElementById('home-total').textContent=Q.length;
+  document.getElementById('home-streak').textContent=fcState.bestStreak;
+  document.getElementById('home-sessions').textContent=simState.sessionCount+depthState.sessionCount;
+}
+
+function renderFilters(containerId, state){
+  const c=document.getElementById(containerId);
+  c.innerHTML='';
+  const allBtn=document.createElement('span');
+  allBtn.className='filter-chip'+(state.selectedCats.size===CATEGORIES.length?' active':'');
+  allBtn.textContent='All';
+  allBtn.onclick=()=>{
+    if(state.selectedCats.size===CATEGORIES.length){state.selectedCats=new Set()}
+    else{state.selectedCats=new Set(CATEGORIES)}
+    renderFilters(containerId,state);
+  };
+  c.appendChild(allBtn);
+  CATEGORIES.forEach(cat=>{
+    const chip=document.createElement('span');
+    chip.className='filter-chip'+(state.selectedCats.has(cat)?' active':'');
+    chip.textContent=cat;
+    chip.onclick=()=>{
+      if(state.selectedCats.has(cat))state.selectedCats.delete(cat);
+      else state.selectedCats.add(cat);
+      renderFilters(containerId,state);
+    };
+    c.appendChild(chip);
+  });
+}
+
+/* ========= FLASHCARDS ========= */
+function startFlashcards(){
+  showScreen('flashcards');
+  renderFilters('fc-filters',fcState);
+  buildFCDeck();
+  showCard();
+}
+function buildFCDeck(){
+  let pool=Q.filter(q=>fcState.selectedCats.has(q.cat));
+  let reviewCards=pool.filter(q=>fcState.review.has(q.id));
+  let otherCards=pool.filter(q=>!fcState.review.has(q.id));
+  let deck=[...shuffle(reviewCards),...shuffle(reviewCards),...shuffle(reviewCards),...shuffle(otherCards)];
+  fcState.deck=deck;
+  fcState.current=0;
+  fcState.flipped=false;
+  fcState.streak=0;
+}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+function showCard(){
+  if(fcState.deck.length===0){buildFCDeck()}
+  if(fcState.deck.length===0)return;
+  const q=fcState.deck[fcState.current%fcState.deck.length];
+  document.getElementById('fc-card').classList.remove('flipped');
+  fcState.flipped=false;
+  document.getElementById('fc-actions').style.visibility='hidden';
+  document.getElementById('fc-cat').textContent=q.cat;
+  document.getElementById('fc-cat').style.background=hexToSoft(CAT_COLORS[q.cat]||'#7c3aed');
+  document.getElementById('fc-cat').style.color=CAT_COLORS[q.cat]||'#7c3aed';
+  document.getElementById('fc-question').textContent=q.q;
+  document.getElementById('fc-oneliner').textContent=q.a;
+  const pts=document.getElementById('fc-points');
+  pts.innerHTML='';
+  q.p.forEach(p=>{const li=document.createElement('li');li.textContent=p;pts.appendChild(li)});
+  updateFCProgress();
+  document.getElementById('fc-streak').textContent=fcState.streak;
+  const pool=Q.filter(q=>fcState.selectedCats.has(q.cat));
+  document.getElementById('fc-counter').textContent=`Card ${(fcState.current%fcState.deck.length)+1} of ${fcState.deck.length} (${pool.length} in pool)`;
+}
+function flipCard(){
+  const card=document.getElementById('fc-card');
+  if(!fcState.flipped){card.classList.add('flipped');fcState.flipped=true;document.getElementById('fc-actions').style.visibility='visible'}
+  else{card.classList.remove('flipped');fcState.flipped=false;document.getElementById('fc-actions').style.visibility='hidden'}
+}
+function rateCard(rating){
+  const q=fcState.deck[fcState.current%fcState.deck.length];
+  if(rating==='got'){
+    fcState.mastered.add(q.id);
+    fcState.review.delete(q.id);
+    fcState.streak++;
+    if(fcState.streak>fcState.bestStreak)fcState.bestStreak=fcState.streak;
+    if(fcState.streak>0&&fcState.streak%10===0)confetti();
+  }else{
+    fcState.review.add(q.id);
+    fcState.mastered.delete(q.id);
+    fcState.streak=0;
+  }
+  saveProgress();
+  fcState.current++;
+  if(fcState.current>=fcState.deck.length){buildFCDeck()}
+  showCard();
+}
+function updateFCProgress(){
+  const pool=Q.filter(q=>fcState.selectedCats.has(q.cat));
+  const mastered=pool.filter(q=>fcState.mastered.has(q.id)).length;
+  const pct=pool.length?Math.round(mastered/pool.length*100):0;
+  document.getElementById('fc-progress').style.width=pct+'%';
+  document.getElementById('fc-progress-text').textContent=mastered+'/'+pool.length;
+}
+function hexToSoft(hex){return hex+'22'}
+
+/* ========= INTERVIEW SIMULATOR ========= */
+function startSimulator(){
+  showScreen('simulator');
+  renderFilters('sim-filters',simState);
+  simState.ratings=[];
+  simState.current=0;
+  buildSimDeck();
+  showSimQuestion();
+}
+function buildSimDeck(){
+  let pool=Q.filter(q=>simState.selectedCats.has(q.cat));
+  simState.deck=shuffle(pool).slice(0,10);
+}
+function showSimQuestion(){
+  if(simState.current>=simState.deck.length||simState.deck.length===0){showSimSummary();return}
+  const q=simState.deck[simState.current];
+  document.getElementById('sim-question-wrap').style.display='block';
+  document.getElementById('sim-answer-wrap').style.display='none';
+  document.getElementById('sim-summary').style.display='none';
+  document.getElementById('sim-cat').textContent=q.cat;
+  document.getElementById('sim-cat').style.background=hexToSoft(CAT_COLORS[q.cat]||'#7c3aed');
+  document.getElementById('sim-cat').style.color=CAT_COLORS[q.cat]||'#7c3aed';
+  document.getElementById('sim-q').textContent=q.q;
+  document.getElementById('sim-notepad').value='';
+  document.getElementById('sim-reveal-btn').disabled=false;
+  simState.answered=false;
+  simState.timeLeft=120;
+  startTimer();
+}
+function startTimer(){
+  clearInterval(simState.timer);
+  updateTimerDisplay();
+  simState.timer=setInterval(()=>{
+    simState.timeLeft--;
+    updateTimerDisplay();
+    if(simState.timeLeft<=0){clearInterval(simState.timer);revealSimAnswer()}
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(simState.timeLeft/60);
+  const s=simState.timeLeft%60;
+  document.getElementById('sim-timer').textContent=m+':'+(s<10?'0':'')+s;
+  const circle=document.getElementById('timer-ring-circle');
+  const pct=simState.timeLeft/120;
+  circle.style.strokeDashoffset=238.76*(1-pct);
+  let color='var(--accent)';
+  if(simState.timeLeft<=10)color='var(--red)';
+  else if(simState.timeLeft<=30)color='var(--orange)';
+  circle.style.stroke=color;
+  document.getElementById('sim-timer').style.color=simState.timeLeft<=10?'var(--red-text)':simState.timeLeft<=30?'var(--orange-text)':'var(--text)';
+}
+function revealSimAnswer(){
+  clearInterval(simState.timer);
+  simState.answered=true;
+  const q=simState.deck[simState.current];
+  document.getElementById('sim-question-wrap').style.display='none';
+  document.getElementById('sim-answer-wrap').style.display='block';
+  let html='<div class="oneliner-box">'+escHtml(q.a)+'</div><ul class="points">';
+  q.p.forEach(p=>{html+='<li>'+escHtml(p)+'</li>'});
+  html+='</ul>';
+  document.getElementById('sim-answer-box').innerHTML=html;
+  document.getElementById('sim-counter').textContent=`Question ${simState.current+1} of ${simState.deck.length}`;
+}
+function rateSimQuestion(rating){
+  simState.ratings.push({id:simState.deck[simState.current].id,cat:simState.deck[simState.current].cat,rating});
+  if(rating==='struggled'){fcState.review.add(simState.deck[simState.current].id);fcState.mastered.delete(simState.deck[simState.current].id)}
+  if(rating==='crushed'){fcState.mastered.add(simState.deck[simState.current].id);fcState.review.delete(simState.deck[simState.current].id)}
+  saveProgress();
+  simState.current++;
+  showSimQuestion();
+}
+function showSimSummary(){
+  clearInterval(simState.timer);
+  simState.sessionCount++;
+  saveProgress();
+  document.getElementById('sim-question-wrap').style.display='none';
+  document.getElementById('sim-answer-wrap').style.display='none';
+  const wrap=document.getElementById('sim-summary');
+  wrap.style.display='block';
+  const c=simState.ratings.reduce((a,r)=>{a[r.rating]=(a[r.rating]||0)+1;return a},{});
+  const weakCats={};
+  simState.ratings.filter(r=>r.rating==='struggled').forEach(r=>{weakCats[r.cat]=(weakCats[r.cat]||0)+1});
+  let weakHtml='';
+  if(Object.keys(weakCats).length){
+    weakHtml='<div class="weak-areas"><h4>Focus Areas</h4>';
+    Object.keys(weakCats).sort((a,b)=>weakCats[b]-weakCats[a]).forEach(cat=>{weakHtml+=`<span class="tag">${cat} (${weakCats[cat]})</span>`});
+    weakHtml+='</div>';
+  }
+  wrap.innerHTML=`<div class="summary-card">
+    <h2>Session Complete</h2>
+    <p class="subtitle">${simState.ratings.length} questions attempted</p>
+    <div class="summary-scores">
+      <div class="score-item crushed"><div class="num">${c.crushed||0}</div><div class="label">Crushed</div></div>
+      <div class="score-item decent"><div class="num">${c.decent||0}</div><div class="label">Decent</div></div>
+      <div class="score-item struggled"><div class="num">${c.struggled||0}</div><div class="label">Struggled</div></div>
+    </div>
+    ${weakHtml}
+    <button class="sim-btn" onclick="startSimulator()" style="margin-top:20px">New Session</button>
+    <button class="sim-btn" onclick="showScreen('home')" style="margin-top:10px;background:var(--bg3)">Home</button>
+  </div>`;
+  if((c.crushed||0)>=7)confetti();
+}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ========= STORY BANK ========= */
+const STORIES = [
+{id:1,q:"Tell me about a time you improved app performance",cat:"Performance",
+star:{s:"Our e-commerce dashboard was loading in 4+ seconds. Users complained the product listing page was unusable with 500+ products. Management wanted it fixed before the holiday sale.",
+t:"I was tasked with diagnosing the root cause and getting the page load under 1 second without a full rewrite.",
+a:"I profiled with React DevTools and Chrome Performance tab. Found 3 issues: the API returned all 500 products at once (2MB payload), the entire list re-rendered on any filter change, and we loaded 3 chart libraries on initial page load. I implemented backend pagination (50/page), added react-window for virtualization, wrapped row components in React.memo, and code-split the chart libraries behind lazy loading.",
+r:"Page load dropped from 4.2s to 800ms. Lighthouse performance score went from 34 to 89. Customer complaints about the product page dropped to zero. The pagination pattern became our team standard for all list views."},
+tips:["Always lead with a specific metric (4s → 800ms, not 'it got faster')","Mention the TOOLS you used to diagnose, not just the fix","Show systematic thinking: measure → diagnose → fix → measure again"]},
+{id:2,q:"Describe a technical decision you had to defend",cat:"Architecture",
+star:{s:"On a new project with 5 frontend devs, I proposed using Redux Toolkit for state management. Two senior devs pushed back, saying Context API was simpler and Redux was 'overkill' for our app.",
+t:"I needed to justify the choice without dismissing their concerns, since the team had to buy in for it to work.",
+a:"I built a small proof-of-concept showing both approaches side by side. With Context, our 8 different data domains would cause the re-render problem — every consumer updates when any context value changes. I demonstrated Redux DevTools time-travel debugging and showed how middleware would handle our complex async workflows (optimistic updates, retry logic). I also showed that RTK eliminates most of the boilerplate they disliked about old Redux.",
+r:"The team agreed on Redux Toolkit. 6 months in, the devtools saved us hours debugging a race condition in checkout. The middleware pattern handled 12 different async flows cleanly. One of the skeptics later said it was the right call."},
+tips:["Show you LISTENED to objections, not just overruled","Proof-of-concept > argument — show, don't just tell","Mention the long-term validation (6 months later...)"]},
+{id:3,q:"How did you handle a disagreement with a teammate?",cat:"Conflict",
+star:{s:"A colleague and I disagreed on the API design for our component library. They wanted a single mega-component with 15 props (<Button type='primary' size='lg' icon='check' loading rounded outlined />). I wanted smaller composed components (<Button variant='primary'><Icon name='check'/> Save</Button>).",
+t:"We needed to resolve this quickly — the library was blocking 3 feature teams waiting to adopt it.",
+a:"Instead of debating in Slack, I suggested we both build the same 5 UI patterns using our preferred approach and present to the team. I focused on showing how composition handles edge cases gracefully (icon-only buttons, button groups, buttons with badges) while the prop-heavy approach needed more and more boolean flags. I also acknowledged their approach was simpler for the basic case and suggested we keep a simple API for common patterns while using composition for complex ones.",
+r:"We went with composition as the primary pattern, with sensible defaults so the simple case stayed clean. The colleague appreciated the fair comparison. The library shipped on time and is still in use 2 years later with minimal API changes."},
+tips:["Show mutual respect — acknowledge what was good about their approach","'Let's both build it and compare' defuses tension better than arguing","Mention the relationship outcome, not just the technical outcome"]},
+{id:4,q:"Tell me about debugging a production issue",cat:"Debugging",
+star:{s:"On a Friday afternoon, our monitoring showed memory usage climbing steadily on the dashboard page. After 30 minutes of use, the tab would crash. It only happened in production, not in our dev environment.",
+t:"I needed to find and fix the memory leak before Monday when the sales team had client demos scheduled on that dashboard.",
+a:"I took heap snapshots in Chrome DevTools at 5-minute intervals on the production build. Comparing snapshots, I found thousands of detached DOM nodes accumulating. Traced it to a WebSocket subscription in a useEffect that wasn't returning a cleanup function — every time the user switched dashboard tabs, a new subscription was created but old ones were never closed. The dev environment didn't catch it because we rarely switched tabs during testing. I added the cleanup return, also found two forgotten setInterval calls without clearInterval.",
+r:"Memory usage flatlined after the fix. Deployed Saturday morning, verified stable over 2 hours. Monday demos went smoothly. I added a 'subscription cleanup' checklist item to our code review template and wrote a custom ESLint rule to warn on useEffect without cleanup returns."},
+tips:["Show urgency and ownership — 'Friday afternoon, needed by Monday'","Explain WHY dev didn't catch it — shows deep understanding","Mention the prevention step (ESLint rule, review checklist)"]},
+{id:5,q:"How do you mentor junior developers?",cat:"Leadership",
+star:{s:"A new junior dev joined our team and was struggling with React patterns. Their PRs had tightly coupled components, API calls inside render functions, and no error handling. Code reviews were taking 2+ hours each.",
+t:"I wanted to help them level up without making them feel criticized or micromanaged.",
+a:"I set up weekly 30-minute pairing sessions focused on one concept at a time — first week was component composition, second was custom hooks for data fetching, third was error boundaries. Instead of rewriting their code in reviews, I'd leave questions: 'What happens if this API call fails?' or 'Could this logic be reused in the other page?' I also created a small 'patterns library' doc with before/after examples from our actual codebase (anonymized). When they did something well, I'd highlight it in the team standup.",
+r:"Within 2 months, their PR review time dropped from 2+ hours to 30 minutes. They started writing custom hooks unprompted and even suggested an error boundary pattern the team adopted. They told me the question-based reviews helped them think independently rather than just copying my solutions."},
+tips:["Show patience and structured approach, not just 'I helped them'","Question-based reviews > rewriting their code — shows teaching philosophy","Quantify improvement (2 hours → 30 minutes)"]},
+{id:6,q:"Describe a time you pushed back on a requirement",cat:"Process",
+star:{s:"The PM wanted real-time live updates on a reporting dashboard — every chart and table updating every second via WebSocket. The reasoning was 'users want the latest data.'",
+t:"I needed to push back without just saying 'no' — I had to offer a better alternative backed by data.",
+a:"I did some quick analysis: our reports ran on hourly aggregated data, so real-time was showing the same numbers 3,599 out of 3,600 seconds. I calculated the engineering cost (WebSocket infrastructure, connection management, reconnection logic, state sync) at roughly 3 sprints vs 2 days for polling every 60 seconds. I also showed that WebSocket connections from 200 concurrent users would significantly increase our server costs. I proposed: poll every 60 seconds with a manual refresh button, and a subtle 'last updated' timestamp.",
+r:"PM agreed the polling approach met the actual user need at 1/10th the cost. We shipped in 3 days instead of 6 weeks. Users never complained about the 60-second delay. The PM later thanked me for saving the sprint for higher-priority features."},
+tips:["Never just say 'no' — quantify the cost and offer an alternative","Show you understand the USER need behind the requirement","Mention the positive outcome for the PM/team, not just yourself"]},
+{id:7,q:"Tell me about a project you architected from scratch",cat:"Architecture",
+star:{s:"We were building a new customer portal with 8 feature areas: auth, dashboard, orders, products, support tickets, settings, notifications, and analytics. Team of 6 frontend devs.",
+t:"I was responsible for defining the frontend architecture that 6 devs could work on simultaneously without stepping on each other.",
+a:"I chose a feature-based architecture: each feature (auth, orders, etc.) was a self-contained folder with its own components, hooks, API layer, types, and tests. Features could not import from each other — only from a shared/ folder with generic UI components. I set up path aliases and an ESLint rule to enforce boundaries. State was split: React Query for server data, Context for auth/theme, local useState for UI state. I wrote an ADR (Architecture Decision Record) for each major choice so future devs understood the 'why.'",
+r:"6 devs worked in parallel with near-zero merge conflicts for 4 months. Onboarding new devs took 1 day to understand the structure. When we killed the analytics feature after a pivot, it was literally deleting one folder — nothing else broke."},
+tips:["Mention the scale: team size, feature count, timeline","Show the RULES you set (ESLint boundaries, no cross-feature imports)","The 'delete one folder' proof is powerful — concrete, memorable"]},
+{id:8,q:"How do you handle technical debt?",cat:"Process",
+star:{s:"Our codebase had accumulated significant tech debt — 3 different styling approaches (CSS modules, styled-components, inline styles), inconsistent API patterns, and a 400KB utility file everyone was afraid to touch. Velocity was dropping every sprint.",
+t:"I needed to convince the team and PM to allocate time for debt reduction without pausing feature work entirely.",
+a:"I tracked the impact: 40% of bug tickets originated from the utility file, styling inconsistency added 2-3 hours to every new feature for figuring out which approach to use, and our bundle was 2x larger than needed due to shipping both CSS modules and styled-components. I proposed a '20% rule' — every sprint, 20% of capacity goes to debt. I prioritized by pain: first unified on CSS modules (biggest daily friction), then broke up the utility file into focused modules, then standardized API patterns. Each debt item had a clear 'done' definition.",
+r:"Bug rate dropped 35% after the utility refactor. Feature velocity increased — new features that took 5 days dropped to 3 days because devs weren't fighting the codebase. Bundle size decreased 40%. The 20% rule became a permanent team practice."},
+tips:["Quantify the COST of debt (40% of bugs, 2-3 extra hours per feature)","Show you prioritized — didn't try to fix everything at once","Frame for business: 'feature velocity increased' matters to PMs"]},
+{id:9,q:"Describe a time you delivered under a tight deadline",cat:"Process",
+star:{s:"Two weeks before Black Friday, product asked for a flash-sale feature: countdown timer, special pricing display, cart quantity limits, and a banner system. Normally a 4-week project.",
+t:"Deliver a working, reliable flash-sale experience in 10 working days with 2 devs (myself and one mid-level).",
+a:"I ruthlessly scoped: the countdown timer and pricing display were must-haves, the banner was nice-to-have, and custom cart limits could use our existing validation system with a config flag. I broke work into independent tracks so we could work in parallel without blocking each other. I took the riskier backend integration work while the other dev built UI components. We skipped a custom admin panel and used a JSON config file for sale setup. We did daily 15-minute syncs and deployed to staging every day for PM review.",
+r:"Shipped 1 day early. Flash sale handled 3x normal traffic without issues. Revenue was 40% above target. The JSON config approach worked so well that the next sale took 10 minutes to set up instead of a new sprint. PM called it the smoothest crunch they'd experienced."},
+tips:["Show how you SCOPED DOWN, not how you worked 80 hours","Mention what you cut and why — shows senior judgment","Daily deploys to staging = confidence building for stakeholders"]},
+{id:10,q:"Tell me about a time something you built failed",cat:"Debugging",
+star:{s:"I over-engineered a form system. Instead of simple controlled components, I built an abstraction layer with a JSON schema that generated forms dynamically — field types, validation rules, conditional visibility, all driven by config.",
+t:"The form system was supposed to save time across 15+ forms in our app. Instead, it became a bottleneck.",
+a:"After 3 weeks of building, we realized edge cases were endless: forms with dependent dropdowns, async validation, multi-step wizards, file uploads with preview. Each edge case required extending the schema, and the abstraction was now harder to use than just writing React components. I made the call to stop, wrote a post-mortem, and proposed the alternative: simple reusable form hooks (useForm, useField, useValidation) that could be composed for any pattern without learning a custom schema language.",
+r:"The hooks approach shipped in 1 week and covered all 15 forms. Developers could read the code and understand it immediately. I shared the post-mortem with the team so we could all learn from it. Key lesson: build the 3rd form, not the form framework — wait until you see the real patterns before abstracting."},
+tips:["Showing FAILURE is a strength if you show the LEARNING","'I made the call to stop' shows leadership and ego management","The lesson at the end is quotable — interviewers remember it"]},
+{id:11,q:"How do you decide what to build vs buy?",cat:"Architecture",
+star:{s:"We needed data visualization for an analytics dashboard — 8 chart types, real-time updates, responsive, with custom tooltips and drill-down interactions. The debate was D3.js custom build vs a library like Recharts or Nivo.",
+t:"Make a recommendation that balanced development speed, customization needs, and long-term maintenance.",
+a:"I evaluated along 4 axes: (1) Time — D3 custom: 6-8 weeks, Library: 2-3 weeks. (2) Customization — we needed custom tooltips and drill-down, which libraries support via render props. (3) Maintenance — D3 custom means we own every bug. Library means community fixes + we upgrade. (4) Team skills — only I knew D3 well; if I left, who maintains it? I prototyped our most complex chart (real-time line with drill-down) in Recharts in 1 day to prove it handled our edge cases.",
+r:"We chose Recharts, shipped the dashboard in 3 weeks instead of 8. Two custom charts needed D3 wrappers, which was fine — 90% library, 10% custom. When I moved teams 6 months later, the other devs maintained it easily because Recharts has great docs."},
+tips:["Show a structured evaluation framework (time, customization, maintenance, team)","The 'bus factor' argument (if I leave, who maintains it?) shows senior thinking","Prototype the hardest part first to de-risk the decision"]},
+{id:12,q:"Describe how you onboarded to a complex codebase",cat:"Leadership",
+star:{s:"I joined a team maintaining a large React app that had been built over 3 years by 12 different developers. No architecture docs, inconsistent patterns, and a mix of class components, hooks, Redux, and Context scattered throughout.",
+t:"Get productive within 2 weeks and start contributing meaningful code without breaking existing features.",
+a:"Week 1: I read the routing file to understand the app's page structure, then traced 3 key user flows end-to-end (login, main dashboard, checkout) by following component imports. I drew a rough architecture diagram and identified the 4 state management patterns in use. I ran the test suite to see what was covered. Week 2: I picked 3 small bug fixes in areas I'd traced, which forced me to understand the patterns by fixing them. I asked targeted questions in PRs rather than broad 'how does this work?' questions. I also wrote down every 'WTF moment' — things that confused me were likely confusing for everyone.",
+r:"Submitted my first feature PR in week 2. My 'WTF list' became the team's tech debt backlog — nobody had written it down before because they'd forgotten what was confusing after getting used to it. The architecture diagram I drew became the team's onboarding doc for the next hire."},
+tips:["Show a SYSTEMATIC approach: routing → flows → state → bugs","'WTF list' is memorable and shows you create value while learning","Turning your onboarding into a doc for others = leadership"]},
+];
+
+const STORY_CATS=[...new Set(STORIES.map(s=>s.cat))];
+let storyFilterCat='All';
+let practiceTimer=null;
+
+function renderStories(){
+  const list=document.getElementById('story-list');
+  list.innerHTML='';
+  const filtered=storyFilterCat==='All'?STORIES:STORIES.filter(s=>s.cat===storyFilterCat);
+  filtered.forEach(s=>{
+    const card=document.createElement('div');
+    card.className='story-card';
+    card.innerHTML=`<div class="story-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="story-cat">${escHtml(s.cat)}</span>
+      <span class="story-q">${escHtml(s.q)}</span>
+      <span class="chevron">&#x276F;</span>
+    </div>
+    <div class="story-body"><div class="story-content">
+      <div class="star-section s-sit"><div class="star-label">Situation</div><div class="star-text">${escHtml(s.star.s)}</div></div>
+      <div class="star-section s-task"><div class="star-label">Task</div><div class="star-text">${escHtml(s.star.t)}</div></div>
+      <div class="star-section s-act"><div class="star-label">Action</div><div class="star-text">${escHtml(s.star.a)}</div></div>
+      <div class="star-section s-res"><div class="star-label">Result</div><div class="star-text">${escHtml(s.star.r)}</div></div>
+      <div class="story-tips"><h4>Interview Tips</h4><ul>${s.tips.map(t=>'<li>'+escHtml(t)+'</li>').join('')}</ul></div>
+      <button class="practice-btn" onclick="openPracticeTimer(${s.id})">&#x1F3A4; Practice Retelling (90s)</button>
+    </div></div>`;
+    list.appendChild(card);
+  });
+}
+function renderStoryFilters(){
+  const c=document.getElementById('story-filters');
+  c.innerHTML='';
+  ['All',...STORY_CATS].forEach(cat=>{
+    const chip=document.createElement('span');
+    chip.className='filter-chip'+(storyFilterCat===cat?' active':'');
+    chip.textContent=cat;
+    chip.onclick=()=>{storyFilterCat=cat;renderStoryFilters();renderStories()};
+    c.appendChild(chip);
+  });
+}
+function openPracticeTimer(storyId){
+  const s=STORIES.find(x=>x.id===storyId);
+  if(!s)return;
+  document.getElementById('pt-question').textContent=s.q;
+  document.getElementById('practice-overlay').style.display='flex';
+  let timeLeft=90;
+  const el=document.getElementById('pt-time');
+  el.style.color='var(--text)';
+  function tick(){
+    const m=Math.floor(timeLeft/60);const sec=timeLeft%60;
+    el.textContent=m+':'+(sec<10?'0':'')+sec;
+    if(timeLeft<=10)el.style.color='var(--red-text)';
+    else if(timeLeft<=30)el.style.color='var(--orange-text)';
+    if(timeLeft<=0){clearInterval(practiceTimer);el.textContent='Time!';el.style.color='var(--red-text)'}
+    timeLeft--;
+  }
+  tick();
+  clearInterval(practiceTimer);
+  practiceTimer=setInterval(tick,1000);
+}
+function closePracticeTimer(){
+  clearInterval(practiceTimer);
+  document.getElementById('practice-overlay').style.display='none';
+}
+
+const origShowScreen=showScreen;
+showScreen=function(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  if(name==='home')updateHomeStats();
+  if(name==='stories'){renderStoryFilters();renderStories()}
+};
+
+/* ========= DEPTH DRILL ========= */
+const DEPTH = [
+{baseId:1,q1:{q:"What are the limitations of the Virtual DOM approach?",a:"Virtual DOM adds memory overhead (two trees in memory), diffing has a cost for large trees, and it can't beat hand-optimized direct DOM manipulation. Fine-grained reactivity (Svelte, Solid) skips the diff entirely and updates only the exact DOM node that changed."},
+q2:{q:"When would you NOT use React for a project?",a:"Static content sites (use Astro/Hugo), highly interactive real-time apps like games (direct Canvas/WebGL), tiny widgets where React's 40KB is overkill (use vanilla JS or Preact at 3KB), or when SEO is critical and your team can't set up SSR properly."}},
+{baseId:3,q1:{q:"How does React.memo help prevent unnecessary re-renders?",a:"React.memo wraps a component and does a shallow comparison of props. If all props have the same reference, it skips re-rendering that component and its entire subtree. It's like a 'gate' that says 'nothing changed, don't bother.'"},
+q2:{q:"When does React.memo actually fail or make things worse?",a:"It fails when you pass inline objects/functions as props — new reference every render, so memo always sees 'changed.' It wastes memory and CPU on the shallow comparison for components that almost always receive new props anyway. Also breaks with children prop since JSX creates new element references."}},
+{baseId:5,q1:{q:"Why can't React hooks be called conditionally or inside loops?",a:"React tracks hooks by their call ORDER in the component, not by name. If you put a hook inside an if-block, the order changes between renders, and React maps the wrong state to the wrong hook. Hook 1 might get Hook 2's state."},
+q2:{q:"How does React internally track which hook belongs to which state?",a:"React maintains a linked list of hook nodes for each fiber (component instance). On each render, it walks the list in order. First useState call gets node 1, second gets node 2, etc. If the order changes, the pointer misaligns and state corrupts. This is why the rules of hooks exist."}},
+{baseId:7,q1:{q:"What's the re-render problem with Context API?",a:"When a Context value changes, EVERY component that calls useContext for that Context re-renders, even if they only use a small piece of the value object. Unlike Redux's useSelector which subscribes to specific slices, Context is all-or-nothing."},
+q2:{q:"How would you fix Context re-renders at scale?",a:"Split into multiple focused contexts (AuthContext, ThemeContext, CartContext). Memoize the provider value with useMemo. For frequently-updating values, consider useRef + subscription pattern, or switch to Zustand/Redux which have built-in granular subscriptions. React's experimental use(context) with selectors may solve this natively."}},
+{baseId:10,q1:{q:"How are Server Components different from SSR?",a:"SSR renders the SAME client components on the server as HTML, then ships all the JS to hydrate them. Server Components never ship JS at all — they render on the server and send the result as a lightweight serialized format. SSR = same code, two environments. Server Components = server-only code, zero client JS."},
+q2:{q:"When would you still choose Client Components over Server Components?",a:"Any time you need interactivity: useState, useEffect, onClick handlers, browser APIs (localStorage, geolocation), third-party client-side libraries (drag-and-drop, rich text editor), or real-time updates via WebSocket. The key is making the client boundary as small as possible — a Server Component page with tiny Client Component islands."}},
+{baseId:15,q1:{q:"Show a classic closure bug in a for loop and explain it",a:"for(var i=0;i<3;i++){setTimeout(()=>console.log(i),100)} prints 3,3,3 — not 0,1,2. The closure captures the variable i, not its value. By the time setTimeout fires, the loop is done and i is 3. All three callbacks share the same i."},
+q2:{q:"How does let fix the closure bug, and what's actually happening under the hood?",a:"let creates a new binding for each loop iteration — each callback closes over its own separate i variable. Under the hood, the JS engine creates a new lexical environment per iteration. With var, there's only one variable in the function scope. With let, there are 3 separate variables, each scoped to one iteration."}},
+{baseId:16,q1:{q:"What order does this print: console.log(1); setTimeout(()=>console.log(2),0); Promise.resolve().then(()=>console.log(3)); console.log(4);",a:"1, 4, 3, 2. Synchronous code runs first (1, 4). Then microtask queue drains (Promise → 3). Then macrotask queue (setTimeout → 2). Even with 0ms delay, setTimeout is always after all microtasks."},
+q2:{q:"Why do Promises always run before setTimeout even with 0ms delay?",a:"The event loop processes one macrotask, then drains ALL microtasks before the next macrotask. setTimeout(fn, 0) adds to the macrotask queue. Promise.then adds to the microtask queue. After the current synchronous code (which is itself a macrotask), all microtasks drain first. The spec guarantees this order — it's not about timing, it's about queue priority."}},
+{baseId:18,q1:{q:"What does an arrow function do to 'this' binding?",a:"Arrow functions don't have their own 'this'. They capture 'this' from the enclosing lexical scope at definition time — not call time. You can't change it with call/apply/bind. This is why arrow functions work perfectly as React event handlers and callbacks."},
+q2:{q:"Give an example where using an arrow function for 'this' is actually wrong",a:"Object methods: const obj = { name: 'test', greet: () => console.log(this.name) } — this.name is undefined because the arrow captures 'this' from the outer scope (window/module), not from obj. Also wrong for: prototype methods, constructor functions, and addEventListener where you need 'this' to be the element. Use regular function when you need dynamic 'this'."}},
+{baseId:20,q1:{q:"How does the ES6 class keyword relate to prototypes?",a:"Classes are syntactic sugar over prototypes. class Dog extends Animal compiles to: Dog.prototype = Object.create(Animal.prototype). Methods defined in the class body go on the prototype, not on each instance. typeof Dog === 'function'. There's no new mechanism — it's the same prototype chain."},
+q2:{q:"What's the performance difference between prototype methods and instance methods?",a:"Prototype methods are defined once and shared across all instances — memory efficient. Instance methods (defined in constructor with this.method = ...) create a new function per instance — more memory. With 1000 instances, prototype methods = 1 function in memory, instance methods = 1000 copies. Arrow methods in class fields are instance methods (new copy per instance), which is why React class components used bind in constructor."}},
+{baseId:29,q1:{q:"Write a generic type for an API response wrapper",a:"type ApiResponse<T> = { data: T; status: number; message: string; timestamp: string; }. Usage: ApiResponse<User[]> for a user list endpoint, ApiResponse<null> for a delete response. The T flows through so you get full type safety on the data field."},
+q2:{q:"How do you constrain a generic so it only accepts certain types?",a:"Use extends: function getProperty<T extends object, K extends keyof T>(obj: T, key: K): T[K]. The constraint 'T extends object' means T must be an object type. 'K extends keyof T' means K must be a valid key of T. You get compile-time errors if you pass a string where an object is expected. Multiple constraints: T extends HasId & Serializable."}},
+{baseId:40,q1:{q:"When does code splitting actually hurt performance?",a:"Too many tiny chunks create waterfall requests — each chunk is a network round-trip. Splitting below 20KB isn't worth the HTTP overhead. Also hurts when the split point is on the critical rendering path — user sees a loading spinner for 200ms when the component could have been in the main bundle. Over-splitting fragments the browser cache."},
+q2:{q:"How do you measure whether code splitting actually improved things?",a:"Compare before/after: Time to Interactive (TTI), Largest Contentful Paint (LCP), and total JS downloaded on first load. Use Chrome Coverage tab to see how much downloaded JS is actually executed. Bundle analyzer shows chunk sizes. Set a performance budget: 'main bundle under 150KB gzipped.' If splitting a route saves less than 20KB, keep it in the main bundle."}},
+{baseId:61,q1:{q:"Walk me through your exact process for debugging a re-render issue",a:"Step 1: React DevTools Profiler — record the interaction, look at the flame chart for which components rendered and their render duration. Step 2: Check the 'Why did this render?' feature. Step 3: Add console.log to suspect components to see render frequency. Step 4: Use React DevTools 'Highlight updates' to visually see what flashes on interaction. Step 5: Trace the cause — is it state, props, context, or parent?"},
+q2:{q:"What specific tools do you use at each step of performance debugging?",a:"React layer: React DevTools Profiler (render timing, component tree). JS layer: Chrome Performance tab flame chart (long tasks, scripting time). Network layer: Network tab waterfall (API timing, payload sizes, request count). Memory: Memory tab heap snapshots (leak detection). Metrics: web-vitals library + Lighthouse (LCP, INP, CLS scores). Production: Sentry Performance, DataDog RUM, or custom web-vitals reporting."}},
+{baseId:33,q1:{q:"How do you debug a CSS specificity conflict in practice?",a:"Open DevTools Elements panel, click the element, look at Styles tab. Crossed-out rules are being overridden. Check the specificity — DevTools shows the cascade. Look for !important overrides. If styles are unexpectedly applied, check inherited styles and the computed tab. For complex cases, add a temporary outline to visualize which element is actually targeted."},
+q2:{q:"How does CSS-in-JS solve the specificity problem?",a:"CSS-in-JS generates unique class names (e.g., .sc-bdVTJa) so specificity is always the same (one class = 010). No global namespace conflicts. No cascade issues between components. The trade-off: runtime overhead (styled-components generates styles in JS), harder to debug in DevTools (cryptic class names), and SSR complexity. CSS Modules solve the same scoping problem with zero runtime cost."}},
+{baseId:50,q1:{q:"How do you handle JWT token expiry in a React app?",a:"Store access token (short-lived, 15min) and refresh token (long-lived, 7 days) in HttpOnly cookies. When API returns 401, intercept with axios interceptor → call /refresh endpoint with refresh token → get new access token → retry the original request. Queue concurrent requests during refresh to avoid multiple refresh calls."},
+q2:{q:"What is refresh token rotation and why does it matter?",a:"Each time you use a refresh token, the server issues a new refresh token and invalidates the old one. If an attacker steals a refresh token and uses it, the legitimate user's next refresh fails (old token invalid), alerting the system. Without rotation, a stolen refresh token works until it naturally expires (could be months). Rotation creates a 'use once' pattern that limits the damage window of a stolen token."}},
+{baseId:7,q1:{q:"Can you use Context and Redux together in the same app?",a:"Yes, and you should. Context for rarely-changing globals (theme, locale, auth user). Redux for complex, frequently-changing shared state (shopping cart, multi-step forms, real-time data). They solve different problems — Context is a delivery mechanism (avoids prop drilling), Redux is a state management architecture (actions, reducers, middleware, devtools)."},
+q2:{q:"Show me a real architecture that uses both Context and Redux together",a:"AuthContext: provides user object + login/logout (changes once per session). ThemeContext: provides theme + toggle (changes rarely). Redux store: manages cart items, product filters, notification queue (changes frequently, needs middleware for async). React Query: manages all server data (product list, order history). Local useState: manages UI state (modal open, search input, hover). Each tool handles what it's best at — no single solution for everything."}},
+{baseId:45,q1:{q:"What if the 100K-row table also needs real-time updates?",a:"WebSocket pushes only changed rows (delta updates), not the full dataset. Frontend maintains a Map<rowId, rowData> for O(1) lookups and updates. Virtualized table re-renders only visible rows. Use requestAnimationFrame to batch rapid WebSocket updates into visual frames — don't re-render on every message. Optimistic UI for user edits."},
+q2:{q:"How do WebSocket connections and virtualization work together technically?",a:"WebSocket receives update → updates the data Map → if the updated row is in the visible window, trigger re-render of just that row (React.memo + stable key). If it's outside the visible window, data updates silently with no DOM work. The virtualization library only renders ~25 DOM nodes regardless. Add a 'new updates available' banner if user has scrolled away from updated rows, like Twitter's 'new tweets' indicator."}},
+{baseId:60,q1:{q:"When does ISR (Incremental Static Regeneration) break down?",a:"ISR serves stale content during revalidation — for a few seconds, some users see old data. If content is user-specific (personalized dashboard), ISR can't cache it (it's one page for all users). ISR also struggles with: content that must be instantly consistent across all users (stock prices, auction bids), pages that depend on auth state, and very large sites where revalidation of thousands of pages overwhelms the server."},
+q2:{q:"How do you handle dynamic, user-specific content when you want SSG-level speed?",a:"Use the 'static shell + client fetch' pattern: SSG the page layout, navigation, and public content at build time (fast CDN delivery). Then fetch user-specific data client-side after hydration (useEffect or React Query). The user sees instant page structure, then personalized content loads in ~200ms. For authenticated pages, use middleware to redirect unauthenticated users before the page even loads. Combine with edge functions (Vercel Edge, Cloudflare Workers) for personalization at the CDN layer."}},
+{baseId:72,q1:{q:"Show the 4-layer separation pattern with a concrete example",a:"Component: <ProductList products={products} onSort={handleSort} /> — just renders UI. Hook: useProducts() — calls productService.getAll(), manages loading/error state, returns { products, loading, error, sort }. Service: productService.getAll(filters) — applies business rules (price calculations, availability logic). API: api.get('/products', { params: filters }) — HTTP layer, handles headers, base URL, interceptors. Each layer is independently testable and swappable."},
+q2:{q:"How do you test each layer independently?",a:"API layer: MSW (Mock Service Worker) intercepts network requests — test that correct endpoints are called with correct params. Service layer: unit test with mocked API — test business logic (price calculation returns correct values). Hook layer: renderHook from RTL — test that state transitions correctly (loading → data → error). Component layer: render with mocked hook return values — test that UI shows correct states. Each test is fast because it mocks only the layer below it."}},
+{baseId:9,q1:{q:"How does useTransition actually work under the hood?",a:"useTransition marks a state update as 'low priority.' React starts rendering the update but can interrupt it if a high-priority update comes in (like user typing). The isPending flag lets you show a loading indicator while the transition renders in the background. React keeps showing the current UI until the transition is ready — no blank screen or spinner."},
+q2:{q:"What's the difference between useTransition and useDeferredValue?",a:"useTransition wraps the state UPDATE — you control when to start a transition. useDeferredValue wraps the VALUE — React decides when to update it. Use useTransition when you own the state setter (search input → filter results). Use useDeferredValue when you receive a prop you can't control (parent passes a frequently-changing value). Both achieve the same goal: keep the UI responsive by deprioritizing expensive renders."}},
+{baseId:6,q1:{q:"What's the difference between a custom hook that returns state vs a hook that returns JSX?",a:"State-returning hooks (useForm, useAuth) give data and functions — the component decides how to render. JSX-returning hooks are actually headless components — they encapsulate both logic AND UI. Prefer state-returning hooks because they're more flexible: the same useForm hook works in a modal form, inline form, or multi-step wizard with completely different UIs."},
+q2:{q:"When would you extract a custom hook vs just lifting state?",a:"Lift state when siblings need the same state instance (shared data). Extract a hook when multiple components need the same logic pattern but independent state (each has its own form, its own fetch, its own timer). If you're copy-pasting useState + useEffect patterns across 3+ components, that's a hook. If two components need to see the same value, that's lifted state or context."}},
+{baseId:4,q1:{q:"If useMemo and useCallback are free optimizations, why not use them everywhere?",a:"They're NOT free. Each one allocates memory for the cached value and the dependency array. React compares every dependency with === on every render. For cheap operations (string concatenation, simple math), the comparison overhead exceeds the computation cost. Plus they add code complexity — every future developer must understand the dependency array and when it invalidates."},
+q2:{q:"Give me a rule of thumb for when memoization is worth it",a:"Memoize when: (1) the computation takes >1ms (filter/sort large arrays, complex calculations), (2) the result is passed as a prop to a React.memo child (referential stability matters), (3) the result is a dependency of another hook (prevents cascading re-computations). Don't memoize: primitive returns, components with no children, values that change every render anyway. Profile first — React DevTools Profiler shows if a component is actually slow."}},
+{baseId:47,q1:{q:"What happens if someone disables cookies — does your auth break?",a:"Yes, cookie-based auth fails if cookies are disabled. Fallback options: detect cookie support early and show a message asking to enable them (most common approach), or fall back to Authorization header with token stored in memory (cleared on tab close — most secure non-cookie option). Never fall back to localStorage — that defeats the XSS protection reason for using cookies."},
+q2:{q:"Walk me through the complete auth flow from login button click to authenticated API call",a:"1. User submits credentials → POST /api/login. 2. Server verifies, creates session/JWT → sets HttpOnly Secure SameSite=Lax cookie in response. 3. Browser stores cookie automatically. 4. React updates auth Context (user info for UI, not the token). 5. Subsequent API calls include credentials: 'include' in fetch — browser attaches cookie. 6. Server middleware reads cookie, verifies session/JWT, attaches user to request. 7. On 401, axios interceptor tries token refresh. 8. On logout, POST /api/logout → server invalidates session → client clears auth Context."}},
+{baseId:43,q1:{q:"How do you enforce feature boundaries so developers don't break the architecture?",a:"ESLint rule: no imports from features/X inside features/Y. Path aliases: @features/auth, @shared/components. PR review checklist: 'Does this import cross feature boundaries?' Barrel files (index.ts) in each feature that export only the public API. Anything not exported is private to the feature. CI check that fails if cross-feature imports are detected."},
+q2:{q:"What happens when two features genuinely need to share logic?",a:"Three options in order of preference: (1) Move the shared logic to shared/ — if it's truly generic (a utility, a UI component). (2) Event-based communication — feature A dispatches an event/action, feature B listens (Redux actions, custom events). (3) Create a new shared module specifically for that cross-cutting concern with its own tests and clear ownership. Never let Feature A import from Feature B's internals — that couples them and defeats the architecture."}},
+{baseId:54,q1:{q:"How does Redux middleware actually intercept actions?",a:"Middleware sits between dispatch and the reducer. When you dispatch(action), it goes through each middleware in order. Each middleware can: inspect the action, modify it, delay it, dispatch other actions, or block it. The signature is store => next => action => { /* your logic */ next(action); }. Thunks work by checking if the action is a function — if so, call it instead of forwarding."},
+q2:{q:"How do selectors and createSelector prevent unnecessary re-renders?",a:"useSelector subscribes a component to specific state. It runs the selector after every dispatch and does === comparison with the previous result. If the reference is the same, no re-render. createSelector (reselect) memoizes derived data — if the input selectors return the same references, it returns the cached computation. This prevents re-computing expensive derived data AND prevents re-renders from new object references. Without createSelector, array.filter() creates a new array reference every time even with same results."}},
+{baseId:35,q1:{q:"What's the real-world impact of bad accessibility?",a:"Legal: ADA lawsuits increased 300% since 2018 — companies get sued for inaccessible websites. Users: 15-20% of people have some disability. Business: accessible sites rank better in SEO (semantic HTML). Technical: accessible code is usually better structured code. If a screen reader can navigate your app, your HTML semantics are correct."},
+q2:{q:"Give me 5 quick accessibility wins you'd implement on any project",a:"1. All images have meaningful alt text (or alt='' for decorative). 2. Every form input has a visible <label> with htmlFor. 3. Color contrast ratio 4.5:1 minimum (use Chrome DevTools contrast checker). 4. All interactive elements are keyboard-focusable with visible focus styles. 5. Use semantic HTML: <button> not <div onclick>, <nav> not <div class='nav'>, <main> for primary content. These 5 catch 80% of accessibility issues."}},
+{baseId:82,q1:{q:"Why is using array index as key dangerous in React?",a:"When items are reordered, added, or deleted, the index doesn't identify the same item anymore. React thinks item at index 0 is the same component and tries to update its props instead of moving it. This causes: wrong state attached to wrong items, input values staying on wrong rows, animations breaking, and subtle data corruption in forms."},
+q2:{q:"When IS it safe to use index as key, and what's the official guidance?",a:"Index is safe when ALL three conditions are true: (1) list is static — never reordered, filtered, or sorted, (2) items have no state (no inputs, no selections, no toggles), (3) items are never added or removed from the middle. In practice, this means only display-only static lists. If you're unsure, always use a stable unique ID. React docs say 'don't use index' as the default guidance. Using item.id is never wrong; using index is sometimes wrong."}},
+{baseId:56,q1:{q:"Where does React Query fit in the state management picture?",a:"React Query manages SERVER state — data that lives on the backend and is fetched, cached, and synchronized. It replaces the 'fetch in useEffect, store in Redux' pattern. It handles caching, background refetch, stale-while-revalidate, deduplication, pagination, and optimistic updates. Don't put API data in Redux if you have React Query — Redux is for CLIENT state only."},
+q2:{q:"How do you decide between React Query, SWR, and Redux for data fetching?",a:"React Query: full-featured, built-in devtools, optimistic updates, infinite queries, mutation management. Best for complex data requirements. SWR: lighter, simpler API, great for read-heavy apps. Best for dashboards and content sites. Redux (RTK Query): if you already use Redux and want data fetching integrated with your existing store. Don't add Redux just for data fetching — React Query or SWR is simpler. The key insight: server state and client state are different problems requiring different tools."}},
+];
+
+let depthState={chains:[],current:0,step:0,ratings:[],sessionCount:0};
+
+function loadDepthProgress(){
+  try{const d=JSON.parse(localStorage.getItem('depth-drill-history')||'{}');
+  if(d.sessionCount)depthState.sessionCount=d.sessionCount;
+  }catch(e){}
+}
+function saveDepthProgress(){
+  try{localStorage.setItem('depth-drill-history',JSON.stringify({sessionCount:depthState.sessionCount}));}catch(e){}
+}
+
+function startDepthDrill(){
+  showScreen('depth');
+  depthState.chains=shuffle([...DEPTH]).slice(0,8);
+  depthState.current=0;
+  depthState.step=0;
+  depthState.ratings=[];
+  showDepthQuestion();
+}
+function showDepthQuestion(){
+  if(depthState.current>=depthState.chains.length){showDepthSummary();return}
+  depthState.step=0;
+  const chain=depthState.chains[depthState.current];
+  const base=Q.find(q=>q.id===chain.baseId);
+  if(!base)return;
+  document.getElementById('depth-q-wrap').style.display='block';
+  document.getElementById('depth-reveal-wrap').style.display='none';
+  document.getElementById('depth-final-wrap').style.display='none';
+  document.getElementById('depth-q').textContent=base.q;
+  document.getElementById('depth-badge').textContent='Base Question';
+  document.getElementById('depth-badge').className='depth-level-badge base';
+  document.getElementById('depth-next-btn').textContent="I've got my answer";
+  document.getElementById('depth-next-btn').style.display='block';
+  updateDepthDots();
+  document.getElementById('depth-counter').textContent=`Chain ${depthState.current+1} of ${depthState.chains.length}`;
+}
+function updateDepthDots(){
+  for(let i=1;i<=3;i++){
+    const dot=document.getElementById('dd-'+i);
+    dot.className='depth-dot';
+    if(i-1<depthState.step)dot.classList.add('done');
+    else if(i-1===depthState.step)dot.classList.add('active');
+  }
+}
+function depthNext(){
+  const chain=depthState.chains[depthState.current];
+  const base=Q.find(q=>q.id===chain.baseId);
+  if(depthState.step===0){
+    depthState.step=1;
+    updateDepthDots();
+    let html=`<div class="depth-answer-box"><div class="depth-a-label">Model Answer — Base</div><div class="depth-a-text">${escHtml(base.a)}</div></div>`;
+    html+=`<div class="depth-q-area" style="margin-top:12px"><span class="depth-level-badge f1">Follow-up 1</span><div class="depth-q-text">${escHtml(chain.q1.q)}</div></div>`;
+    document.getElementById('depth-reveal-wrap').innerHTML=html;
+    document.getElementById('depth-reveal-wrap').style.display='block';
+    document.getElementById('depth-q-wrap').style.display='none';
+    document.getElementById('depth-next-btn').textContent="I've answered follow-up 1";
+  }else if(depthState.step===1){
+    depthState.step=2;
+    updateDepthDots();
+    let html=`<div class="depth-answer-box"><div class="depth-a-label">Model Answer — Base</div><div class="depth-a-text">${escHtml(base.a)}</div></div>`;
+    html+=`<div class="depth-answer-box"><div class="depth-a-label">Model Answer — Follow-up 1</div><div class="depth-a-text">${escHtml(chain.q1.a)}</div></div>`;
+    html+=`<div class="depth-q-area" style="margin-top:12px"><span class="depth-level-badge f2">Follow-up 2 — Deepest</span><div class="depth-q-text">${escHtml(chain.q2.q)}</div></div>`;
+    document.getElementById('depth-reveal-wrap').innerHTML=html;
+    document.getElementById('depth-next-btn').textContent="Show final answer";
+  }else if(depthState.step===2){
+    depthState.step=3;
+    updateDepthDots();
+    document.getElementById('depth-next-btn').style.display='none';
+    let html='<div class="depth-final"><h3>Full Chain Review</h3>';
+    html+=`<div class="depth-final-q"><div class="dfq-label base">Base</div><div class="dfq-q">${escHtml(base.q)}</div><div class="dfq-a">${escHtml(base.a)}</div></div>`;
+    html+=`<div class="depth-final-q"><div class="dfq-label f1">Follow-up 1</div><div class="dfq-q">${escHtml(chain.q1.q)}</div><div class="dfq-a">${escHtml(chain.q1.a)}</div></div>`;
+    html+=`<div class="depth-final-q"><div class="dfq-label f2">Follow-up 2</div><div class="dfq-q">${escHtml(chain.q2.q)}</div><div class="dfq-a">${escHtml(chain.q2.a)}</div></div>`;
+    html+='</div>';
+    html+='<div class="depth-rating"><button class="dr-deep" onclick="rateDepth(\'deep\')">&#x1F9E0; Deep</button><button class="dr-surface" onclick="rateDepth(\'surface\')">&#x1F44D; Surface</button><button class="dr-lost" onclick="rateDepth(\'lost\')">&#x1F635; Lost</button></div>';
+    document.getElementById('depth-final-wrap').innerHTML=html;
+    document.getElementById('depth-final-wrap').style.display='block';
+    document.getElementById('depth-reveal-wrap').style.display='none';
+  }
+}
+function rateDepth(rating){
+  const chain=depthState.chains[depthState.current];
+  const base=Q.find(q=>q.id===chain.baseId);
+  depthState.ratings.push({baseId:chain.baseId,cat:base?base.cat:'',rating});
+  if(rating==='lost'){fcState.review.add(chain.baseId);fcState.mastered.delete(chain.baseId)}
+  if(rating==='deep'){fcState.mastered.add(chain.baseId);fcState.review.delete(chain.baseId)}
+  saveProgress();
+  depthState.current++;
+  showDepthQuestion();
+}
+function showDepthSummary(){
+  depthState.sessionCount++;
+  saveDepthProgress();
+  document.getElementById('depth-q-wrap').style.display='none';
+  document.getElementById('depth-reveal-wrap').style.display='none';
+  const wrap=document.getElementById('depth-final-wrap');
+  wrap.style.display='block';
+  const c=depthState.ratings.reduce((a,r)=>{a[r.rating]=(a[r.rating]||0)+1;return a},{});
+  const weakCats={};
+  depthState.ratings.filter(r=>r.rating==='lost').forEach(r=>{weakCats[r.cat]=(weakCats[r.cat]||0)+1});
+  let weakHtml='';
+  if(Object.keys(weakCats).length){
+    weakHtml='<div class="weak-areas"><h4>Depth Gaps</h4>';
+    Object.keys(weakCats).sort((a,b)=>weakCats[b]-weakCats[a]).forEach(cat=>{weakHtml+=`<span class="tag">${cat} (${weakCats[cat]})</span>`});
+    weakHtml+='</div>';
+  }
+  wrap.innerHTML=`<div class="summary-card">
+    <h2>Depth Drill Complete</h2>
+    <p class="subtitle">${depthState.ratings.length} chains attempted</p>
+    <div class="summary-scores">
+      <div class="score-item crushed"><div class="num">${c.deep||0}</div><div class="label">Deep</div></div>
+      <div class="score-item decent"><div class="num">${c.surface||0}</div><div class="label">Surface</div></div>
+      <div class="score-item struggled"><div class="num">${c.lost||0}</div><div class="label">Lost</div></div>
+    </div>
+    ${weakHtml}
+    <button class="sim-btn" onclick="startDepthDrill()" style="margin-top:20px">New Session</button>
+    <button class="sim-btn" onclick="showScreen('home')" style="margin-top:10px;background:var(--bg3)">Home</button>
+  </div>`;
+  if((c.deep||0)>=6)confetti();
+}
+
+/* ========= CONFETTI ========= */
+function confetti(){
+  const colors=['#7c3aed','#3b82f6','#22c55e','#f59e0b','#ef4444','#ec4899'];
+  for(let i=0;i<40;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';
+    el.style.top=-10+'px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius=Math.random()>0.5?'50%':'2px';
+    el.style.width=(6+Math.random()*8)+'px';
+    el.style.height=(6+Math.random()*8)+'px';
+    el.style.animationDuration=(1.5+Math.random()*1.5)+'s';
+    el.style.animationDelay=(Math.random()*0.3)+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),3500);
+  }
+}
+
+/* ========= KEYBOARD SHORTCUTS ========= */
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('screen-flashcards').classList.contains('active')){
+    if(document.activeElement.tagName==='TEXTAREA'||document.activeElement.tagName==='INPUT')return;
+    if(e.code==='Space'){e.preventDefault();flipCard()}
+    if(e.code==='ArrowRight'&&fcState.flipped)rateCard('got');
+    if(e.code==='ArrowLeft'&&fcState.flipped)rateCard('review');
+  }
+});
+
+/* ========= FILTER REBUILD ON CLICK ========= */
+const origRenderFilters=renderFilters;
+document.getElementById('fc-filters').addEventListener('click',()=>setTimeout(()=>{buildFCDeck();showCard()},50));
+document.getElementById('sim-filters').addEventListener('click',()=>setTimeout(()=>{buildSimDeck();simState.current=0},50));
+
+/* ========= INIT ========= */
+loadProgress();
+loadDepthProgress();
+updateHomeStats();
+</script>
+</body>
+</html>
