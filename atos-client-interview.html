@@ -1,0 +1,2137 @@
+<title>Atos Client Interview Prep</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #F3F5F9;
+  --surface: #FFFFFF;
+  --text: #1A2236;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+  --accent: #2B5CE6;
+  --accent-hover: #1D4ED8;
+  --accent-soft: #EBF0FF;
+  --accent-text: #1E3A8A;
+  --green: #0F7B5F;
+  --green-soft: #EDFCF5;
+  --green-text: #065F46;
+  --amber: #B45309;
+  --amber-soft: #FFF8EB;
+  --amber-text: #92400E;
+  --red-soft: #FFF1F0;
+  --red-text: #9B1C1C;
+  --border: #E2E8F0;
+  --border-light: #EDF2F7;
+  --code-bg: #F0F4F8;
+  --code-text: #1A2236;
+  --nav-bg: #FFFFFF;
+  --nav-active: #EBF0FF;
+  --shadow-sm: 0 1px 2px rgba(26,34,54,0.05);
+  --shadow-md: 0 4px 12px rgba(26,34,54,0.08);
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1220; --surface: #141E30; --text: #D8DEE9; --text-secondary: #A0AEC0; --text-muted: #718096;
+    --accent: #5B8DEF; --accent-hover: #7BA3F3; --accent-soft: #1A2D50; --accent-text: #93B8F7;
+    --green: #34D399; --green-soft: #0D2E23; --green-text: #6EE7B7;
+    --amber: #FBBF24; --amber-soft: #2D2410; --amber-text: #FCD34D;
+    --red-soft: #2D1515; --red-text: #FCA5A5;
+    --border: #1E2D42; --border-light: #1A2740;
+    --code-bg: #0F1923; --code-text: #D8DEE9;
+    --nav-bg: #141E30; --nav-active: #1A2D50;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1220; --surface: #141E30; --text: #D8DEE9; --text-secondary: #A0AEC0; --text-muted: #718096;
+  --accent: #5B8DEF; --accent-hover: #7BA3F3; --accent-soft: #1A2D50; --accent-text: #93B8F7;
+  --green: #34D399; --green-soft: #0D2E23; --green-text: #6EE7B7;
+  --amber: #FBBF24; --amber-soft: #2D2410; --amber-text: #FCD34D;
+  --red-soft: #2D1515; --red-text: #FCA5A5;
+  --border: #1E2D42; --border-light: #1A2740;
+  --code-bg: #0F1923; --code-text: #D8DEE9;
+  --nav-bg: #141E30; --nav-active: #1A2D50;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.7; margin: 0; }
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--nav-bg); border-right: 1px solid var(--border); padding: 24px 0; scrollbar-width: thin; }
+.sidebar-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; padding: 0 16px 14px; color: var(--text); border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.nav-section { padding: 10px 14px 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+.nav-link { display: block; padding: 4px 16px; font-size: 12.5px; font-weight: 500; color: var(--text-secondary); text-decoration: none; border-radius: 5px; margin: 1px 6px; transition: background 0.15s, color 0.15s; }
+.nav-link:hover { background: var(--nav-active); color: var(--accent); }
+.main { padding: 36px 44px 80px; max-width: 860px; }
+@media (max-width: 900px) { .main { padding: 20px 14px 60px; } }
+.hero { margin-bottom: 40px; }
+.hero h1 { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.2; margin: 0 0 10px; text-wrap: balance; }
+.hero .subtitle { font-size: 15px; color: var(--text-secondary); margin: 0 0 18px; max-width: 580px; }
+.stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.stat-num { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-left: 5px; }
+.section { margin-bottom: 44px; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.section-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+.section-badge.reported { background: #8B5CF622; color: #7C3AED; }
+.section-badge.react { background: #61DAFB22; color: #0EA5E9; }
+.section-badge.redux { background: #764ABC22; color: #764ABC; }
+.section-badge.js { background: #F7DF1E22; color: #A88C00; }
+.section-badge.next { background: #00000022; color: #555; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .section-badge.next { background: #FFFFFF22; color: #ccc; } :root:not([data-theme="light"]) .section-badge.redux { color: #B794F4; } }
+:root[data-theme="dark"] .section-badge.next { background: #FFFFFF22; color: #ccc; }
+:root[data-theme="dark"] .section-badge.redux { color: #B794F4; }
+.section-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin: 0; }
+.qa { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; box-shadow: var(--shadow-sm); overflow: hidden; }
+.qa summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 14.5px; color: var(--text); list-style: none; display: flex; align-items: flex-start; gap: 10px; user-select: none; transition: background 0.15s; }
+.qa summary:hover { background: var(--accent-soft); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::before { content: ''; width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; background: var(--text-muted); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none'%3E%3Cpath d='M6 3l6 6-6 6' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none'%3E%3Cpath d='M6 3l6 6-6 6' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat; transition: transform 0.2s; }
+.qa[open] summary::before { transform: rotate(90deg); }
+.answer { padding: 2px 18px 18px 46px; color: var(--text-secondary); font-size: 14.5px; }
+.answer p { margin: 0 0 10px; }
+.answer p:last-child { margin-bottom: 0; }
+.answer h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text); margin: 16px 0 6px; }
+.answer h4:first-child { margin-top: 2px; }
+.answer ul, .answer ol { margin: 0 0 10px; padding-left: 18px; }
+.answer li { margin-bottom: 3px; }
+.oneliner { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; margin: 4px 0 14px; font-weight: 600; color: var(--accent-text); font-size: 14px; line-height: 1.5; }
+pre { background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border-light); border-radius: var(--radius); padding: 12px 14px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55; overflow-x: auto; margin: 10px 0; }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--code-bg); padding: 1px 4px; border-radius: 3px; color: var(--accent-text); }
+pre code { background: none; padding: 0; color: inherit; }
+.tip { background: var(--green-soft); border-left: 3px solid var(--green); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; margin: 10px 0; font-size: 13px; color: var(--green-text); }
+.warn { background: var(--amber-soft); border-left: 3px solid var(--amber); padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; margin: 10px 0; font-size: 13px; color: var(--amber-text); }
+.gotcha { background: var(--red-soft); border-left: 3px solid #E53E3E; padding: 8px 12px; border-radius: 0 var(--radius) var(--radius) 0; margin: 10px 0; font-size: 13px; color: var(--red-text); }
+.q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; border-radius: 6px; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; background: var(--accent-soft); color: var(--accent-text); }
+.expand-all { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-weight: 500; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+.expand-all:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+@media print { .sidebar { display: none; } .layout { grid-template-columns: 1fr; } .qa { break-inside: avoid; } details { display: block; } details > .answer { display: block !important; } details summary::before { display: none; } }
+</style>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-title">Atos Client Prep</div>
+  <div style="padding:0 10px 12px;display:flex;gap:6px;border-bottom:1px solid var(--border);margin-bottom:8px">
+    <a href="interview-prep.html" style="font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:6px;background:var(--accent-soft)">Reference</a>
+    <a href="tutor-mode.html" style="font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:6px;background:var(--accent-soft)">Tutor</a>
+    <a href="interview-game.html" style="font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:6px;background:var(--accent-soft)">Practice</a>
+  </div>
+  <div class="nav-section">A. Reported Questions</div>
+  <a class="nav-link" href="#reported">12 Questions</a>
+  <div class="nav-section">B. React Deep Dive</div>
+  <a class="nav-link" href="#react">15 Questions</a>
+  <div class="nav-section">Redux (Critical)</div>
+  <a class="nav-link" href="#redux">14 Questions</a>
+  <div class="nav-section">JavaScript</div>
+  <a class="nav-link" href="#javascript">13 Questions</a>
+  <div class="nav-section">Next.js</div>
+  <a class="nav-link" href="#nextjs">12 Questions</a>
+  <div class="nav-section">API & Data Handling</div>
+  <a class="nav-link" href="#api-data">5 Questions</a>
+  <div class="nav-section">Process & Soft Skills</div>
+  <a class="nav-link" href="#soft-skills">4 Questions</a>
+</nav>
+
+<main class="main">
+<div class="hero">
+  <h1>Atos Client Interview</h1>
+  <p class="subtitle">Reported &amp; high-probability questions for the React client round. Every answer has a one-liner you can say directly, then a deeper explanation with code.</p>
+  <div class="stats">
+    <span class="stat-num">75</span><span class="stat-label">Questions</span>
+    <span class="stat-num">7</span><span class="stat-label">Categories</span>
+  </div>
+  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+    <a href="interview-prep.html" style="display:inline-block;padding:10px 22px;background:var(--accent);color:#fff;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:0.15s">&larr; Full Reference</a>
+    <a href="tutor-mode.html" style="display:inline-block;padding:10px 22px;background:var(--accent-soft);color:var(--accent-text);border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:0.15s">Tutor Mode</a>
+  </div>
+</div>
+
+<div style="margin-bottom:28px;display:flex;gap:8px;">
+  <button class="expand-all" onclick="toggleAll()">Expand All</button>
+  <button class="expand-all" onclick="collapseAll()">Collapse All</button>
+</div>
+
+<!-- ============================================ -->
+<!-- A. REPORTED QUESTIONS -->
+<!-- ============================================ -->
+<section class="section" id="reported">
+<div class="section-header">
+  <span class="section-badge reported">A</span>
+  <h2 class="section-title">Reported Questions</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> Why did you use Redux?</summary><div class="answer">
+<div class="oneliner">We used Redux because our app had complex shared state across many disconnected components &mdash; things like user auth, cart data, and notification counts that needed to be read and updated from anywhere in the tree without prop-drilling.</div>
+<h4>When Redux makes sense</h4>
+<ul>
+  <li><strong>Many components</strong> at different levels need the same data</li>
+  <li><strong>State updates are complex</strong> &mdash; multiple actions affect the same slice</li>
+  <li><strong>Predictable debugging</strong> &mdash; time-travel debugging with Redux DevTools</li>
+  <li><strong>Team size</strong> &mdash; strict patterns (actions, reducers) keep large teams consistent</li>
+</ul>
+<h4>What to say in the interview</h4>
+<p>Frame it around a real problem: "We had a dashboard where filters, user preferences, and real-time data all needed to be shared across 15+ components in different parts of the tree. Prop-drilling was unmanageable, and Context re-rendered too many components. Redux gave us targeted updates via selectors and a clear audit trail via actions."</p>
+<div class="tip"><strong>Follow-up ready:</strong> If they ask "Would you still choose Redux today?" &mdash; say "For new projects I'd evaluate Redux Toolkit (much less boilerplate) vs Zustand (simpler API). But Redux remains the right choice when you need middleware, DevTools time-travel, and strict action patterns in a large team."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> Why React instead of Angular?</summary><div class="answer">
+<div class="oneliner">React gives us a lightweight view library with freedom to choose our own routing, state management, and build tools, while Angular is a full opinionated framework. React's component model, massive ecosystem, and one-way data flow made it the better fit for our team.</div>
+<h4>Key differences to mention</h4>
+<ul>
+  <li><strong>Learning curve:</strong> React &mdash; learn JSX + hooks. Angular &mdash; learn TypeScript, decorators, modules, DI, RxJS, zones</li>
+  <li><strong>Flexibility:</strong> React lets you pick your router, state library, form handling. Angular bundles everything</li>
+  <li><strong>Bundle size:</strong> A basic React app starts around 40KB gzipped vs Angular's ~100KB+</li>
+  <li><strong>One-way data flow:</strong> React's unidirectional flow is easier to debug than Angular's two-way binding</li>
+  <li><strong>Ecosystem:</strong> React's npm ecosystem is significantly larger</li>
+</ul>
+<div class="warn"><strong>Don't bash Angular:</strong> Say "Angular is great for enterprise apps with large teams that benefit from opinionated structure. We chose React because our team valued flexibility and our app was more consumer-facing where bundle size and interactivity mattered."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> What are the stages in the React lifecycle?</summary><div class="answer">
+<div class="oneliner">React components go through three phases: Mounting (component is created and inserted into DOM), Updating (component re-renders due to state/prop changes), and Unmounting (component is removed from DOM).</div>
+<h4>Class component lifecycle methods</h4>
+<ol>
+  <li><strong>Mounting:</strong> <code>constructor</code> &rarr; <code>getDerivedStateFromProps</code> &rarr; <code>render</code> &rarr; <code>componentDidMount</code></li>
+  <li><strong>Updating:</strong> <code>getDerivedStateFromProps</code> &rarr; <code>shouldComponentUpdate</code> &rarr; <code>render</code> &rarr; <code>getSnapshotBeforeUpdate</code> &rarr; <code>componentDidUpdate</code></li>
+  <li><strong>Unmounting:</strong> <code>componentWillUnmount</code></li>
+</ol>
+<h4>Hooks equivalent (what you should actually use)</h4>
+<pre><code>function MyComponent({ userId }) {
+  // Mounting + Updating: runs after every render
+  useEffect(() =&gt; {
+    fetchUser(userId);
+  }, [userId]); // only re-runs when userId changes
+
+  // Mounting only (empty deps)
+  useEffect(() =&gt; {
+    initAnalytics();
+    // Unmounting: cleanup function
+    return () =&gt; cleanupAnalytics();
+  }, []);
+
+  return &lt;div&gt;...&lt;/div&gt;;
+}</code></pre>
+<div class="tip"><strong>Say this:</strong> "In modern React, we don't think in lifecycle methods anymore. We think in <em>effects that synchronize with external systems</em>. useEffect replaces componentDidMount, componentDidUpdate, and componentWillUnmount with a single mental model."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> What hooks have you used?</summary><div class="answer">
+<div class="oneliner">I regularly use useState, useEffect, useRef, useMemo, useCallback, useContext, and useReducer. I've also built custom hooks for API calls, form handling, debouncing, and local storage sync.</div>
+<h4>Quick summary of each</h4>
+<ul>
+  <li><code>useState</code> &mdash; local component state</li>
+  <li><code>useEffect</code> &mdash; side effects (API calls, subscriptions, DOM manipulation)</li>
+  <li><code>useRef</code> &mdash; mutable value that persists across renders without causing re-renders (DOM refs, timers)</li>
+  <li><code>useMemo</code> &mdash; cache expensive computed values</li>
+  <li><code>useCallback</code> &mdash; cache function references to prevent child re-renders</li>
+  <li><code>useContext</code> &mdash; consume context without nesting Consumer components</li>
+  <li><code>useReducer</code> &mdash; complex state with multiple sub-values or when next state depends on previous</li>
+</ul>
+<h4>Custom hook example</h4>
+<pre><code>function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() =&gt; {
+    const timer = setTimeout(() =&gt; setDebounced(value), delay);
+    return () =&gt; clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
+// Usage
+const debouncedSearch = useDebounce(searchTerm, 500);</code></pre>
+<div class="tip"><strong>Impress tip:</strong> Mention you follow the rules of hooks (only call at top level, only in React functions) and explain why &mdash; "React relies on call order to match state slots to useState calls."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> How would you start a project when requirements and UX are ready?</summary><div class="answer">
+<div class="oneliner">I start by breaking the UX designs into a component tree, identifying shared state and data flows, setting up the project scaffold with build tools, linting, and CI, then building from the inside out &mdash; atomic components first, then composing pages.</div>
+<h4>My step-by-step approach</h4>
+<ol>
+  <li><strong>Analyze designs:</strong> Break every screen into a component hierarchy. Identify reusable patterns (buttons, cards, modals, form fields)</li>
+  <li><strong>Define data model:</strong> Map out what state lives where &mdash; server state (React Query/SWR), global UI state (Redux/Zustand), local state (useState)</li>
+  <li><strong>Project setup:</strong> Scaffold with Vite/Next.js, configure ESLint + Prettier, set up CI pipeline, add Husky pre-commit hooks</li>
+  <li><strong>Design system first:</strong> Build base components (Typography, Button, Input, Card, Layout) with Storybook</li>
+  <li><strong>API layer:</strong> Define API client, error handling, and loading states</li>
+  <li><strong>Feature slices:</strong> Build page by page, each with its own route, components, and tests</li>
+  <li><strong>Integration testing:</strong> Add Cypress/Playwright E2E tests for critical flows</li>
+</ol>
+<div class="tip"><strong>Senior signal:</strong> Mention that you'd establish coding conventions, PR review process, and branch strategy <em>before</em> writing feature code. "The first PR should be the project skeleton with linting, testing, and CI &mdash; not a feature."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">6</span> Explain your current project.</summary><div class="answer">
+<div class="oneliner">Use the STAR-like structure: What the product does (1 sentence), tech stack, your role, the scale/impact, and one interesting technical challenge.</div>
+<h4>Framework for answering</h4>
+<ol>
+  <li><strong>Product:</strong> "It's a [type] platform that [does what] for [who]" (1 sentence)</li>
+  <li><strong>Stack:</strong> React 18, TypeScript, Redux Toolkit, React Query, Next.js, Node/Express, PostgreSQL</li>
+  <li><strong>Your role:</strong> "I'm the senior frontend engineer leading the [module] &mdash; I own the architecture decisions and mentor two junior devs"</li>
+  <li><strong>Scale:</strong> "Serves X monthly active users, Y API endpoints, Z components in the design system"</li>
+  <li><strong>Challenge:</strong> Pick one interesting problem you solved (performance, complex state, migration)</li>
+</ol>
+<div class="warn"><strong>Keep it under 2 minutes.</strong> The interviewer wants a high-level picture, not every detail. If they want more, they'll ask follow-ups.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">7</span> Explain your existing project architecture.</summary><div class="answer">
+<div class="oneliner">Describe it in layers: UI layer (component structure), state management layer, API layer, routing, and build/deployment. Use a mental picture of data flowing from the API through state into components.</div>
+<h4>Example structure to describe</h4>
+<pre><code>src/
+  components/       # Shared UI components (Button, Modal, Table)
+  features/         # Feature-based modules
+    dashboard/
+      components/   # Feature-specific components
+      hooks/        # Custom hooks for this feature
+      api/          # API calls (React Query queries)
+      store/        # Redux slice for this feature
+      Dashboard.tsx # Page component
+  hooks/            # Shared custom hooks
+  services/         # API client, auth, analytics
+  store/            # Redux store setup, root reducer
+  utils/            # Pure helper functions
+  pages/            # Route definitions (Next.js) or route config</code></pre>
+<h4>Key points to hit</h4>
+<ul>
+  <li><strong>Feature-based structure</strong> &mdash; not grouping by file type (all reducers together) but by domain</li>
+  <li><strong>Data flow:</strong> API &rarr; React Query cache (server state) &rarr; Components. UI state &rarr; Redux/Zustand &rarr; Components</li>
+  <li><strong>Separation of concerns:</strong> Components don't call APIs directly; they use hooks that encapsulate data fetching</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">8</span> Explain your day-to-day responsibilities.</summary><div class="answer">
+<div class="oneliner">My day includes sprint ceremonies, feature development, code reviews, debugging production issues, mentoring juniors, and collaborating with designers and backend engineers on API contracts.</div>
+<h4>Structure your answer around these buckets</h4>
+<ul>
+  <li><strong>Morning:</strong> Check Slack/Jira, review any overnight PRs, daily standup</li>
+  <li><strong>Core development:</strong> Feature work, writing tests, fixing bugs (60% of the day)</li>
+  <li><strong>Code reviews:</strong> Review 2-3 PRs daily, provide constructive feedback (15%)</li>
+  <li><strong>Collaboration:</strong> Align with designers on edge cases, discuss API contracts with backend, unblock teammates (15%)</li>
+  <li><strong>Technical leadership:</strong> Architectural decisions, RFC documents, mentoring (10%)</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> Emphasize that you spend significant time on code reviews and unblocking others. "My impact is not just the code I write, but the code quality I maintain across the team through reviews and knowledge sharing."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">9</span> Explain a difficult technical problem you solved.</summary><div class="answer">
+<div class="oneliner">Use the STAR format: Situation (what was the problem), Task (what was your role), Action (what you did technically), Result (measurable outcome).</div>
+<h4>Example framework</h4>
+<p><strong>Situation:</strong> "Our dashboard page was taking 8 seconds to load. Users were dropping off, and our Lighthouse score was 35."</p>
+<p><strong>Task:</strong> "I was tasked with bringing load time under 2 seconds."</p>
+<p><strong>Action:</strong></p>
+<ul>
+  <li>Profiled with Chrome DevTools &mdash; found 3 problems: massive bundle, unnecessary re-renders, unoptimized API calls</li>
+  <li>Code-split with React.lazy + Suspense &mdash; reduced initial bundle by 60%</li>
+  <li>Added React.memo + useMemo to prevent cascading re-renders on filter changes</li>
+  <li>Implemented API response caching with React Query + staleTime</li>
+</ul>
+<p><strong>Result:</strong> "Load time dropped from 8s to 1.8s. Lighthouse score went from 35 to 87. User retention on that page improved 23%."</p>
+<div class="warn"><strong>Always have 2-3 stories ready.</strong> One about performance, one about a complex feature, one about debugging a production outage.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">10</span> How do you approach production issues?</summary><div class="answer">
+<div class="oneliner">Triage first (severity + impact), reproduce the issue, check logs and monitoring, isolate the root cause, apply a fix or hotfix, then do a post-mortem to prevent recurrence.</div>
+<h4>Step-by-step process</h4>
+<ol>
+  <li><strong>Triage:</strong> How many users affected? Is it a blocker? Assign severity (P0/P1/P2)</li>
+  <li><strong>Quick look:</strong> Check error monitoring (Sentry/Datadog), look at recent deploys, check for API errors</li>
+  <li><strong>Reproduce:</strong> Match the user's environment, browser, data. Can I reproduce locally?</li>
+  <li><strong>Isolate:</strong> Is it frontend or backend? Which component/API? Git bisect if needed</li>
+  <li><strong>Fix:</strong> For P0 &mdash; hotfix branch, fast-track review, deploy immediately. For P1 &mdash; normal PR process</li>
+  <li><strong>Verify:</strong> Confirm fix in staging AND production. Check monitoring for 30 min</li>
+  <li><strong>Post-mortem:</strong> Document root cause, timeline, fix, and prevention measures</li>
+</ol>
+<div class="tip"><strong>Senior answer:</strong> "I also set up proactive monitoring &mdash; Sentry alerts for new error spikes, performance budgets with alerts, and synthetic monitoring for critical flows. The best production issue is one caught before users report it."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">11</span> How do you approach deployments and CI/CD?</summary><div class="answer">
+<div class="oneliner">We use a CI/CD pipeline that runs linting, tests, and builds on every PR. Merges to main auto-deploy to staging, then promote to production via a manual approval gate or automated canary deployment.</div>
+<h4>Typical pipeline</h4>
+<pre><code>PR Created
+  &rarr; Lint (ESLint + Prettier check)
+  &rarr; Type check (tsc --noEmit)
+  &rarr; Unit tests (Jest/Vitest)
+  &rarr; Build (verify it compiles)
+  &rarr; E2E tests (Playwright on preview deploy)
+
+Merge to main
+  &rarr; Auto-deploy to staging
+  &rarr; Smoke tests on staging
+  &rarr; Manual approval / canary rollout
+  &rarr; Production deploy
+  &rarr; Post-deploy monitoring (15-30 min)</code></pre>
+<h4>Key practices</h4>
+<ul>
+  <li><strong>Feature flags:</strong> Deploy code behind flags, enable gradually</li>
+  <li><strong>Rollback plan:</strong> Every deploy should be reversible in under 5 minutes</li>
+  <li><strong>No Friday deploys</strong> (unless critical hotfix)</li>
+  <li><strong>Preview deploys:</strong> Every PR gets its own preview URL for QA/design review</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">12</span> How do you perform application performance tuning?</summary><div class="answer">
+<div class="oneliner">I measure first using Lighthouse, Chrome DevTools, and React Profiler, then optimize the three main bottlenecks: bundle size (code splitting, tree shaking), rendering (memo, virtualization), and network (caching, prefetching, compression).</div>
+<h4>Performance tuning checklist</h4>
+<p><strong>Bundle size:</strong></p>
+<ul>
+  <li>Analyze with <code>webpack-bundle-analyzer</code> or <code>source-map-explorer</code></li>
+  <li>Code-split routes with <code>React.lazy</code> + <code>Suspense</code></li>
+  <li>Dynamic import heavy libraries (chart libs, date libs)</li>
+  <li>Tree-shake unused exports, replace large deps with smaller ones (moment &rarr; date-fns)</li>
+</ul>
+<p><strong>Rendering:</strong></p>
+<ul>
+  <li>Profile with React DevTools Profiler &mdash; find components that re-render too often</li>
+  <li>Apply <code>React.memo</code>, <code>useMemo</code>, <code>useCallback</code> where needed</li>
+  <li>Virtualize long lists with <code>react-window</code> or <code>tanstack-virtual</code></li>
+  <li>Debounce search inputs, throttle scroll handlers</li>
+</ul>
+<p><strong>Network:</strong></p>
+<ul>
+  <li>Cache API responses (React Query staleTime, HTTP cache headers)</li>
+  <li>Prefetch data for likely next pages (<code>router.prefetch</code>, <code>queryClient.prefetchQuery</code>)</li>
+  <li>Compress images (WebP/AVIF), use responsive images with <code>srcset</code></li>
+  <li>Enable gzip/brotli compression on the server</li>
+</ul>
+<div class="tip"><strong>Golden rule:</strong> "Don't optimize blindly. Measure, identify the bottleneck, fix it, measure again. The React Profiler and Lighthouse are my starting points for every performance investigation."</div>
+</div></details>
+</section>
+
+<!-- ============================================ -->
+<!-- B. REACT DEEP DIVE -->
+<!-- ============================================ -->
+<section class="section" id="react">
+<div class="section-header">
+  <span class="section-badge react">R</span>
+  <h2 class="section-title">React Deep Dive</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> How does React rendering work?</summary><div class="answer">
+<div class="oneliner">React rendering is a two-phase process: the Render phase (calls your component functions to produce a virtual DOM tree) and the Commit phase (applies the minimal set of DOM changes calculated by diffing the old and new trees).</div>
+<h4>The two phases</h4>
+<ol>
+  <li><strong>Render phase (pure, no side effects):</strong> React calls your component function, which returns JSX. React converts this to a Virtual DOM tree. It then diffs this new tree against the previous one to find changes. This phase can be paused/restarted (concurrent mode).</li>
+  <li><strong>Commit phase (DOM mutations):</strong> React applies the calculated changes to the real DOM in one batch. Then it runs <code>useLayoutEffect</code>, then the browser paints, then <code>useEffect</code> runs.</li>
+</ol>
+<pre><code>// Timeline of a state update:
+setState(newValue)
+  &rarr; Schedule re-render
+  &rarr; RENDER PHASE: Call component function, diff VDOM
+  &rarr; COMMIT PHASE: Apply DOM changes
+  &rarr; useLayoutEffect runs (synchronous, before paint)
+  &rarr; Browser paints
+  &rarr; useEffect runs (asynchronous, after paint)</code></pre>
+<div class="tip"><strong>Key insight:</strong> "Rendering" in React does NOT mean updating the DOM. It means calling your component function. The DOM only updates in the commit phase if changes are detected.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> What causes a React component to re-render?</summary><div class="answer">
+<div class="oneliner">Four things trigger a re-render: (1) its own state changes via setState, (2) its parent re-renders (regardless of whether props changed), (3) the context it consumes changes, (4) a custom hook's internal state changes.</div>
+<h4>The biggest misconception</h4>
+<p>People think "if props didn't change, the child won't re-render." <strong>Wrong.</strong> By default, when a parent re-renders, ALL its children re-render. You need <code>React.memo</code> to skip re-renders when props are the same.</p>
+<pre><code>function Parent() {
+  const [count, setCount] = useState(0);
+  return (
+    &lt;&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;{count}&lt;/button&gt;
+      &lt;Child name="Alice" /&gt;  {/* Re-renders EVERY click! */}
+    &lt;/&gt;
+  );
+}
+
+// Fix: wrap with React.memo
+const Child = React.memo(function Child({ name }) {
+  return &lt;p&gt;{name}&lt;/p&gt;; // Now skips re-render if name unchanged
+});</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> How do you identify unnecessary re-renders?</summary><div class="answer">
+<div class="oneliner">Use the React DevTools Profiler to record interactions and see which components re-rendered, how long they took, and why. Enable "Highlight updates when components render" for a quick visual check.</div>
+<h4>Tools and techniques</h4>
+<ul>
+  <li><strong>React DevTools Profiler:</strong> Record a session, click on a component &rarr; see "Why did this render?" (state change, props change, parent re-render)</li>
+  <li><strong>Highlight updates:</strong> React DevTools settings &rarr; enable "Highlight updates" &mdash; flashing borders show re-renders in real time</li>
+  <li><strong>Console logging:</strong> Temporarily add <code>console.log('render', componentName)</code> at the top of the component</li>
+  <li><strong>useWhyDidYouRender:</strong> Third-party library that logs the exact prop/state that changed</li>
+</ul>
+<div class="tip"><strong>Not all re-renders are bad.</strong> Only optimize when a re-render is: (1) frequent (every keystroke, scroll), (2) expensive (large component trees, heavy computations), or (3) causing visible jank.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> How would you optimize a slow React application?</summary><div class="answer">
+<div class="oneliner">Profile first, then attack the three pillars: reduce bundle size (code splitting), reduce render count (memoization), and reduce render cost (virtualization, offloading work).</div>
+<h4>Optimization checklist</h4>
+<ol>
+  <li><strong>Profile:</strong> Lighthouse, React Profiler, bundle analyzer</li>
+  <li><strong>Code split:</strong> <code>React.lazy</code> for routes and heavy components</li>
+  <li><strong>Memoize:</strong> <code>React.memo</code> for expensive children, <code>useMemo</code> for expensive computations</li>
+  <li><strong>Virtualize:</strong> <code>react-window</code> for lists with 100+ items</li>
+  <li><strong>State colocation:</strong> Move state closer to where it's used to limit re-render blast radius</li>
+  <li><strong>Debounce/throttle:</strong> Input handlers, scroll/resize listeners</li>
+  <li><strong>Web Workers:</strong> Offload CPU-heavy tasks (parsing, sorting large datasets)</li>
+</ol>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> When would you use useMemo?</summary><div class="answer">
+<div class="oneliner">Use useMemo when you have an expensive computation that you don't want to re-run on every render &mdash; things like filtering/sorting large arrays, complex calculations, or creating derived data structures.</div>
+<pre><code>function ProductList({ products, filters }) {
+  // WITHOUT useMemo: filters 10,000 products on every render
+  // WITH useMemo: only recomputes when products or filters change
+  const filtered = useMemo(() =&gt; {
+    return products.filter(p =&gt;
+      p.price &gt;= filters.minPrice &amp;&amp;
+      p.category === filters.category
+    );
+  }, [products, filters]);
+
+  return filtered.map(p =&gt; &lt;ProductCard key={p.id} product={p} /&gt;);
+}</code></pre>
+<div class="warn"><strong>Don't overuse it.</strong> useMemo itself has overhead (storing previous values, comparing deps). Only use it when the computation is actually expensive. A simple <code>a + b</code> does not need useMemo.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">6</span> When would you use useCallback?</summary><div class="answer">
+<div class="oneliner">Use useCallback when you pass a function as a prop to a memoized child (React.memo), or when the function is a dependency of useEffect. Without it, a new function reference is created every render, breaking memoization.</div>
+<pre><code>const Parent = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  // Without useCallback: new function every render
+  // ExpensiveList re-renders even though React.memo wraps it
+  const handleClick = useCallback((id) =&gt; {
+    console.log('clicked', id);
+  }, []); // stable reference
+
+  return (
+    &lt;&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;{count}&lt;/button&gt;
+      &lt;ExpensiveList onClick={handleClick} /&gt;
+    &lt;/&gt;
+  );
+};
+
+const ExpensiveList = React.memo(({ onClick }) =&gt; {
+  // Only re-renders if onClick reference changes
+  return /* ... 1000 items ... */;
+});</code></pre>
+<div class="gotcha"><strong>useCallback without React.memo is useless.</strong> If the child isn't memoized, it'll re-render anyway when the parent re-renders, regardless of whether the function reference is stable.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">7</span> What is the difference between useMemo and useCallback?</summary><div class="answer">
+<div class="oneliner">useMemo caches the <em>result</em> of calling a function. useCallback caches the <em>function itself</em>. Essentially, <code>useCallback(fn, deps)</code> is equivalent to <code>useMemo(() =&gt; fn, deps)</code>.</div>
+<pre><code>// useMemo: caches the RESULT (the sorted array)
+const sorted = useMemo(() =&gt; items.sort(compareFn), [items]);
+
+// useCallback: caches the FUNCTION (the handler reference)
+const handleClick = useCallback((id) =&gt; {
+  selectItem(id);
+}, [selectItem]);</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><code>useMemo</code> &rarr; Expensive <strong>computations</strong> (filtering, sorting, transforming data)</li>
+  <li><code>useCallback</code> &rarr; Stable <strong>function references</strong> (event handlers passed to memoized children, deps of useEffect)</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">8</span> When does React.memo help?</summary><div class="answer">
+<div class="oneliner">React.memo helps when a component re-renders often due to its parent, receives the same props most of the time, and is expensive to render (large subtree, complex calculations, or many DOM elements).</div>
+<h4>When it helps</h4>
+<ul>
+  <li>Component is in a frequently-updating parent but its own props rarely change</li>
+  <li>Component renders a large list or complex visualization</li>
+  <li>Component is used many times (e.g., a table cell rendered 500 times)</li>
+</ul>
+<h4>When it does NOT help</h4>
+<ul>
+  <li>Props change on almost every render anyway (memo adds overhead, skips nothing)</li>
+  <li>Component is already cheap to render (simple <code>&lt;span&gt;</code>)</li>
+  <li>Props include objects/arrays created inline (new reference every render defeats memo)</li>
+</ul>
+<pre><code>// This DEFEATS React.memo because style is a new object every render
+&lt;MemoizedChild style={{ color: 'red' }} /&gt;
+
+// Fix: hoist the object or useMemo it
+const style = useMemo(() =&gt; ({ color: 'red' }), []);
+&lt;MemoizedChild style={style} /&gt;</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">9</span> Can React.memo actually hurt performance?</summary><div class="answer">
+<div class="oneliner">Yes. React.memo adds overhead &mdash; it performs a shallow comparison of all props on every render. If props change frequently, you're paying the comparison cost AND still re-rendering, making it slower than no memo at all.</div>
+<h4>Cases where memo hurts</h4>
+<ul>
+  <li><strong>Props always change:</strong> Inline objects, arrays, or functions as props &mdash; new reference every render, comparison always fails</li>
+  <li><strong>Cheap components:</strong> A simple <code>&lt;span&gt;{text}&lt;/span&gt;</code> is cheaper to re-render than to shallow-compare its props</li>
+  <li><strong>Complex props:</strong> Many props with nested objects make the shallow comparison expensive but ineffective (shallow compare won't catch deep changes)</li>
+</ul>
+<div class="tip"><strong>Rule of thumb:</strong> Only add React.memo when you've profiled and confirmed unnecessary re-renders are causing a performance problem. Premature memoization is a code smell.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">10</span> Explain reconciliation.</summary><div class="answer">
+<div class="oneliner">Reconciliation is React's diffing algorithm that compares the previous and new Virtual DOM trees to determine the minimal set of DOM operations needed. It uses two heuristics: different element types rebuild the subtree, and keys identify stable elements in lists.</div>
+<h4>Two core rules</h4>
+<ol>
+  <li><strong>Different type?</strong> (<code>&lt;div&gt;</code> &rarr; <code>&lt;span&gt;</code>) &mdash; Destroy old subtree entirely, build new from scratch. All state in that subtree is lost.</li>
+  <li><strong>Same type?</strong> &mdash; Keep the DOM node, update only changed attributes, then recurse into children.</li>
+</ol>
+<h4>List reconciliation with keys</h4>
+<p>Without keys, React compares children by position. With keys, React matches by key value &mdash; so inserting an item at the top doesn't cause every item to re-render.</p>
+<div class="tip"><strong>Why O(n) not O(n&sup3;):</strong> A general tree diff is O(n&sup3;). React's two heuristics reduce it to O(n) by never comparing across different levels or different types.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">11</span> Why are keys important in React?</summary><div class="answer">
+<div class="oneliner">Keys let React identify which items in a list have changed, been added, or removed. Without stable keys, React re-renders the entire list when one item changes, destroying component state and causing bugs.</div>
+<pre><code>// BAD: index as key
+// Inserting at top shifts every index, React updates ALL items
+{items.map((item, i) =&gt; &lt;Item key={i} {...item} /&gt;)}
+
+// GOOD: stable unique ID
+// React knows exactly which item was added/removed
+{items.map(item =&gt; &lt;Item key={item.id} {...item} /&gt;)}</code></pre>
+<h4>What goes wrong with index keys</h4>
+<ul>
+  <li>Reordering: React thinks every item changed (index shifted)</li>
+  <li>State bugs: Inputs retain values from the wrong item</li>
+  <li>Performance: Entire list re-renders instead of just the changed item</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">12</span> What happens if you use array indexes as keys?</summary><div class="answer">
+<div class="oneliner">It works fine for static lists that never reorder. But for dynamic lists (sort, filter, add, delete), index keys cause React to mismatch items, destroy/recreate wrong components, lose input state, and trigger unnecessary re-renders.</div>
+<h4>Visual example of the bug</h4>
+<pre><code>// Before: [{name: "Alice"}, {name: "Bob"}]
+// key=0: Alice, key=1: Bob
+
+// User adds "Charlie" at the top
+// After: [{name: "Charlie"}, {name: "Alice"}, {name: "Bob"}]
+// key=0: Charlie, key=1: Alice, key=2: Bob
+
+// React sees: key=0 changed "Alice" &rarr; "Charlie" (UPDATE)
+//             key=1 changed "Bob" &rarr; "Alice"     (UPDATE)
+//             key=2 is new "Bob"                    (CREATE)
+// All 3 items re-render! With stable IDs, only 1 insert needed.</code></pre>
+<div class="gotcha"><strong>Index keys are only safe when:</strong> The list is static (no reorder, add, or delete) AND items have no state (no inputs, no animations).</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">13</span> Controlled vs uncontrolled components?</summary><div class="answer">
+<div class="oneliner">Controlled components store form values in React state (value + onChange), giving React full control. Uncontrolled components let the DOM handle values, and you read them via refs when needed.</div>
+<pre><code>// CONTROLLED: React owns the value
+function Controlled() {
+  const [name, setName] = useState('');
+  return &lt;input value={name} onChange={e =&gt; setName(e.target.value)} /&gt;;
+}
+
+// UNCONTROLLED: DOM owns the value
+function Uncontrolled() {
+  const ref = useRef();
+  const handleSubmit = () =&gt; console.log(ref.current.value);
+  return &lt;input ref={ref} defaultValue="" /&gt;;
+}</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><strong>Controlled:</strong> Real-time validation, conditional disabling, formatting input, when you need the value for other UI updates</li>
+  <li><strong>Uncontrolled:</strong> File inputs (must be uncontrolled), integrating non-React libraries, simple forms where you only need the value on submit</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">14</span> How would you build reusable components?</summary><div class="answer">
+<div class="oneliner">Design components with a single responsibility, accept flexible props (children, render props, composition), keep styles themeable, and document with Storybook. Think "API design" &mdash; your component's props ARE its API.</div>
+<h4>Principles</h4>
+<ul>
+  <li><strong>Composition over configuration:</strong> Use <code>children</code> and slots instead of dozens of boolean props</li>
+  <li><strong>Inversion of control:</strong> Let the consumer decide what to render (render props, compound components)</li>
+  <li><strong>Sensible defaults:</strong> Work out of the box, but allow overrides</li>
+  <li><strong>Forward ref:</strong> Allow parent to access the DOM node</li>
+  <li><strong>Spread remaining props:</strong> <code>...rest</code> on the root element for className, aria-*, data-* etc.</li>
+</ul>
+<pre><code>// Good: composable, flexible
+&lt;Card&gt;
+  &lt;Card.Header&gt;Title&lt;/Card.Header&gt;
+  &lt;Card.Body&gt;Content&lt;/Card.Body&gt;
+  &lt;Card.Footer&gt;&lt;Button&gt;Save&lt;/Button&gt;&lt;/Card.Footer&gt;
+&lt;/Card&gt;
+
+// Bad: rigid, prop-heavy
+&lt;Card title="Title" body="Content" footerButton="Save" /&gt;</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">15</span> How would you design a large React application?</summary><div class="answer">
+<div class="oneliner">Feature-based folder structure, clear separation between server state and UI state, a shared component library, strict TypeScript, automated testing at every level, and CI/CD that enforces quality gates.</div>
+<h4>Architecture pillars</h4>
+<ol>
+  <li><strong>Structure:</strong> Feature folders (not file-type folders). Each feature is self-contained with its own components, hooks, API, and state</li>
+  <li><strong>State strategy:</strong> Server state in React Query/SWR, global UI state in Redux/Zustand, local state in useState. Never mix them</li>
+  <li><strong>Component layers:</strong> Design system (atoms) &rarr; shared components (molecules) &rarr; feature components (organisms) &rarr; pages</li>
+  <li><strong>Type safety:</strong> Strict TypeScript with no <code>any</code>, shared API types generated from backend schema</li>
+  <li><strong>Testing:</strong> Unit tests for utils/hooks, integration tests for features, E2E for critical flows</li>
+  <li><strong>Performance budget:</strong> Bundle size limits enforced in CI, Lighthouse checks on PRs</li>
+</ol>
+<div class="tip"><strong>Senior signal:</strong> "Architecture is about making the right thing easy and the wrong thing hard. Good folder conventions, strict linting rules, and PR templates enforce quality without relying on individual discipline."</div>
+</div></details>
+</section>
+
+<!-- ============================================ -->
+<!-- REDUX -->
+<!-- ============================================ -->
+<section class="section" id="redux">
+<div class="section-header">
+  <span class="section-badge redux">Rx</span>
+  <h2 class="section-title">Redux (Critical)</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> Why Redux? (Deep Dive)</summary><div class="answer">
+<div class="oneliner">Redux provides a single source of truth for global state, predictable state updates via pure reducer functions, powerful debugging with time-travel DevTools, and middleware for handling side effects like API calls.</div>
+<h4>The three core principles of Redux</h4>
+<ol>
+  <li><strong>Single source of truth:</strong> The entire application state lives in one JavaScript object (the store). This makes it easy to serialize, debug, inspect, and hydrate from server</li>
+  <li><strong>State is read-only:</strong> You can never mutate state directly. The only way to change state is to dispatch an action &mdash; a plain object describing <em>what happened</em></li>
+  <li><strong>Changes via pure functions:</strong> Reducers are pure functions that take the previous state + an action and return a brand new state object. No side effects, no mutations, no API calls inside reducers</li>
+</ol>
+<h4>Why choose Redux over other solutions?</h4>
+<ul>
+  <li><strong>Predictable debugging:</strong> Every state change has a corresponding action. DevTools show the full action log, state diffs, and let you time-travel (step forward/backward through state changes)</li>
+  <li><strong>Centralized state:</strong> When 10+ components across different routes need the same data (auth, cart, notifications), Redux ensures a single consistent copy</li>
+  <li><strong>Middleware pipeline:</strong> Intercept every action for logging, analytics, async operations, error tracking &mdash; before it reaches the reducer</li>
+  <li><strong>Ecosystem:</strong> Redux Toolkit (RTK), RTK Query, redux-persist, Redux DevTools, Reselect, huge community</li>
+  <li><strong>Testability:</strong> Reducers are pure functions &mdash; pass input, assert output. No mocking needed</li>
+</ul>
+<h4>Modern Redux with Redux Toolkit (RTK)</h4>
+<pre><code>import { createSlice, configureStore } from '@reduxjs/toolkit';
+
+// createSlice = reducer + actions in one place
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: { items: [], total: 0 },
+  reducers: {
+    addItem(state, action) {
+      // RTK uses Immer internally — you CAN "mutate" here
+      // (it produces a new immutable state under the hood)
+      state.items.push(action.payload);
+      state.total += action.payload.price;
+    },
+    removeItem(state, action) {
+      const index = state.items.findIndex(i => i.id === action.payload);
+      if (index !== -1) {
+        state.total -= state.items[index].price;
+        state.items.splice(index, 1);
+      }
+    },
+    clearCart(state) {
+      state.items = [];
+      state.total = 0;
+    },
+  },
+});
+
+export const { addItem, removeItem, clearCart } = cartSlice.actions;
+
+const store = configureStore({
+  reducer: { cart: cartSlice.reducer },
+  // RTK adds thunk middleware + dev checks automatically
+});</code></pre>
+<h4>Redux vs alternatives</h4>
+<ul>
+  <li><strong>vs Context API:</strong> Context re-renders ALL consumers on any change. Redux + useSelector only re-renders components whose selected data changed. Context is for low-frequency updates (theme, auth); Redux for high-frequency shared state</li>
+  <li><strong>vs Zustand:</strong> Zustand is simpler, less boilerplate, no Provider needed. Use Zustand for small-medium apps. Redux for large apps that need middleware, DevTools, and RTK Query</li>
+  <li><strong>vs React Query:</strong> They solve different problems. React Query manages <em>server state</em> (API cache). Redux manages <em>client/UI state</em>. Best practice: use both together</li>
+</ul>
+<div class="tip"><strong>Senior answer:</strong> "I choose Redux when the app has complex shared UI state, needs middleware for side-effect orchestration, and benefits from time-travel debugging. For server data I pair it with React Query. For simple apps, Zustand or even Context is enough &mdash; Redux would be overkill."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> Redux vs Context API?</summary><div class="answer">
+<div class="oneliner">Context is for passing data down without prop-drilling (theme, locale, auth). Redux is for complex, frequently-updated state that many components read. Context re-renders ALL consumers on any change; Redux with selectors only re-renders components that read the changed slice.</div>
+<h4>Key differences</h4>
+<ul>
+  <li><strong>Performance:</strong> Context re-renders every consumer when the value changes. Redux + <code>useSelector</code> only re-renders if the selected slice changed</li>
+  <li><strong>Debugging:</strong> Redux has DevTools with action logs and time-travel. Context has nothing built-in</li>
+  <li><strong>Middleware:</strong> Redux can intercept actions for async logic, logging, analytics. Context can't</li>
+  <li><strong>Boilerplate:</strong> Context is simpler to set up. Redux (even with RTK) requires more structure</li>
+</ul>
+<div class="warn"><strong>Common mistake:</strong> Using Context as a state manager for frequently-updated data (like form state or real-time data). Context is a dependency injection mechanism, not a state manager.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> When should you NOT use Redux?</summary><div class="answer">
+<div class="oneliner">Don't use Redux for server/cache state (use React Query), local component state (use useState), form state (use React Hook Form), or when your app is simple enough that prop-drilling or Context works fine.</div>
+<h4>You probably don't need Redux when</h4>
+<ul>
+  <li>Most state is server data &mdash; React Query/SWR handles caching, refetching, and stale data better</li>
+  <li>State is only used by 1-2 components &mdash; just use useState</li>
+  <li>The app is small (under 10 components sharing state)</li>
+  <li>You're adding Redux just because "it's what we always do" &mdash; that's cargo culting</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> What belongs in Redux and what belongs in component state?</summary><div class="answer">
+<div class="oneliner">Put state in Redux if multiple disconnected components need it, it should survive navigation, or you need to track its changes in DevTools. Keep state local if only one component (or its direct children) uses it.</div>
+<h4>Decision framework</h4>
+<ul>
+  <li><strong>Redux:</strong> User auth, shopping cart, notification count, global filters, feature flags, UI preferences (theme, sidebar open)</li>
+  <li><strong>Component state:</strong> Form input values, dropdown open/close, tooltip visibility, animation states, modal open/close</li>
+  <li><strong>React Query:</strong> Any data fetched from an API (product list, user profile, dashboard stats)</li>
+  <li><strong>URL state:</strong> Current page, search params, active tab (use the router)</li>
+</ul>
+<div class="tip"><strong>Litmus test:</strong> "If I navigate away and come back, should this state still be there?" If yes &rarr; Redux or URL. If no &rarr; local state.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> Explain Redux data flow.</summary><div class="answer">
+<div class="oneliner">User interaction &rarr; dispatch an action &rarr; action hits middleware (for side effects) &rarr; reducer creates new state &rarr; store updates &rarr; connected components re-render with new data. It's a strict unidirectional circle.</div>
+<pre><code>// 1. Component dispatches an action
+dispatch({ type: 'cart/addItem', payload: { id: 1, name: 'Shoes' } });
+
+// 2. Middleware intercepts (optional - logging, async, etc.)
+
+// 3. Reducer produces new state (pure function)
+function cartReducer(state = initialState, action) {
+  switch (action.type) {
+    case 'cart/addItem':
+      return { ...state, items: [...state.items, action.payload] };
+    default:
+      return state;
+  }
+}
+
+// 4. Store holds the new state
+// 5. useSelector in components picks up the change
+const cartItems = useSelector(state =&gt; state.cart.items);</code></pre>
+<div class="tip"><strong>Key principle:</strong> State is never mutated directly. Reducers always return a NEW state object. This is what makes Redux predictable and enables time-travel debugging.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">6</span> What is middleware in Redux? (Deep Dive)</summary><div class="answer">
+<div class="oneliner">Middleware sits between dispatching an action and the reducer receiving it. It can intercept, modify, delay, or replace actions &mdash; commonly used for async operations (API calls), logging, error reporting, and analytics.</div>
+<h4>The middleware signature explained</h4>
+<pre><code>// Every Redux middleware has this curried signature:
+const myMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  // store — has getState() and dispatch()
+  // next  — calls the NEXT middleware in the chain (or the reducer if last)
+  // action — the dispatched action object
+
+  // Do something BEFORE the reducer runs
+  console.log('Before:', store.getState());
+
+  const result = next(action); // pass action down the chain
+
+  // Do something AFTER the reducer runs
+  console.log('After:', store.getState());
+
+  return result;
+};</code></pre>
+<h4>How the middleware chain works</h4>
+<pre><code>// When you dispatch an action, it flows through middleware like a pipeline:
+//
+// dispatch(action)
+//   → Middleware 1 (logger)
+//     → Middleware 2 (auth)
+//       → Middleware 3 (thunk)
+//         → REDUCER (produces new state)
+//       ← returns to Middleware 3
+//     ← returns to Middleware 2
+//   ← returns to Middleware 1
+//
+// Each middleware can:
+//   1. Pass the action along:  next(action)
+//   2. Modify the action:      next({ ...action, extra: 'data' })
+//   3. Swallow the action:     (don't call next — action never reaches reducer)
+//   4. Dispatch NEW actions:   store.dispatch(differentAction)</code></pre>
+<h4>Practical middleware examples</h4>
+<pre><code>// 1. AUTH TOKEN INJECTION — attach token to every API action
+const authMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  if (action.type.startsWith('api/')) {
+    const token = store.getState().auth.token;
+    action.meta = { ...action.meta, token };
+  }
+  return next(action);
+};
+
+// 2. ERROR REPORTING — catch action errors, send to Sentry
+const errorMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  try {
+    return next(action);
+  } catch (err) {
+    Sentry.captureException(err, { extra: { action, state: store.getState() } });
+    throw err;
+  }
+};
+
+// 3. ANALYTICS — track specific user actions
+const analyticsMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  if (action.type === 'cart/checkout') {
+    analytics.track('Checkout Started', {
+      itemCount: store.getState().cart.items.length,
+    });
+  }
+  return next(action);
+};
+
+// 4. API MIDDLEWARE — centralized API call handler
+const apiMiddleware = (store) =&gt; (next) =&gt; async (action) =&gt; {
+  if (action.type !== 'API_CALL') return next(action);
+
+  const { url, method, onSuccess, onError } = action.payload;
+  store.dispatch({ type: 'api/loading' });
+
+  try {
+    const data = await fetch(url, { method }).then(r =&gt; r.json());
+    store.dispatch({ type: onSuccess, payload: data });
+  } catch (err) {
+    store.dispatch({ type: onError, payload: err.message });
+  }
+};</code></pre>
+<h4>Built-in middleware in Redux Toolkit</h4>
+<ul>
+  <li><strong>Redux Thunk:</strong> Included by default in RTK. Lets you dispatch functions for async logic</li>
+  <li><strong>Immutability check:</strong> Warns if you accidentally mutate state outside Immer (dev only)</li>
+  <li><strong>Serializability check:</strong> Warns if you put non-serializable values (functions, class instances) in state or actions (dev only)</li>
+  <li><strong>RTK Listener middleware:</strong> Like a lightweight Saga &mdash; respond to actions with async logic, cancellation, conditions</li>
+</ul>
+<pre><code>// Applying middleware in RTK
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =&gt;
+    getDefaultMiddleware()       // includes thunk + dev checks
+      .concat(authMiddleware)    // add custom middleware
+      .concat(analyticsMiddleware),
+});</code></pre>
+<h4>When to write custom middleware</h4>
+<ul>
+  <li><strong>Do write:</strong> Cross-cutting concerns that apply to many actions (auth, logging, analytics, API normalization)</li>
+  <li><strong>Don't write:</strong> Logic specific to one feature &mdash; use a thunk or RTK listener instead</li>
+  <li><strong>Rule of thumb:</strong> If you're checking <code>action.type</code> for one specific action, it probably belongs in a thunk. If you're intercepting a <em>category</em> of actions, middleware is the right place</li>
+</ul>
+<div class="tip"><strong>Interview tip:</strong> "Middleware is Redux's plugin system. It gives you a single point to add cross-cutting concerns without touching every reducer or component. Think of it like Express middleware for your state management."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">7</span> Redux Thunk vs Redux Saga?</summary><div class="answer">
+<div class="oneliner">Thunk uses async/await for simple async flows (fetch data, dispatch result). Saga uses generator functions for complex flows (race conditions, retries, debouncing, channels, parallel tasks). Thunk is simpler; Saga is more powerful.</div>
+<h4>Thunk example</h4>
+<pre><code>// Simple, easy to understand
+const fetchUser = (id) =&gt; async (dispatch) =&gt; {
+  dispatch({ type: 'user/loading' });
+  try {
+    const user = await api.getUser(id);
+    dispatch({ type: 'user/loaded', payload: user });
+  } catch (err) {
+    dispatch({ type: 'user/error', payload: err.message });
+  }
+};</code></pre>
+<h4>Saga example</h4>
+<pre><code>// More powerful: can cancel, retry, race, debounce
+function* fetchUserSaga(action) {
+  try {
+    const user = yield call(api.getUser, action.payload);
+    yield put({ type: 'user/loaded', payload: user });
+  } catch (err) {
+    yield put({ type: 'user/error', payload: err.message });
+  }
+}
+
+function* watchFetchUser() {
+  yield takeLatest('user/fetch', fetchUserSaga); // auto-cancels previous
+}</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><strong>Thunk:</strong> Simple CRUD, straightforward API calls, 90% of use cases</li>
+  <li><strong>Saga:</strong> Complex workflows &mdash; polling, WebSocket orchestration, race conditions, retry with backoff, multi-step transactions</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">8</span> Why did your project use Redux Saga?</summary><div class="answer">
+<div class="oneliner">We used Saga because we had complex async workflows: polling for real-time data updates, handling race conditions when users rapidly switch tabs, and orchestrating multi-step form submissions where each step depended on the previous API response.</div>
+<h4>Specific scenarios where Saga shined</h4>
+<ul>
+  <li><strong>takeLatest:</strong> When a user types fast in a search box, takeLatest auto-cancels previous API calls &mdash; only the last one runs. Thunk can't cancel.</li>
+  <li><strong>Polling:</strong> <code>while(true) { yield call(fetchData); yield delay(5000); }</code> &mdash; clean polling loop that's easy to start/stop</li>
+  <li><strong>Parallel fetches:</strong> <code>yield all([call(fetchA), call(fetchB)])</code> &mdash; fetch multiple resources in parallel</li>
+  <li><strong>Error retry:</strong> Automatic retry with exponential backoff using a simple loop</li>
+</ul>
+<div class="warn"><strong>Be honest:</strong> "If I were starting fresh today, I'd evaluate RTK Query for data fetching and only reach for Saga if we had genuinely complex orchestration needs. Saga adds significant complexity."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">9</span> How do you handle API calls with Redux?</summary><div class="answer">
+<div class="oneliner">Modern approach: use RTK Query (built into Redux Toolkit) which handles fetching, caching, and cache invalidation automatically. Classic approach: dispatch loading/success/error actions via thunk or saga middleware.</div>
+<h4>RTK Query approach (recommended)</h4>
+<pre><code>// Define the API
+const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  endpoints: (build) =&gt; ({
+    getUsers: build.query({ query: () =&gt; '/users' }),
+    addUser: build.mutation({
+      query: (user) =&gt; ({ url: '/users', method: 'POST', body: user }),
+      invalidatesTags: ['Users'], // auto-refetch list
+    }),
+  }),
+});
+
+// Use in component
+const { data, isLoading, error } = useGetUsersQuery();</code></pre>
+<h4>Classic thunk pattern</h4>
+<pre><code>// Three action types per API call
+const fetchUsers = createAsyncThunk('users/fetch', async () =&gt; {
+  const response = await fetch('/api/users');
+  return response.json();
+});
+
+// Reducer handles pending/fulfilled/rejected automatically
+extraReducers: (builder) =&gt; {
+  builder
+    .addCase(fetchUsers.pending, (state) =&gt; { state.loading = true; })
+    .addCase(fetchUsers.fulfilled, (state, action) =&gt; {
+      state.loading = false;
+      state.users = action.payload;
+    })
+    .addCase(fetchUsers.rejected, (state, action) =&gt; {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+}</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">10</span> How do you prevent unnecessary Redux re-renders?</summary><div class="answer">
+<div class="oneliner">Use granular selectors that return only the data each component needs, use createSelector for derived data (memoized selectors), and never create new objects/arrays inside selectors.</div>
+<pre><code>// BAD: returns a new array every time (new reference = re-render)
+const items = useSelector(state =&gt;
+  state.items.filter(i =&gt; i.active)
+);
+
+// GOOD: memoized selector with Reselect/RTK
+const selectActiveItems = createSelector(
+  state =&gt; state.items,
+  items =&gt; items.filter(i =&gt; i.active)
+); // Only recomputes when state.items changes
+
+const items = useSelector(selectActiveItems);</code></pre>
+<h4>Rules for efficient selectors</h4>
+<ul>
+  <li>Select the smallest piece of state possible</li>
+  <li>Never do <code>useSelector(state =&gt; state)</code> &mdash; re-renders on ANY state change</li>
+  <li>Use <code>createSelector</code> for any filtering, mapping, or transformation</li>
+  <li>Use <code>shallowEqual</code> as second arg to useSelector if you must return an object</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">11</span> What are selectors?</summary><div class="answer">
+<div class="oneliner">Selectors are functions that extract and optionally transform specific pieces of state from the Redux store. They act as a stable API between your store shape and your components, and can be memoized to avoid unnecessary recalculations.</div>
+<pre><code>// Simple selector
+const selectUser = (state) =&gt; state.auth.user;
+
+// Memoized selector with derived data
+const selectCartTotal = createSelector(
+  (state) =&gt; state.cart.items,
+  (items) =&gt; items.reduce((sum, item) =&gt; sum + item.price * item.qty, 0)
+);
+
+// Parameterized selector
+const selectItemById = createSelector(
+  (state) =&gt; state.items.list,
+  (_, itemId) =&gt; itemId,
+  (list, itemId) =&gt; list.find(i =&gt; i.id === itemId)
+);</code></pre>
+<h4>Why selectors matter</h4>
+<ul>
+  <li><strong>Encapsulation:</strong> If store shape changes, update the selector, not every component</li>
+  <li><strong>Performance:</strong> Memoized selectors prevent recalculation and re-renders</li>
+  <li><strong>Reusability:</strong> Same selector used across many components</li>
+  <li><strong>Testability:</strong> Pure functions, easy to unit test</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">12</span> How would you structure Redux in a large application?</summary><div class="answer">
+<div class="oneliner">Feature-based slices with Redux Toolkit. Each feature owns its slice (reducer + actions + selectors). Use code-splitting with store.injectReducer for lazy-loaded features. Keep the store flat and normalized.</div>
+<pre><code>store/
+  index.ts            # configureStore, root reducer
+  middleware.ts       # custom middleware
+
+features/
+  auth/
+    authSlice.ts      # createSlice: reducer + actions
+    authSelectors.ts  # all selectors for auth
+    authApi.ts        # RTK Query endpoints or thunks
+  cart/
+    cartSlice.ts
+    cartSelectors.ts
+  dashboard/
+    dashboardSlice.ts
+    dashboardSelectors.ts</code></pre>
+<h4>Key patterns</h4>
+<ul>
+  <li><strong>Normalize state:</strong> Use entities pattern (<code>{ ids: [], entities: {} }</code>) instead of arrays &mdash; O(1) lookups</li>
+  <li><strong>createEntityAdapter:</strong> RTK provides this out of the box for CRUD operations</li>
+  <li><strong>Slice isolation:</strong> Each slice only manages its own state. Cross-slice logic goes in thunks or listener middleware</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">13</span> What problems occur when Redux state becomes too large?</summary><div class="answer">
+<div class="oneliner">Large Redux state leads to memory bloat, slow serialization (DevTools), unnecessary re-renders from broad selectors, slow reducer updates on deeply nested state, and difficulty debugging because too much unrelated data is in one place.</div>
+<h4>Common problems and solutions</h4>
+<ul>
+  <li><strong>Memory:</strong> Storing entire API responses &rarr; only store what you need, paginate, evict stale data</li>
+  <li><strong>DevTools slow:</strong> Huge state serialization &rarr; exclude large slices from DevTools in production</li>
+  <li><strong>Re-renders:</strong> Selectors reading too much &rarr; granular selectors, createSelector</li>
+  <li><strong>Staleness:</strong> Cached data never refreshed &rarr; use TTL, listen for visibility change to refetch</li>
+  <li><strong>Complexity:</strong> Everything in Redux &rarr; move server state to React Query, move local state to useState</li>
+</ul>
+<div class="tip"><strong>Modern rule:</strong> "Redux should only hold true global UI state. Server data belongs in a data-fetching library. Most apps have way too much in Redux because they started before React Query existed."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">14</span> Does Redux state persist when you refresh the browser?</summary><div class="answer">
+<div class="oneliner">No. Redux state lives in JavaScript memory (a variable in the running app). When you refresh the browser, the entire JavaScript context is destroyed and re-created, so all Redux state resets to its <code>initialState</code>.</div>
+<h4>Why state is lost</h4>
+<pre><code>// Redux store is just a JS object in memory
+const store = configureStore({
+  reducer: { cart: cartReducer },
+  // initialState of cartReducer = { items: [], total: 0 }
+});
+
+// User adds items → state = { cart: { items: [shoes, shirt], total: 150 } }
+// User hits F5 (refresh)
+// → Browser destroys the entire JS execution context
+// → React app re-mounts from scratch
+// → configureStore runs again with initialState
+// → state = { cart: { items: [], total: 0 } }  ← everything gone!</code></pre>
+<h4>Solution 1: redux-persist (most common)</h4>
+<pre><code>import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // uses localStorage
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth', 'cart'],    // ONLY persist these slices
+  // blacklist: ['notifications'], // or exclude specific slices
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefault) =&gt;
+    getDefault({ serializableCheck: false }), // redux-persist uses non-serializable actions
+});
+
+const persistor = persistStore(store);
+
+// In your App component:
+// &lt;PersistGate loading={&lt;Spinner /&gt;} persistor={persistor}&gt;
+//   &lt;App /&gt;
+// &lt;/PersistGate&gt;</code></pre>
+<h4>Solution 2: Manual localStorage (simple cases)</h4>
+<pre><code>// Save to localStorage on every state change
+store.subscribe(() =&gt; {
+  const { auth, cart } = store.getState();
+  localStorage.setItem('appState', JSON.stringify({ auth, cart }));
+});
+
+// Load from localStorage on app start
+const savedState = JSON.parse(localStorage.getItem('appState') || '{}');
+const store = configureStore({
+  reducer: rootReducer,
+  preloadedState: savedState,
+});</code></pre>
+<h4>What to persist vs what to refetch</h4>
+<ul>
+  <li><strong>Persist (survives refresh):</strong> Auth tokens, user preferences (theme, language), shopping cart, draft form data, onboarding progress</li>
+  <li><strong>Don't persist (refetch from API):</strong> User profile data, product lists, dashboard stats, notifications &mdash; these go stale quickly; let React Query refetch fresh data on mount</li>
+  <li><strong>Never persist:</strong> Loading states, error messages, modal open/close, temporary UI state</li>
+</ul>
+<h4>localStorage vs sessionStorage</h4>
+<ul>
+  <li><strong>localStorage:</strong> Persists even after closing the browser tab/window. Use for auth tokens, user preferences</li>
+  <li><strong>sessionStorage:</strong> Cleared when the tab is closed. Use for sensitive data like payment flow state</li>
+</ul>
+<div class="warn"><strong>Security note:</strong> Never store sensitive data (passwords, credit card numbers) in localStorage/Redux state. Auth tokens are acceptable but should have short expiry + refresh token rotation.</div>
+<div class="tip"><strong>Senior answer:</strong> "Redux state is ephemeral by design &mdash; it's just a JS variable. For persistence, I use redux-persist with a whitelist of only the slices that need to survive a refresh. Server data doesn't need persistence because React Query re-fetches it on mount anyway."</div>
+</div></details>
+</section>
+
+<!-- ============================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================ -->
+<section class="section" id="javascript">
+<div class="section-header">
+  <span class="section-badge js">JS</span>
+  <h2 class="section-title">JavaScript</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> Explain closures.</summary><div class="answer">
+<div class="oneliner">A closure is a function that remembers the variables from its outer scope even after the outer function has returned. Every function in JavaScript forms a closure over its lexical environment.</div>
+<pre><code>function createCounter() {
+  let count = 0; // This variable is "closed over"
+  return {
+    increment: () =&gt; ++count,
+    getCount: () =&gt; count,
+  };
+}
+
+const counter = createCounter();
+counter.increment(); // 1
+counter.increment(); // 2
+counter.getCount();  // 2
+// 'count' still exists because the returned functions hold a reference to it</code></pre>
+<h4>Real-world uses</h4>
+<ul>
+  <li><strong>Data privacy:</strong> Variables in the closure are truly private (no access from outside)</li>
+  <li><strong>Factory functions:</strong> Create configured functions like <code>createLogger('auth')</code></li>
+  <li><strong>Event handlers:</strong> Callbacks that remember the context they were created in</li>
+  <li><strong>React hooks:</strong> useState, useEffect &mdash; closures capture state values at render time</li>
+</ul>
+<div class="gotcha"><strong>Stale closure bug in React:</strong> When useEffect captures an old state value because the dependency array is missing the state variable. This is the #1 hooks bug.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> Explain the event loop.</summary><div class="answer">
+<div class="oneliner">JavaScript is single-threaded. The event loop continuously checks if the call stack is empty, then picks the next task from the microtask queue (Promises), then the macrotask queue (setTimeout, events) to execute.</div>
+<h4>Execution order</h4>
+<ol>
+  <li>Execute all synchronous code (call stack)</li>
+  <li>Drain the <strong>microtask queue</strong> (Promise callbacks, queueMicrotask, MutationObserver)</li>
+  <li>Pick ONE task from the <strong>macrotask queue</strong> (setTimeout, setInterval, I/O, UI events)</li>
+  <li>Repeat from step 2</li>
+</ol>
+<pre><code>console.log('1');                          // sync
+setTimeout(() =&gt; console.log('2'), 0);     // macrotask
+Promise.resolve().then(() =&gt; console.log('3')); // microtask
+console.log('4');                          // sync
+
+// Output: 1, 4, 3, 2
+// Sync first, then microtasks, then macrotasks</code></pre>
+<div class="tip"><strong>Why this matters:</strong> Understanding the event loop explains why setTimeout(fn, 0) doesn't run immediately, why Promises resolve before timeouts, and why blocking the call stack freezes the UI.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> Microtask vs macrotask?</summary><div class="answer">
+<div class="oneliner">Microtasks (Promises, queueMicrotask) run immediately after the current task completes and before the browser renders or picks up the next macrotask (setTimeout, setInterval, I/O). The entire microtask queue is drained before moving on.</div>
+<h4>Key difference</h4>
+<ul>
+  <li><strong>Microtasks:</strong> Promise.then/catch/finally, queueMicrotask, MutationObserver. All microtasks run before the browser paints.</li>
+  <li><strong>Macrotasks:</strong> setTimeout, setInterval, setImmediate (Node), requestAnimationFrame, I/O events, UI events</li>
+</ul>
+<div class="gotcha"><strong>Danger:</strong> If a microtask keeps scheduling more microtasks, the macrotask queue starves and the browser can't repaint &mdash; the page freezes.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> Promise vs async/await?</summary><div class="answer">
+<div class="oneliner">They do the same thing. async/await is syntactic sugar over Promises that makes asynchronous code read like synchronous code. Under the hood, an async function always returns a Promise.</div>
+<pre><code>// Promise chains
+fetchUser(id)
+  .then(user =&gt; fetchOrders(user.id))
+  .then(orders =&gt; displayOrders(orders))
+  .catch(err =&gt; showError(err));
+
+// Same logic with async/await (cleaner)
+async function loadOrders(id) {
+  try {
+    const user = await fetchUser(id);
+    const orders = await fetchOrders(user.id);
+    displayOrders(orders);
+  } catch (err) {
+    showError(err);
+  }
+}</code></pre>
+<h4>When to prefer which</h4>
+<ul>
+  <li><strong>async/await:</strong> Sequential async operations, try/catch error handling, most common choice</li>
+  <li><strong>Promise.then:</strong> When chaining is more readable, or running inside a non-async context</li>
+  <li><strong>Promise.all:</strong> When you need parallel execution (can use with await too: <code>await Promise.all([...])</code>)</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> Promise.all() vs Promise.allSettled()?</summary><div class="answer">
+<div class="oneliner">Promise.all() fails fast &mdash; if ANY promise rejects, the whole thing rejects immediately. Promise.allSettled() waits for ALL promises to complete and gives you the result of each, whether fulfilled or rejected.</div>
+<pre><code>// Promise.all: first rejection kills everything
+try {
+  const [a, b, c] = await Promise.all([fetchA(), fetchB(), fetchC()]);
+} catch (err) {
+  // If fetchB fails, you lose fetchA and fetchC results too
+}
+
+// Promise.allSettled: get all results regardless
+const results = await Promise.allSettled([fetchA(), fetchB(), fetchC()]);
+// [
+//   { status: 'fulfilled', value: dataA },
+//   { status: 'rejected', reason: Error },
+//   { status: 'fulfilled', value: dataC }
+// ]</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><code>Promise.all</code> &mdash; All-or-nothing: loading a page where ALL data is required</li>
+  <li><code>Promise.allSettled</code> &mdash; Best-effort: dashboard widgets where each can fail independently</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">6</span> Explain hoisting.</summary><div class="answer">
+<div class="oneliner">Hoisting moves variable and function declarations to the top of their scope during compilation. <code>var</code> declarations are hoisted and initialized to undefined. <code>let</code>/<code>const</code> are hoisted but NOT initialized &mdash; accessing them before declaration throws a ReferenceError (temporal dead zone).</div>
+<pre><code>console.log(a); // undefined (var is hoisted + initialized to undefined)
+var a = 5;
+
+console.log(b); // ReferenceError: Cannot access 'b' before initialization
+let b = 5;      // b is hoisted but in the "temporal dead zone"
+
+greet();        // "Hello!" (function declarations are fully hoisted)
+function greet() { console.log("Hello!"); }
+
+sayBye();       // TypeError: sayBye is not a function
+var sayBye = function() { console.log("Bye!"); };
+// var sayBye is hoisted (undefined), but the assignment isn't</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">7</span> var vs let vs const.</summary><div class="answer">
+<div class="oneliner">var is function-scoped and hoisted (legacy, avoid it). let is block-scoped and reassignable. const is block-scoped and cannot be reassigned (but objects/arrays it points to can still be mutated).</div>
+<pre><code>// var: function-scoped, hoisted, can cause bugs
+for (var i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log(i), 100); // 3, 3, 3 (shared i)
+}
+
+// let: block-scoped, each iteration gets its own i
+for (let i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log(i), 100); // 0, 1, 2
+}
+
+// const: cannot reassign, but can mutate
+const arr = [1, 2];
+arr.push(3);    // OK: [1, 2, 3]
+arr = [4, 5];   // TypeError: Assignment to constant variable</code></pre>
+<div class="tip"><strong>Modern rule:</strong> Default to <code>const</code>. Use <code>let</code> only when reassignment is needed. Never use <code>var</code>.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">8</span> Explain <code>this</code>.</summary><div class="answer">
+<div class="oneliner">In JavaScript, <code>this</code> is determined by HOW a function is called, not where it's defined. In a method call, it's the object. In a regular function, it's window/undefined. Arrow functions inherit <code>this</code> from their enclosing scope.</div>
+<pre><code>const obj = {
+  name: 'Alice',
+  greet() { console.log(this.name); },        // 'Alice' (method call)
+  greetArrow: () =&gt; console.log(this.name),   // undefined (arrow: outer this)
+};
+
+obj.greet();        // 'Alice'
+obj.greetArrow();   // undefined (this = window/module)
+
+const fn = obj.greet;
+fn();               // undefined (lost context, this = window)
+fn.call(obj);       // 'Alice' (explicit binding)</code></pre>
+<h4>Rules in order of priority</h4>
+<ol>
+  <li><code>new</code> &mdash; <code>this</code> is the new instance</li>
+  <li><code>call/apply/bind</code> &mdash; <code>this</code> is the explicitly passed object</li>
+  <li>Method call (<code>obj.fn()</code>) &mdash; <code>this</code> is obj</li>
+  <li>Plain call (<code>fn()</code>) &mdash; <code>this</code> is window (sloppy) or undefined (strict)</li>
+  <li>Arrow function &mdash; inherits <code>this</code> from enclosing lexical scope</li>
+</ol>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">9</span> Shallow copy vs deep copy.</summary><div class="answer">
+<div class="oneliner">A shallow copy duplicates the top-level properties but still shares references to nested objects. A deep copy recursively duplicates everything, creating a completely independent clone.</div>
+<pre><code>const original = { name: 'Alice', address: { city: 'NYC' } };
+
+// Shallow copy: spread operator
+const shallow = { ...original };
+shallow.address.city = 'LA';
+console.log(original.address.city); // 'LA' (shared reference!)
+
+// Deep copy: structuredClone (modern)
+const deep = structuredClone(original);
+deep.address.city = 'LA';
+console.log(original.address.city); // 'NYC' (independent)</code></pre>
+<h4>Methods</h4>
+<ul>
+  <li><strong>Shallow:</strong> <code>{ ...obj }</code>, <code>Object.assign()</code>, <code>[...arr]</code>, <code>arr.slice()</code></li>
+  <li><strong>Deep:</strong> <code>structuredClone()</code> (best), <code>JSON.parse(JSON.stringify())</code> (loses functions, dates, undefined)</li>
+</ul>
+<div class="warn"><strong>Why this matters in React/Redux:</strong> React state updates require new references to trigger re-renders. Redux reducers must return new state objects. Understanding copy depth prevents bugs where you accidentally mutate state.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">10</span> Debouncing vs throttling.</summary><div class="answer">
+<div class="oneliner">Debouncing delays execution until a pause in events (fires once after the user stops). Throttling limits execution to at most once per time interval (fires at a steady rate during continuous events).</div>
+<pre><code>// Debounce: fires ONCE, 300ms after the user stops typing
+function debounce(fn, delay) {
+  let timer;
+  return (...args) =&gt; {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn(...args), delay);
+  };
+}
+
+// Throttle: fires at most once every 200ms during scrolling
+function throttle(fn, limit) {
+  let inThrottle;
+  return (...args) =&gt; {
+    if (!inThrottle) {
+      fn(...args);
+      inThrottle = true;
+      setTimeout(() =&gt; inThrottle = false, limit);
+    }
+  };
+}</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><strong>Debounce:</strong> Search input (wait for user to stop typing), window resize handler, auto-save</li>
+  <li><strong>Throttle:</strong> Scroll events (infinite scroll), mouse move tracking, rate-limiting API calls</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">11</span> Event bubbling vs capturing.</summary><div class="answer">
+<div class="oneliner">When you click an element, the event travels in two phases: Capturing (top-down, from window to target) and Bubbling (bottom-up, from target back to window). By default, event listeners fire during the bubbling phase.</div>
+<pre><code>&lt;div id="outer"&gt;
+  &lt;div id="inner"&gt;
+    &lt;button id="btn"&gt;Click&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+// Click the button:
+// CAPTURING: window &rarr; document &rarr; div#outer &rarr; div#inner &rarr; button
+// TARGET: button (event fires on the target)
+// BUBBLING: button &rarr; div#inner &rarr; div#outer &rarr; document &rarr; window
+
+// Listen during capturing phase:
+outer.addEventListener('click', handler, true); // third arg = capture
+// Listen during bubbling phase (default):
+outer.addEventListener('click', handler);       // or false</code></pre>
+<ul>
+  <li><code>event.stopPropagation()</code> &mdash; stops the event from continuing up/down</li>
+  <li><code>event.preventDefault()</code> &mdash; prevents the browser default (form submit, link navigation)</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">12</span> Event delegation.</summary><div class="answer">
+<div class="oneliner">Instead of attaching an event listener to every child element, attach ONE listener to the parent and use <code>event.target</code> to determine which child was clicked. This is more memory-efficient and works for dynamically added elements.</div>
+<pre><code>// BAD: 1000 listeners for 1000 list items
+items.forEach(item =&gt; {
+  item.addEventListener('click', handleClick);
+});
+
+// GOOD: 1 listener on the parent
+document.getElementById('list').addEventListener('click', (e) =&gt; {
+  const item = e.target.closest('li'); // find the clicked li
+  if (item) handleClick(item.dataset.id);
+});</code></pre>
+<h4>Benefits</h4>
+<ul>
+  <li><strong>Memory:</strong> 1 listener instead of N</li>
+  <li><strong>Dynamic elements:</strong> Works for items added later (no need to re-attach listeners)</li>
+  <li><strong>Cleanup:</strong> Only 1 listener to remove</li>
+</ul>
+<div class="tip"><strong>React connection:</strong> React uses event delegation internally &mdash; it attaches a single event listener to the root DOM node and delegates all events. That's why <code>event.nativeEvent</code> exists.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">13</span> How would you optimize expensive JavaScript?</summary><div class="answer">
+<div class="oneliner">Profile first with Chrome DevTools Performance tab, then apply: Web Workers for CPU-heavy tasks, requestAnimationFrame for visual updates, chunking long tasks with setTimeout/scheduler.yield, and efficient data structures.</div>
+<h4>Techniques</h4>
+<ul>
+  <li><strong>Web Workers:</strong> Move heavy computation (parsing, sorting 100K items, image processing) off the main thread</li>
+  <li><strong>Task chunking:</strong> Break a loop processing 10,000 items into chunks of 100, yielding to the browser between chunks</li>
+  <li><strong>requestAnimationFrame:</strong> Batch visual DOM updates to sync with the browser's paint cycle</li>
+  <li><strong>Memoization:</strong> Cache function results for repeated calls with same arguments</li>
+  <li><strong>Efficient algorithms:</strong> Use Map/Set for O(1) lookups instead of Array.find O(n)</li>
+</ul>
+<pre><code>// Chunking a long task to avoid blocking
+async function processLargeArray(items) {
+  const CHUNK_SIZE = 100;
+  for (let i = 0; i &lt; items.length; i += CHUNK_SIZE) {
+    const chunk = items.slice(i, i + CHUNK_SIZE);
+    processChunk(chunk);
+    // Yield to browser between chunks
+    await new Promise(resolve =&gt; setTimeout(resolve, 0));
+  }
+}</code></pre>
+</div></details>
+</section>
+
+<!-- ============================================ -->
+<!-- NEXT.JS -->
+<!-- ============================================ -->
+<section class="section" id="nextjs">
+<div class="section-header">
+  <span class="section-badge next">N</span>
+  <h2 class="section-title">Next.js</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> Why Next.js instead of React alone?</summary><div class="answer">
+<div class="oneliner">Plain React is a client-side SPA with no built-in routing, SSR, or optimization. Next.js adds server-side rendering, static generation, file-based routing, API routes, image optimization, and built-in performance features out of the box.</div>
+<h4>What Next.js gives you for free</h4>
+<ul>
+  <li><strong>SSR/SSG:</strong> Pages can be rendered on the server or at build time &mdash; better SEO, faster first paint</li>
+  <li><strong>File-based routing:</strong> No react-router config &mdash; files in <code>/app</code> or <code>/pages</code> become routes</li>
+  <li><strong>Image optimization:</strong> <code>&lt;Image&gt;</code> component handles lazy loading, responsive sizes, WebP conversion</li>
+  <li><strong>API routes:</strong> Build backend endpoints inside the same project</li>
+  <li><strong>Code splitting:</strong> Automatic per-route code splitting</li>
+  <li><strong>Incremental Static Regeneration:</strong> Regenerate static pages without full rebuild</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> SSR vs SSG vs ISR?</summary><div class="answer">
+<div class="oneliner">SSR renders HTML on every request (always fresh). SSG renders HTML at build time (fastest, but stale until rebuild). ISR is the best of both &mdash; serves static HTML but revalidates in the background after a time interval.</div>
+<h4>Comparison</h4>
+<ul>
+  <li><strong>SSG (Static Site Generation):</strong> HTML built at <code>next build</code>. Served from CDN. Fastest. Best for content that rarely changes (blog, docs, marketing)</li>
+  <li><strong>SSR (Server-Side Rendering):</strong> HTML generated on the server per request. Always up-to-date. Best for personalized/dynamic pages (dashboard, search results)</li>
+  <li><strong>ISR (Incremental Static Regeneration):</strong> Serves stale static page, triggers background rebuild after <code>revalidate</code> seconds. Best for product pages, news articles &mdash; "mostly static, occasionally updated"</li>
+</ul>
+<pre><code>// SSG (App Router): default behavior, no special config
+export default async function Page() {
+  const data = await fetch('https://api.example.com/posts');
+  return &lt;Posts data={data} /&gt;;
+}
+
+// ISR: revalidate every 60 seconds
+export const revalidate = 60;
+
+// SSR: force dynamic rendering
+export const dynamic = 'force-dynamic';</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> When would you choose SSR?</summary><div class="answer">
+<div class="oneliner">Choose SSR when the page content depends on the request (user-specific data, cookies, search params), needs to be always up-to-date, and SEO matters. Examples: personalized dashboards, search results pages, checkout flows.</div>
+<h4>SSR is the right choice when</h4>
+<ul>
+  <li>Content is <strong>user-specific</strong> (can't pre-build for every user)</li>
+  <li>Data changes <strong>frequently</strong> and stale data is unacceptable</li>
+  <li>Page uses <strong>request data</strong> (cookies, headers, auth tokens)</li>
+  <li><strong>SEO</strong> is critical AND content is dynamic</li>
+</ul>
+<div class="warn"><strong>Downside:</strong> SSR is slower than SSG because it runs server code on every request. Use caching headers (Cache-Control) to mitigate. Consider ISR if "slightly stale" is acceptable.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> When would you choose ISR?</summary><div class="answer">
+<div class="oneliner">Choose ISR when your content is mostly static but updates periodically &mdash; like product pages, blog posts, or news articles. You get the speed of static pages with automatic background revalidation.</div>
+<h4>ISR sweet spot</h4>
+<ul>
+  <li>E-commerce product pages (price/stock changes every few minutes)</li>
+  <li>Blog or news articles (corrections or updates happen, but not constantly)</li>
+  <li>Any page where being 30-60 seconds stale is acceptable</li>
+</ul>
+<pre><code>// Revalidate every 60 seconds
+export const revalidate = 60;
+
+// Or on-demand revalidation via API route
+// POST /api/revalidate?path=/products/shoes
+import { revalidatePath } from 'next/cache';
+export async function POST(request) {
+  const path = request.nextUrl.searchParams.get('path');
+  revalidatePath(path);
+  return Response.json({ revalidated: true });
+}</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> What is hydration?</summary><div class="answer">
+<div class="oneliner">Hydration is the process where React takes the server-rendered static HTML and "activates" it by attaching event listeners and making it interactive. The browser shows the HTML immediately (fast first paint), then React makes it clickable.</div>
+<h4>How it works</h4>
+<ol>
+  <li>Server renders HTML string and sends it to the browser</li>
+  <li>Browser shows the HTML immediately (fast first contentful paint)</li>
+  <li>JavaScript bundle loads</li>
+  <li>React walks the existing DOM, attaches event handlers, and reconciles its Virtual DOM with the actual DOM &mdash; this is "hydration"</li>
+  <li>Page is now fully interactive</li>
+</ol>
+<div class="tip"><strong>Key insight:</strong> During hydration, React does NOT recreate the DOM. It reuses the existing server-rendered DOM nodes and just attaches the interactivity layer on top.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">6</span> What causes hydration mismatch?</summary><div class="answer">
+<div class="oneliner">Hydration mismatch happens when the HTML rendered on the server differs from what React produces on the client. Common causes: using <code>Date.now()</code>, <code>Math.random()</code>, <code>window</code>/<code>localStorage</code> during render, or rendering based on browser-only APIs.</div>
+<h4>Common causes</h4>
+<ul>
+  <li><strong>Time-based values:</strong> <code>new Date()</code> on server vs client gives different timestamps</li>
+  <li><strong>Random values:</strong> <code>Math.random()</code> produces different results</li>
+  <li><strong>Browser APIs:</strong> <code>window.innerWidth</code>, <code>localStorage</code>, <code>navigator</code> don't exist on server</li>
+  <li><strong>User-agent based rendering:</strong> Showing mobile vs desktop layout based on UA</li>
+  <li><strong>Extensions:</strong> Browser extensions modifying the DOM before hydration</li>
+</ul>
+<h4>How to fix</h4>
+<pre><code>// Use useEffect for browser-only values
+function MyComponent() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() =&gt; setMounted(true), []);
+
+  // Server and client both render the same fallback initially
+  if (!mounted) return &lt;div&gt;Loading...&lt;/div&gt;;
+
+  // After hydration, render browser-specific content
+  return &lt;div&gt;Width: {window.innerWidth}&lt;/div&gt;;
+}
+
+// Or use suppressHydrationWarning for intentional mismatches
+&lt;time suppressHydrationWarning&gt;{new Date().toLocaleString()}&lt;/time&gt;</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">7</span> Server Component vs Client Component?</summary><div class="answer">
+<div class="oneliner">Server Components run only on the server &mdash; they can access databases, file systems, and secrets directly, with zero client-side JavaScript. Client Components run on the client (and server for SSR) &mdash; they can use state, effects, event handlers, and browser APIs.</div>
+<h4>Key differences</h4>
+<ul>
+  <li><strong>Server Components (default in App Router):</strong> No useState, no useEffect, no onClick, no browser APIs. CAN import server-only modules, read databases, access env secrets. Zero bundle size impact.</li>
+  <li><strong>Client Components ("use client"):</strong> Full React interactivity. Hooks, events, browser APIs. Code ships in the JS bundle.</li>
+</ul>
+<pre><code>// Server Component (default): no directive needed
+async function ProductPage({ id }) {
+  const product = await db.query('SELECT * FROM products WHERE id = ?', [id]);
+  return &lt;ProductDetails product={product} /&gt;;
+}
+
+// Client Component: needs "use client" at the top
+'use client';
+function AddToCartButton({ productId }) {
+  const [added, setAdded] = useState(false);
+  return &lt;button onClick={() =&gt; setAdded(true)}&gt;Add to Cart&lt;/button&gt;;
+}</code></pre>
+<div class="tip"><strong>Rule:</strong> Keep components as Server Components by default. Only add "use client" when you need interactivity (state, effects, events). Push "use client" as far down the tree as possible.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">8</span> What happens when you use "use client"?</summary><div class="answer">
+<div class="oneliner">The "use client" directive marks the boundary where React transitions from Server Components to Client Components. The marked component AND all its imports become part of the client JavaScript bundle.</div>
+<h4>What actually happens</h4>
+<ol>
+  <li>Next.js sees <code>"use client"</code> and marks this file as a client boundary</li>
+  <li>The component is still server-rendered for SSR (HTML generation)</li>
+  <li>But its JavaScript code is included in the client bundle for hydration</li>
+  <li>All components imported by this file are also treated as Client Components</li>
+  <li>Server Components can still be passed as children (via the <code>children</code> prop) &mdash; they stay on the server</li>
+</ol>
+<pre><code>// This pattern keeps ServerComponent on the server!
+'use client';
+function ClientWrapper({ children }) {
+  const [open, setOpen] = useState(false);
+  return &lt;div&gt;{open &amp;&amp; children}&lt;/div&gt;; // children rendered on server
+}
+
+// Usage in a Server Component:
+&lt;ClientWrapper&gt;
+  &lt;ServerComponent /&gt;  {/* Still a server component! */}
+&lt;/ClientWrapper&gt;</code></pre>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">9</span> How do you optimize a Next.js application?</summary><div class="answer">
+<div class="oneliner">Use Server Components by default, optimize images with next/image, leverage static generation and ISR, implement proper caching, lazy-load heavy client components, and monitor Core Web Vitals.</div>
+<h4>Optimization checklist</h4>
+<ul>
+  <li><strong>Server Components:</strong> Reduce client bundle by keeping data-fetching components on the server</li>
+  <li><strong>Images:</strong> Use <code>&lt;Image&gt;</code> for automatic lazy loading, responsive sizes, and WebP</li>
+  <li><strong>Fonts:</strong> Use <code>next/font</code> for zero layout shift font loading</li>
+  <li><strong>Static generation:</strong> Pre-render as many pages as possible at build time</li>
+  <li><strong>Dynamic imports:</strong> <code>next/dynamic</code> for heavy client-only components (charts, editors)</li>
+  <li><strong>Route groups:</strong> Split layouts to avoid loading unnecessary shared UI</li>
+  <li><strong>Parallel routes:</strong> Load independent page sections simultaneously</li>
+  <li><strong>Caching:</strong> Use Next.js Data Cache + fetch cache headers</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">10</span> How do you improve SEO in Next.js?</summary><div class="answer">
+<div class="oneliner">Use Server Components/SSR so crawlers see full HTML, define metadata with the Metadata API, generate a sitemap, use semantic HTML, optimize Core Web Vitals, and implement structured data (JSON-LD).</div>
+<pre><code>// App Router Metadata API
+export const metadata = {
+  title: 'Product Name | Store',
+  description: 'Buy the best products...',
+  openGraph: {
+    title: 'Product Name',
+    description: 'Description for social sharing',
+    images: ['/og-image.png'],
+  },
+};
+
+// Dynamic metadata
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.id);
+  return {
+    title: product.name,
+    description: product.description,
+  };
+}</code></pre>
+<h4>SEO checklist</h4>
+<ul>
+  <li>Generate <code>sitemap.xml</code> with <code>app/sitemap.ts</code></li>
+  <li>Add <code>robots.txt</code> with <code>app/robots.ts</code></li>
+  <li>Use semantic HTML (<code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;h1&gt;</code>-<code>&lt;h6&gt;</code>)</li>
+  <li>Implement canonical URLs for duplicate content</li>
+  <li>Add structured data (JSON-LD) for rich search results</li>
+  <li>Optimize images with alt text and proper sizing</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">11</span> How would you optimize Core Web Vitals?</summary><div class="answer">
+<div class="oneliner">LCP (Largest Contentful Paint): preload hero images, use SSR/SSG. FID/INP (Input Delay): reduce JavaScript, code-split, use Web Workers. CLS (Cumulative Layout Shift): set image dimensions, use next/font, avoid dynamic content injection above the fold.</div>
+<h4>LCP (target &lt; 2.5s)</h4>
+<ul>
+  <li>Preload the hero image: <code>&lt;Image priority /&gt;</code></li>
+  <li>Use SSR/SSG so HTML arrives with content</li>
+  <li>Reduce server response time (edge functions, CDN)</li>
+  <li>Inline critical CSS, defer non-critical</li>
+</ul>
+<h4>INP / FID (target &lt; 200ms)</h4>
+<ul>
+  <li>Code-split: smaller bundles = faster interactivity</li>
+  <li>Break long tasks into chunks (yield to main thread)</li>
+  <li>Use <code>startTransition</code> for non-urgent updates</li>
+  <li>Minimize third-party scripts</li>
+</ul>
+<h4>CLS (target &lt; 0.1)</h4>
+<ul>
+  <li>Always set <code>width</code>/<code>height</code> on images (or use <code>next/image</code>)</li>
+  <li>Use <code>next/font</code> to prevent font swap layout shift</li>
+  <li>Reserve space for dynamic content (skeleton loaders with fixed dimensions)</li>
+  <li>Never insert content above existing content after load</li>
+</ul>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">12</span> How does Next.js caching work?</summary><div class="answer">
+<div class="oneliner">Next.js has four caching layers: Request Memoization (deduplicates identical fetch calls in one render), Data Cache (persists fetch results across requests), Full Route Cache (caches rendered HTML/RSC payload), and Router Cache (client-side cache for visited routes).</div>
+<h4>The four caching layers</h4>
+<ol>
+  <li><strong>Request Memoization:</strong> If you call <code>fetch('/api/user')</code> in 5 different Server Components during the same render, Next.js makes only 1 actual HTTP request. Automatic, per-request, no config needed.</li>
+  <li><strong>Data Cache:</strong> Fetch results are stored on the server across requests. Persists until revalidated. Control with <code>{ next: { revalidate: 60 } }</code> or <code>{ cache: 'no-store' }</code>.</li>
+  <li><strong>Full Route Cache:</strong> For static routes, the entire rendered HTML + RSC payload is cached at build time. Served from CDN on subsequent requests. Invalidated by revalidation.</li>
+  <li><strong>Router Cache:</strong> Client-side in-memory cache. When you navigate back to a previously visited page, it shows instantly from the client cache instead of making a server request.</li>
+</ol>
+<pre><code>// No caching (always fresh)
+fetch('https://api.example.com/data', { cache: 'no-store' });
+
+// Revalidate every 60 seconds
+fetch('https://api.example.com/data', {
+  next: { revalidate: 60 }
+});
+
+// Cache forever (default for static data)
+fetch('https://api.example.com/data');
+// equivalent to { cache: 'force-cache' }</code></pre>
+<h4>How to opt out of caching</h4>
+<ul>
+  <li><code>export const dynamic = 'force-dynamic'</code> &mdash; opt out at the route level</li>
+  <li><code>{ cache: 'no-store' }</code> &mdash; opt out per fetch</li>
+  <li><code>revalidatePath()</code> / <code>revalidateTag()</code> &mdash; on-demand cache invalidation</li>
+  <li>Using <code>cookies()</code> or <code>headers()</code> in a Server Component auto-opts into dynamic rendering</li>
+</ul>
+<div class="warn"><strong>Common gotcha:</strong> Developers expect data to be fresh but Next.js caches aggressively by default. If your page shows stale data, check whether you need <code>cache: 'no-store'</code> or a <code>revalidate</code> interval.</div>
+</div></details>
+</section>
+
+<!-- ============================================ -->
+<!-- F. API & DATA HANDLING -->
+<!-- ============================================ -->
+<section class="section" id="api-data">
+<div class="section-header">
+  <span class="section-badge" style="background:var(--green-soft);color:var(--green-text)">F</span>
+  <h2 class="section-title">API &amp; Data Handling</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> What are common useEffect pitfalls and how do you avoid them?</summary><div class="answer">
+<div class="oneliner">The three big pitfalls are infinite loops (missing or wrong dependency array), stale closures (referencing outdated state), and missing cleanup (subscriptions, timers, abort controllers left dangling).</div>
+<h4>1. Infinite loops</h4>
+<pre><code>// BUG: runs infinitely because `data` is new every render
+useEffect(() => {
+  fetch('/api/items').then(res => res.json()).then(setData);
+}, [data]); // data changes → re-fetch → data changes → ...
+
+// FIX: fetch once on mount, or use a stable trigger
+useEffect(() => {
+  fetch('/api/items').then(res => res.json()).then(setData);
+}, []); // empty deps = run once</code></pre>
+<h4>2. Stale closures</h4>
+<pre><code>// BUG: always logs the initial count
+useEffect(() => {
+  const id = setInterval(() => console.log(count), 1000);
+  return () => clearInterval(id);
+}, []); // count is stale
+
+// FIX: add count to deps, or use a ref
+useEffect(() => {
+  const id = setInterval(() => console.log(count), 1000);
+  return () => clearInterval(id);
+}, [count]);</code></pre>
+<h4>3. Missing cleanup</h4>
+<pre><code>// BUG: if component unmounts before fetch completes → state update on unmounted component
+useEffect(() => {
+  fetch('/api/user').then(res => res.json()).then(setUser);
+}, []);
+
+// FIX: use AbortController
+useEffect(() => {
+  const controller = new AbortController();
+  fetch('/api/user', { signal: controller.signal })
+    .then(res => res.json())
+    .then(setUser)
+    .catch(err => {
+      if (err.name !== 'AbortError') throw err;
+    });
+  return () => controller.abort();
+}, []);</code></pre>
+<h4>Other pitfalls</h4>
+<ul>
+  <li><strong>Object/array deps:</strong> <code>useEffect(() =&gt; {}, [{ a: 1 }])</code> runs every render because objects are compared by reference. Use primitive deps or <code>useMemo</code></li>
+  <li><strong>Missing deps:</strong> ESLint's <code>exhaustive-deps</code> rule catches this &mdash; always enable it</li>
+  <li><strong>Async directly in useEffect:</strong> You can't make the callback async. Define an inner async function and call it</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> "In new projects, I prefer React Query or SWR for data fetching instead of raw useEffect &mdash; they handle caching, cancellation, retries, and race conditions out of the box."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> How do you handle loading and error states when calling APIs?</summary><div class="answer">
+<div class="oneliner">I track three states &mdash; loading, error, and data &mdash; either manually with useState or (preferably) with React Query/SWR which manage this automatically, plus I add skeleton UIs, error boundaries, and retry logic.</div>
+<h4>Manual approach (with useState)</h4>
+<pre><code>function UserProfile({ userId }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/users/${userId}`, { signal: controller.signal })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(setData)
+      .catch(err => {
+        if (err.name !== 'AbortError') setError(err.message);
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
+  }, [userId]);
+
+  if (loading) return &lt;Skeleton /&gt;;
+  if (error) return &lt;ErrorBanner message={error} onRetry={...} /&gt;;
+  return &lt;Profile data={data} /&gt;;
+}</code></pre>
+<h4>Better: React Query</h4>
+<pre><code>function UserProfile({ userId }) {
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetch(`/api/users/${userId}`).then(r => r.json()),
+    retry: 2,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  if (isLoading) return &lt;Skeleton /&gt;;
+  if (isError) return &lt;ErrorBanner message={error.message} onRetry={refetch} /&gt;;
+  return &lt;Profile data={data} /&gt;;
+}</code></pre>
+<h4>UX best practices</h4>
+<ul>
+  <li><strong>Skeleton screens</strong> over spinners &mdash; they feel faster and reduce layout shift</li>
+  <li><strong>Error boundaries</strong> for unexpected crashes (React's <code>componentDidCatch</code> or <code>react-error-boundary</code>)</li>
+  <li><strong>Toast notifications</strong> for mutation errors (POST/PUT/DELETE failures)</li>
+  <li><strong>Retry with backoff:</strong> Auto-retry transient errors (network, 503) with exponential backoff</li>
+  <li><strong>Optimistic updates:</strong> Show the expected result immediately, roll back on error</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> "I centralize error handling in an API client layer with interceptors, so individual components don't repeat the same try/catch logic. Global errors (401, 500) are handled at the app level; component-specific errors are handled locally."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> Axios vs fetch &mdash; which have you used and why?</summary><div class="answer">
+<div class="oneliner">I've used both. Fetch is built into the browser (no dependency), but Axios provides better DX with automatic JSON parsing, interceptors, request cancellation, timeout config, and progress events out of the box.</div>
+<h4>Comparison</h4>
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin:12px 0">
+  <tr style="border-bottom:2px solid var(--border)">
+    <th style="text-align:left;padding:8px">Feature</th>
+    <th style="text-align:left;padding:8px">fetch</th>
+    <th style="text-align:left;padding:8px">Axios</th>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">Install</td><td style="padding:8px">Built-in (zero deps)</td><td style="padding:8px">npm install axios (~14KB)</td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">JSON handling</td><td style="padding:8px">Manual: <code>res.json()</code></td><td style="padding:8px">Automatic</td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">Error handling</td><td style="padding:8px">Only rejects on network errors, not 4xx/5xx</td><td style="padding:8px">Rejects on any non-2xx status</td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">Interceptors</td><td style="padding:8px">No (need wrapper)</td><td style="padding:8px">Built-in request/response interceptors</td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">Timeout</td><td style="padding:8px">AbortController + setTimeout</td><td style="padding:8px"><code>{ timeout: 5000 }</code></td>
+  </tr>
+  <tr style="border-bottom:1px solid var(--border-light)">
+    <td style="padding:8px">Cancel</td><td style="padding:8px">AbortController</td><td style="padding:8px">AbortController (v0.22+)</td>
+  </tr>
+  <tr>
+    <td style="padding:8px">Upload progress</td><td style="padding:8px">No native support</td><td style="padding:8px"><code>onUploadProgress</code></td>
+  </tr>
+</table>
+<h4>Code comparison</h4>
+<pre><code>// fetch — manual error check + JSON parse
+const response = await fetch('/api/users', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name: 'Veeresh' }),
+});
+if (!response.ok) throw new Error(`HTTP ${response.status}`);
+const data = await response.json();
+
+// Axios — cleaner, auto error on non-2xx
+const { data } = await axios.post('/api/users', { name: 'Veeresh' });</code></pre>
+<h4>When to use which</h4>
+<ul>
+  <li><strong>Use fetch when:</strong> Simple apps, SSR/Next.js (fetch has built-in caching in Next.js), wanting zero dependencies, or when you have a thin wrapper around it</li>
+  <li><strong>Use Axios when:</strong> Complex apps needing interceptors (auth tokens, logging), upload progress, or when your team already uses it</li>
+  <li><strong>Modern alternative:</strong> <code>ky</code> (tiny fetch wrapper with Axios-like DX) or just use React Query/SWR which wraps any fetch function</li>
+</ul>
+<div class="tip"><strong>Good answer:</strong> "The fetching library matters less than the patterns around it. Whether I use fetch or Axios, I wrap it in a centralized API client with interceptors for auth, error normalization, and retry. The components never know which HTTP library is underneath."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> If debounced API calls return out of order, how do you ensure only the last result is used?</summary><div class="answer">
+<div class="oneliner">The core problem is a race condition: user types "ab" (API call #1), then "abcd" (API call #2), but call #1's response arrives AFTER call #2's. Without handling, you'd display stale results for "ab" instead of "abcd". Solution: cancel previous requests or ignore stale responses.</div>
+<h4>The problem visualized</h4>
+<pre><code>// User types: a → ab → abc → abcd (debounced to "ab" and "abcd")
+//
+// Timeline:
+// t=0ms    User types "ab" → debounce timer starts
+// t=300ms  Debounce fires → API call #1: search("ab")
+// t=500ms  User types "abcd" → debounce timer starts
+// t=800ms  Debounce fires → API call #2: search("abcd")
+// t=1200ms API call #2 responds (fast server) → shows "abcd" results ✓
+// t=1500ms API call #1 responds (slow!) → OVERWRITES with "ab" results ✗
+//
+// Result: User sees results for "ab" even though they typed "abcd"!</code></pre>
+<h4>Solution 1: AbortController (cancel previous request)</h4>
+<pre><code>function useSearch(query) {
+  const [results, setResults] = useState([]);
+  const controllerRef = useRef(null);
+
+  useEffect(() => {
+    if (!query) return;
+
+    // Cancel the PREVIOUS request before making a new one
+    controllerRef.current?.abort();
+    controllerRef.current = new AbortController();
+
+    fetch(`/api/search?q=${query}`, {
+      signal: controllerRef.current.signal,
+    })
+      .then(res =&gt; res.json())
+      .then(setResults)
+      .catch(err =&gt; {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+
+    return () =&gt; controllerRef.current?.abort(); // cleanup on unmount
+  }, [query]); // query is already debounced
+
+  return results;
+}</code></pre>
+<h4>Solution 2: Ignore stale responses (request ID)</h4>
+<pre><code>function useSearch(query) {
+  const [results, setResults] = useState([]);
+  const latestRequestRef = useRef(0);
+
+  useEffect(() => {
+    if (!query) return;
+
+    const requestId = ++latestRequestRef.current; // increment for each new request
+
+    fetch(`/api/search?q=${query}`)
+      .then(res =&gt; res.json())
+      .then(data =&gt; {
+        // Only update if this is still the latest request
+        if (requestId === latestRequestRef.current) {
+          setResults(data);
+        }
+        // else: stale response, silently ignore
+      });
+  }, [query]);
+
+  return results;
+}</code></pre>
+<h4>Solution 3: Redux Saga's takeLatest</h4>
+<pre><code>// takeLatest automatically CANCELS the previous saga when a new action arrives
+function* searchSaga(action) {
+  const results = yield call(api.search, action.payload);
+  yield put({ type: 'search/success', payload: results });
+}
+
+function* watchSearch() {
+  yield takeLatest('search/request', searchSaga);
+  // If 'search/request' fires while a previous searchSaga is running,
+  // the previous one is cancelled automatically
+}</code></pre>
+<h4>Solution 4: React Query (handles it automatically)</h4>
+<pre><code>function SearchResults({ query }) {
+  const { data } = useQuery({
+    queryKey: ['search', query],
+    queryFn: () => fetch(`/api/search?q=${query}`).then(r => r.json()),
+    enabled: !!query,
+    // React Query automatically cancels outdated queries
+    // and only renders the result matching the current queryKey
+  });
+
+  return &lt;ResultsList items={data} /&gt;;
+}</code></pre>
+<h4>Which approach to use?</h4>
+<ul>
+  <li><strong>AbortController:</strong> Best for raw fetch/Axios &mdash; actually cancels the HTTP request (saves bandwidth)</li>
+  <li><strong>Request ID:</strong> Simpler, works everywhere, but the stale request still completes (wastes bandwidth)</li>
+  <li><strong>takeLatest:</strong> Best if you're already using Redux Saga</li>
+  <li><strong>React Query:</strong> Best overall &mdash; handles cancellation, caching, deduplication, and stale responses automatically</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> "This is a race condition, not just a debounce problem. Debouncing reduces the number of API calls, but doesn't guarantee response order. You need either request cancellation (AbortController) or stale-response detection (request ID). React Query handles both out of the box."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">5</span> What are interceptors and how do you use them?</summary><div class="answer">
+<div class="oneliner">Interceptors are functions that run automatically before every request is sent or after every response is received. They let you centralize cross-cutting concerns like attaching auth tokens, refreshing expired tokens, global error handling, and request/response logging &mdash; without repeating code in every API call.</div>
+<h4>Axios request interceptor (attach auth token)</h4>
+<pre><code>import axios from 'axios';
+
+const api = axios.create({ baseURL: '/api' });
+
+// REQUEST interceptor — runs before every request
+api.interceptors.request.use(
+  (config) =&gt; {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    // Add request timestamp for logging
+    config.metadata = { startTime: Date.now() };
+    return config;
+  },
+  (error) =&gt; Promise.reject(error)
+);</code></pre>
+<h4>Axios response interceptor (error handling + token refresh)</h4>
+<pre><code>// RESPONSE interceptor — runs after every response
+api.interceptors.response.use(
+  (response) =&gt; {
+    // Log response time
+    const duration = Date.now() - response.config.metadata.startTime;
+    console.log(`${response.config.method.toUpperCase()} ${response.config.url} — ${duration}ms`);
+    return response;
+  },
+  async (error) =&gt; {
+    const originalRequest = error.config;
+
+    // 401 Unauthorized → try refreshing the token
+    if (error.response?.status === 401 &amp;&amp; !originalRequest._retry) {
+      originalRequest._retry = true; // prevent infinite retry loop
+
+      try {
+        const { data } = await axios.post('/api/auth/refresh', {
+          refreshToken: localStorage.getItem('refreshToken'),
+        });
+        localStorage.setItem('accessToken', data.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        return api(originalRequest); // retry the original request
+      } catch (refreshError) {
+        // Refresh failed → force logout
+        localStorage.clear();
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // Global error handling
+    if (error.response?.status === 500) {
+      toast.error('Server error. Please try again later.');
+    }
+    if (error.response?.status === 403) {
+      toast.error('You do not have permission for this action.');
+    }
+
+    return Promise.reject(error);
+  }
+);</code></pre>
+<h4>How to achieve the same with fetch (wrapper pattern)</h4>
+<pre><code>// Since fetch has no built-in interceptors, create a wrapper
+async function apiFetch(url, options = {}) {
+  // REQUEST "interceptor"
+  const token = localStorage.getItem('accessToken');
+  const config = {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token &amp;&amp; { Authorization: `Bearer ${token}` }),
+      ...options.headers,
+    },
+  };
+
+  let response = await fetch(url, config);
+
+  // RESPONSE "interceptor" — handle 401
+  if (response.status === 401) {
+    const refreshed = await refreshToken();
+    if (refreshed) {
+      config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+      response = await fetch(url, config); // retry
+    } else {
+      window.location.href = '/login';
+    }
+  }
+
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}</code></pre>
+<h4>Common interceptor use cases</h4>
+<ul>
+  <li><strong>Auth token injection:</strong> Attach JWT to every request automatically</li>
+  <li><strong>Token refresh:</strong> On 401, refresh the token and retry the original request transparently</li>
+  <li><strong>Global error handling:</strong> Show toast for 500s, redirect on 403, logout on expired sessions</li>
+  <li><strong>Request/response logging:</strong> Log URL, method, duration, status for debugging</li>
+  <li><strong>Request cancellation:</strong> Auto-cancel duplicate requests</li>
+  <li><strong>Loading indicators:</strong> Track active request count for global loading spinners</li>
+  <li><strong>Data transformation:</strong> Convert snake_case API responses to camelCase for frontend</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> "Interceptors are the API layer's middleware. I set them up once in a centralized API client, and every component that uses that client gets auth, error handling, and logging for free. Components should never deal with tokens or 401s directly."</div>
+</div></details>
+
+</section>
+
+<!-- ============================================ -->
+<!-- G. PROCESS & SOFT SKILLS -->
+<!-- ============================================ -->
+<section class="section" id="soft-skills">
+<div class="section-header">
+  <span class="section-badge" style="background:var(--amber-soft);color:var(--amber-text)">G</span>
+  <h2 class="section-title">Process &amp; Soft Skills</h2>
+</div>
+
+<details class="qa"><summary><span class="q-num">1</span> How do you handle changing requirements mid-sprint?</summary><div class="answer">
+<div class="oneliner">I assess the impact first (scope, timeline, dependencies), communicate the trade-offs to the team and product owner, then re-prioritize &mdash; either swap out lower-priority items, negotiate the deadline, or split the new requirement into must-have vs. nice-to-have.</div>
+<h4>My approach</h4>
+<ol>
+  <li><strong>Don't resist, assess:</strong> Requirements change &mdash; that's normal. First understand what changed and why (user feedback? stakeholder decision? bug discovery?)</li>
+  <li><strong>Impact analysis:</strong> How many story points does this add? What's already in progress that it affects? Are there dependencies on backend/design?</li>
+  <li><strong>Communicate trade-offs:</strong> "We can add this, but we'll need to move Feature X to next sprint, or push the deadline by 2 days. Which do you prefer?"</li>
+  <li><strong>Protect the team:</strong> Don't silently absorb scope creep. Make the cost visible through the sprint burndown</li>
+  <li><strong>Document the change:</strong> Update Jira tickets, add comments explaining why scope changed (helps in retros)</li>
+</ol>
+<div class="tip"><strong>Senior signal:</strong> "I've learned that saying 'yes, and here's the trade-off' is more effective than saying 'no.' The key is making the cost of change visible so the product owner can make an informed decision."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">2</span> How do you communicate blockers to your team or client?</summary><div class="answer">
+<div class="oneliner">I raise blockers early and proactively &mdash; in standup, Slack, or directly to the relevant person &mdash; always including what I've tried, what I need, and the impact on the timeline if unresolved.</div>
+<h4>My blocker communication framework</h4>
+<ol>
+  <li><strong>Raise immediately, not at standup:</strong> If I'm blocked at 10am, I don't wait until tomorrow's standup. I message the right person now</li>
+  <li><strong>Be specific:</strong> "I'm blocked on the user API endpoint &mdash; it's returning 500 for the /profile route. I've checked the request payload and it matches the Swagger spec. I need backend to investigate. This blocks the profile page, due Thursday."</li>
+  <li><strong>Show what you tried:</strong> Listing your attempts shows initiative and gives the other person context to help faster</li>
+  <li><strong>Propose alternatives:</strong> "While waiting, I can work on the settings page instead, or I can mock the API response and build the UI in parallel"</li>
+  <li><strong>Escalate if needed:</strong> If a blocker isn't resolved in a reasonable time, escalate to the tech lead or scrum master &mdash; that's their job</li>
+</ol>
+<div class="warn"><strong>Anti-pattern:</strong> "I was blocked for 3 days but didn't tell anyone." This is a red flag in any interview. Always show you communicate proactively.</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">3</span> Are you comfortable working directly with client stakeholders?</summary><div class="answer">
+<div class="oneliner">Yes, absolutely. I've regularly participated in client calls, demos, and requirement discussions. I translate technical concepts into business language and keep stakeholders informed about progress, risks, and trade-offs.</div>
+<h4>How I work with clients</h4>
+<ul>
+  <li><strong>Demos:</strong> I present sprint deliverables to clients, walking through features from the user's perspective (not technical jargon)</li>
+  <li><strong>Requirement clarification:</strong> When specs are ambiguous, I ask targeted questions with options: "Should the filter persist across sessions, or reset on page reload? Option A is simpler; Option B needs backend storage."</li>
+  <li><strong>Setting expectations:</strong> If a requested feature is complex, I explain the trade-off: "We can do a basic version in this sprint and enhance it next sprint, or wait and deliver the full version in two sprints."</li>
+  <li><strong>Status updates:</strong> I keep updates concise and focused on what matters to the client: what's done, what's in progress, any risks</li>
+</ul>
+<div class="tip"><strong>Key message:</strong> "I see client communication as part of my job, not a distraction from coding. Understanding the 'why' behind requirements helps me build better solutions and avoid rework."</div>
+</div></details>
+
+<details class="qa"><summary><span class="q-num">4</span> Tell me about a time you disagreed with a technical decision &mdash; how did you handle it?</summary><div class="answer">
+<div class="oneliner">I present my concerns with data and specific trade-offs, listen to the other perspective, and if the team decides differently, I commit fully to the chosen approach &mdash; disagree and commit.</div>
+<h4>Example (STAR format)</h4>
+<p><strong>Situation:</strong> "The team lead wanted to use Redux for all state management in a new dashboard project, including server data (API responses)."</p>
+<p><strong>Task:</strong> "I believed this would lead to excessive boilerplate and stale data bugs, based on my experience in a previous project."</p>
+<p><strong>Action:</strong></p>
+<ul>
+  <li>I didn't argue in the meeting &mdash; I prepared a comparison document: Redux-for-everything vs. Redux + React Query</li>
+  <li>Showed concrete examples: 40 lines of Redux code (action, reducer, thunk, selector) vs. 5 lines of React Query for the same API call</li>
+  <li>Highlighted risks: manual cache invalidation, no automatic refetch on focus, no retry logic</li>
+  <li>Built a small prototype of one feature both ways, shared it with the team</li>
+</ul>
+<p><strong>Result:</strong> "The team agreed to use React Query for server state and keep Redux only for global UI state. This reduced our state management code by ~60% and eliminated a whole class of stale-data bugs."</p>
+<h4>Key principles</h4>
+<ul>
+  <li><strong>Data over opinions:</strong> Back your position with benchmarks, code samples, or documentation</li>
+  <li><strong>Respect the process:</strong> Present your case, but don't undermine the decision if the team goes another way</li>
+  <li><strong>Disagree and commit:</strong> "Once the team decides, I give it 100%. I don't say 'I told you so' if it doesn't work out &mdash; I help fix it."</li>
+  <li><strong>Pick your battles:</strong> Not every disagreement is worth escalating. Save your capital for decisions with real impact</li>
+</ul>
+<div class="tip"><strong>Senior signal:</strong> "Technical disagreements are healthy &mdash; they mean the team cares. The red flag is when nobody disagrees, because that means nobody is thinking critically."</div>
+</div></details>
+
+</section>
+
+</main>
+</div>
+
+<script>
+function toggleAll() { document.querySelectorAll('.qa').forEach(d => d.open = true); }
+function collapseAll() { document.querySelectorAll('.qa').forEach(d => d.open = false); }
+</script>
